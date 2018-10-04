@@ -65,6 +65,7 @@ categories: sql注入
 
 -r 指定HTTP请求报文
 
+```
 --level 2:加入检测cookie
 
 --dbms mysql:指定后端数据库为mysql
@@ -72,6 +73,7 @@ categories: sql注入
 --technique E:指定测试方式为报错注入
 
 --thread 10:指定并发线程
+```
 
 `sqlmap -r sqlpost/post_20.txt --level 2 --dbms mysql --technique E --threads 10 `
 

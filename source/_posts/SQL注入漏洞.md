@@ -2,6 +2,7 @@
 title: SQL注入漏洞
 date: 2018-10-01 20:46:26
 tags:
+categories: sql注入
 ---
 
 ### 1. OSI七层模型

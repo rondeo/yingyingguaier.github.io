@@ -32,7 +32,7 @@ categories: sql注入
 		$value = substr($value,0,15);
 		//限制用户名长度为15以下,如果传入的用户名超过15位会只使用前15位
 		}
-
+	
 		// Stripslashes if magic quotes enabled
 		if (get_magic_quotes_gpc())
 		//获取当前php.ini配置文件中magic_quotes_gpc的配置选项设置
@@ -58,7 +58,7 @@ categories: sql注入
 			$value = stripslashes($value);
 			//使用stripslashes()去掉多余的反斜杠
 			}
-
+	
 		// Quote if not a number
 		if (!ctype_digit($value))
 			//检查$value是不是十进制数字,如果不是就执行if中的语句
@@ -152,6 +152,7 @@ categories: sql注入
 
 ![18](/img/sql/Lesson-17/18.png)
 
+```
 --data:指定请求信息
 
 -p:指定参数
@@ -171,6 +172,7 @@ categories: sql注入
 --risk 1:仅测试常见用例
 
 --technique E:仅测试报错注入方式
+```
 
 `sqlmap -u "http://10.60.250.66/sql/Less-17/" --data "uname=admin&passwd=woshiadmin&submit=Submit" -p passwd --dbms mysql --threads 10 --method POST --flush-session --fresh-queries --level 1 --risk 1 --technique E`
 

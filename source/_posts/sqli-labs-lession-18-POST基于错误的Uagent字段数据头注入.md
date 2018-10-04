@@ -30,15 +30,15 @@ User-Agent干什么用呢:
 Mozilla/5.0 (platform; rv:geckoversion) Gecko/geckotrail Firefox/firefoxversion
 
 * Mozilla/5.0 是一个通用标记符号，用来表示与 Mozilla 兼容，这几乎是现代浏览器的标配。
-    
+  
 * platform 用来说明浏览器所运行的原生系统平台（例如 Windows、Mac、Linux 或 Android），以及是否运行在手机上。搭载 Firefox OS 的手机仅简单地使用了 "Mobile" 这个字符串；因为 web 本身就是平台。注意 platform 可能会包含多个使用 "; " 隔开的标记符号。
-    
+  
 * rv:geckoversion 表示 Gecko 的发布版本号（例如  "17.0"）。在近期发布的版本中，geckoversion 表示的值与 firefoxversion 相同。
-    
+  
 * Gecko/geckotrail 表示该浏览器基于 Gecko 渲染引擎。
 
 * 在桌面浏览器中， geckotrail  是固定的字符串 "20100101" 。
-    
+  
 * Firefox/firefoxversion 表示该浏览器是 Firefox，并且提供了版本号信息（例如  "17.0"）。
 
 拿到了我的信息总要有点东西留给我的吧。
@@ -81,7 +81,7 @@ payload:
 
 ## SQLMAP ##
 
-<font color=red>
+```
 --leveal 
 
 level: 设置检测的方方面面和测试用例, 默认是1,会尝试POST和GET, 2:Cookie也会加入检测, 3:User-Agent和Referer也会检测, 更大的值会增加用例量
@@ -109,8 +109,7 @@ fresh-queries会忽略之前的查询结果,进行重新请求操作
 --flush-session
 
 flush-session会清空当前URL相关的session
-
-</font>
+```
 
 `sqlmap -u http://10.60.250.66/sqlilabs/Less-18/ --data "uname=admin&passwd=admin&submit=Submit" --user-agent "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:62.0) Gecko/20100101 Firefox/62.0' and '1'='1" --level 4 --threads 10 --dbms mysql --fresh-queries --flush-session`
 
