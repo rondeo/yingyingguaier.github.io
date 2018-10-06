@@ -1,7 +1,7 @@
 ---
 title: ubuntn踩坑手册
 date: 2018-10-01 15:07:48
-tags:
+tags: [疑难杂症]
 categories: ubuntn
 
 ---
@@ -17,6 +17,8 @@ categories: ubuntn
 3. [安装有道词典](#003)
 4. [截图工具 Shutter](#004)
 5. [安装DeepinScrot](#005)
+6. [Ubuntu18.04双击网易云音乐无法启动](#006)
+7. [Ubuntu18.04设置合上盖子时不进入休眠](#007)
 
 <span id="001"></span>
 
@@ -167,6 +169,7 @@ $ sudo apt-get install shutter
    点击应用 - 点击 Disabled - 然后迅速按下 ctrl + alt + a
 
 <span id="005"></span>
+
 ## 安装DeepinScrot
 
 DeepinScrot : 这是一个在深度(Deepin)操作系统中使用的截图工具。 
@@ -195,3 +198,79 @@ deepin-scrot
 
 　 ubuntu 设置-键盘－自定义快捷键 
 　 填写名称，命令(deepin-scrot)，快捷键 
+
+<span id="006"></span>
+
+## Ubuntu18.04双击网易云音乐无法启动
+
+解决方案来自知乎。
+
+Ubuntu 18.04 装了网易云音乐，难道只能用 sudo 启动吗？ - Fancy的回答 - 知乎
+https://www.zhihu.com/question/277330447/answer/478510195
+
+### 问题描述
+
+只能在命令行下用`sudo netease-cloud-music`启动网易云音乐,双击网易云音乐无法启动。
+
+### 问题产生原因
+
+双击图标无法启动是因为环境变量 SESSION_MANAGER在捣乱。sudo后该环境变量变为了空。
+
+```
+#输出为空
+sudo env|grep SESSION_MANAGER
+#有输出 
+env|grep SESSION_MANAGER
+```
+
+### 解决方案
+
+```
+# 对应行修改为 Exec=sh -c "unset SESSION_MANAGER && netease-cloud-music %U" 
+sudo vim /usr/share/applications/netease-cloud-music.desktop
+# 修改Exec=
+sh -c "unset SESSION_MANAGER && netease-cloud-music"
+```
+
+![006_1](/img/UbuntuPro/006_1.png)
+
+保存并退出后即可双击打开网易云音乐。
+
+<span id="007"></span>
+
+## Ubuntu18.04设置合上盖子时不进入休眠
+
+### 问题描述：
+
+有的时候想要笔记本合上盖子也能继续工作,但是没有设置过的笔记本合上盖后工作环境就停下来了。这就需要进行相关配置。
+
+### 解决方案
+
+`/etc/systemd/logind.conf`:登录管理配置文件
+
+```
+sudo vim /etc/systemd/logind.conf
+#修改处
+HandleLidSwitch=ignore
+```
+
+保存并退出,还需要重启服务生效。
+
+`sudo restart systemd-logind `
+
+下面是登录管理配置文件的一些细节
+
+HandlePowerKey=, HandleSuspendKey=, HandleHibernateKey=, HandleLidSwitch=, HandleLidSwitchDocked=
+
+当 power(电源)/sleep(休眠)/lid(合上盖子) 事件发生时， 应该执行何种操作： 
+
+"ignore"(无操作), "poweroff"(关闭系统并切断电源), "reboot"(重新启动), "halt"(关闭系统但不切断电源), "kexec"(调用内核"kexec"函数), "suspend"(休眠到内存), "hibernate"(休眠到硬盘), "hybrid-sleep"(同时休眠到内存与硬盘), "lock"(锁屏) 。 
+
+注意， 只监视带有 "power-switch" 标签的 输入设备的 key(按下按钮)/lid(合上盖子) 事件。 如果主机插入了一个扩展坞(docking station) 或者连接了多个显示器， 那么"合上盖子"将执行 HandleLidSwitchDocked= 动作， 否则将执行 HandleLidSwitch= 动作。 
+
+下面是各选项的默认值： 
+
+HandlePowerKey=poweroff 、 HandleSuspendKey=suspend 、 HandleLidSwitch=suspend 、 
+
+HandleLidSwitchDocked=ignore 、 HandleHibernateKey=hibernate
+
