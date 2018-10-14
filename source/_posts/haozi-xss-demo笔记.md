@@ -1,8 +1,8 @@
 ---
 title: haozi/xss-demo笔记
 date: 2018-10-08 21:59:54
-tags: xss
-categories: xss
+tags: XSS
+categories: XSS
 ---
 
 # haozi/xss-demo笔记
@@ -772,14 +772,14 @@ function escape (s) {
 
 ```
 构造闭合
-1. 可以用”)闭合console.log("
+1. 可以用”)闭合console.log(",后利用注释
 2. 用</script>闭合<script>
 ```
 
 ## input code:
 
 ```
-1. "),alert("1
+1. \");alert(1)<!-- 或 \");alert(1)//
 2. 
 </script>
 <script>alert(1)</script>
