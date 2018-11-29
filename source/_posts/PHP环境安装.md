@@ -1,7 +1,7 @@
 ---
 title: Windows下PHP环境安装
 date: 2018-09-19 09:09:12
-tags:
+tags: [环境搭建]
 categories: php
 ---
 
@@ -10,7 +10,7 @@ categories: php
 ---
 
 ## 概述 ##
- 	
+
 windows下的PHP环境简称WAMP（windows+Apache+MySQL+PHP）
 
 PHP的环境搭建需要安装Apache+MySQL+PHP,还需要进行相关配置。与集成开发环境相比,WAMP的过程相对繁琐,那么可以使用phpstudy这样的开发环境。
@@ -82,8 +82,8 @@ PHP的环境搭建需要安装Apache+MySQL+PHP,还需要进行相关配置。与
 ![12](https://i.imgur.com/cU7NZIa.png)
 
 <font color=red>
-	将上图地址栏标记的的地址复制
-	
+​	将上图地址栏标记的的地址复制
+​	
 	`C:\WAMP\Apache24\bin`
 </font>
 
@@ -279,7 +279,7 @@ cmd窗口先别关闭。点下面的连接下载组件
 ![46](https://i.imgur.com/XIGNqcV.png)
 
 `<?php
-	phpinfo();
+​	phpinfo();
 ?>`
 
 删除该目录下的`index.html`文件,因为它会妨碍目录显示。访问`localhost`
