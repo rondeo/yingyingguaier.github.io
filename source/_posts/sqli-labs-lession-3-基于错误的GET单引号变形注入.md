@@ -1,7 +1,7 @@
 ---
 title: sqli-labs lession-3 基于错误的GET单引号变形注入
 date: 2018-09-19 20:02:15
-tags:
+tags: [sqli-labs]
 categories: sql注入
 ---
 

@@ -1,7 +1,7 @@
 ---
 title: sqli-labs lession 17 POST基于错误的更新
 date: 2018-09-28 09:11:00
-tags:
+tags: [sqli-labs]
 categories: sql注入
 ---
 # sqli-labs lession 17 POST基于错误的更新 #

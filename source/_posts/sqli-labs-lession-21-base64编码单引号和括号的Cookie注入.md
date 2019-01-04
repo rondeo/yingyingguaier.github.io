@@ -1,7 +1,7 @@
 ---
 title: sqli-labs-lession 21 base64编码单引号和括号的Cookie注入
 date: 2018-10-02 19:58:34
-tags:
+tags: [sqli-labs]
 categories: sql注入
 ---
 

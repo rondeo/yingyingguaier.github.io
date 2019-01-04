@@ -1,7 +1,7 @@
 ---
 title: sqli-labs-lession 14 POST双引号双注入变形
 date: 2018-09-27 20:40:43
-tags:
+tags: [sqli-labs]
 categories: sql注入
 ---
 # sqli-labs-lession 14 POST双引号双注入变形 #

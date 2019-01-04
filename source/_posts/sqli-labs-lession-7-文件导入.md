@@ -1,7 +1,7 @@
 ---
 title: sqli-labs-lession 7 文件导入
 date: 2018-09-25 21:58:44
-tags:
+tags: [sqli-labs]
 categories: sql注入
 ---
 # sqli-labs-lession 7 文件导入 #

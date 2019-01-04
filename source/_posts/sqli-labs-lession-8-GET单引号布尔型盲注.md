@@ -1,7 +1,7 @@
 ---
 title: sqli-labs-lession 8 GET单引号布尔型盲注
 date: 2018-09-26 11:17:37
-tags:
+tags: [sqli-labs]
 categories: sql注入
 ---
 
@@ -239,7 +239,7 @@ ascii码值为68,对应的字符为`D`,第一个账户的第一个字母是`D`�
 	url = 'http://10.60.250.151/sqlilabs/Less-8/?id=1'
 	db_payload = ''
 	i = j = k = l = m = 0
-
+	
 	left = 97
 	right = 123
 	

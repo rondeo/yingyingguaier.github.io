@@ -1,7 +1,7 @@
 ---
 title: sqli-labs lession 18 POST基于错误的Uagent字段数据头注入
 date: 2018-09-28 19:30:37
-tags:
+tags: [sqli-labs]
 categories: sql注入
 ---
 # sqli-labs lession 18 POST基于错误的Uagent字段数据头注入 #

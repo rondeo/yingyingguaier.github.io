@@ -4,16 +4,15 @@ date: 2018-12-21 16:41:33
 tags: lua
 ---
 
-<center>Lua程序设计第4版-笔记<center>
+# Lua程序设计第4版-笔记
 
-# 语言基础
 
 ## Lua语言入门
 
 ### 三目运算
 
 ```lua
-((a and b)or c))或(a and b or c)
+((a and b)or c)或(a and b or c)
 --b不等于false时,等价于C语言的a?b:c
 ```
 
@@ -92,5 +91,61 @@ function addqueen(a,n)
 	end
 end
 addqueen({},1)
+```
+
+## 强制返回一个结果
+
+```lua
+--使用括号强制返回第一个返回值
+function foo2() return "a", "b" end
+```
+
+![001](/img/lua/001.png)
+
+## table.unpack
+
+```lua
+--将列表转化成一组返回值
+table.unpack({"Sun","Mon","Tue","Wed"},2,3)
+
+--结果
+Mon	Tue
+```
+
+## 文件操作
+
+### 简单I/O模型
+
+```lua
+io.read("a") --读取整个文件
+io.read("l") --读取下一行（丢弃换行符）
+io.read("L") --读取下一行（保留换行符）
+io.read("n") --读取一个数值
+io.read(num) --以字符串读取num个字符
+
+-- 只读打开指定文件，并将文件设置为当前输入流
+io.input([file])
+
+-- 设置默认输出文件
+io.output([file])
+
+-- 不带参数关闭默认文件
+io.close([file])
+
+-- 不带参数使用默认文件，返回一个迭代器，用在for循环
+io.lines([file])
+
+-- 将字符串或数字写入输出流
+io.write(value)
+
+-- 将换缓冲数据写入文件
+io.flush()
+```
+
+### 完整I/O模型
+
+```lua
+-- 检查错误方法
+local f = assert(io.open(filename,mode))
 ```
 

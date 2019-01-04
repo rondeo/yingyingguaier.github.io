@@ -1,7 +1,7 @@
 ---
 title: sqli-labs-lession 16 POST双引号布尔型时间盲注
 date: 2018-09-27 22:15:07
-tags:
+tags: [sqli-labs]
 categories: sql注入
 ---
 # sqli-labs-lession 16 POST双引号布尔型时间盲注 #

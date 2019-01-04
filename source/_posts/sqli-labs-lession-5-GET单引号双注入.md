@@ -1,7 +1,7 @@
 ---
 title: sqli-labs-lession-5 GET单引号双注入
 date: 2018-09-21 17:09:45
-tags:
+tags: [sqli-labs]
 categories: sql注入
 ---
 

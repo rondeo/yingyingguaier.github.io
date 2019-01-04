@@ -1,7 +1,7 @@
 ---
 title: sqli-labs-lession 9 GET单引号基于时间盲注
 date: 2018-09-26 18:57:13
-tags:
+tags: [sqli-labs]
 categories: sql注入
 ---
 # sqli-labs-lession 9 GET单引号基于时间盲注 #

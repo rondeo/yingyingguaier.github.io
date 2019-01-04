@@ -1,7 +1,7 @@
 ---
 title: sqli-labs lession-4 基于错误的GET双引号字符型注入
 date: 2018-09-20 09:08:58
-tags:
+tags: [sqli-labs]
 categories: sql注入
 ---
 # sqli-labs lession-4 基于错误的GET双引号字符型注入 #

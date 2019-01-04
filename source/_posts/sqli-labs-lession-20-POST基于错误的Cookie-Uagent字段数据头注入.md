@@ -1,7 +1,7 @@
 ---
 title: sqli-labs lession 20 POST基于错误的Cookie-Uagent字段数据头注入
 date: 2018-09-29 20:34:34
-tags:
+tags: [sqli-labs]
 categories: sql注入
 ---
 # sqli-labs lession 20 POST基于错误的Cookie-Uagent字段数据头注入 #

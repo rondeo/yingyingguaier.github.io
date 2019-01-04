@@ -1,7 +1,7 @@
 ---
 title: sqli-labs lession 19 POST基于错误的Referer字段数据头注入
 date: 2018-09-29 19:49:33
-tags:
+tags: [sqli-labs]
 categories: sql注入
 ---
 # sqli-labs lession 19 POST基于错误的Referer字段数据头注入 #

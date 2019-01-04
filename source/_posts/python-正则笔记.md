@@ -25,11 +25,11 @@ print r.group(3)
 
 从上看出仍然可以用数字编号来引用分组。
 
-![001](../img/python/Reg/001.png)
+![001](/img/python/Reg/001.png)
 
 值得注意的是，需要反向引用时必须用`（？P=name）`,在正则表达式中进行替换需要写做`\g<name>`
 
-![002](../img/python/Reg/002.png)
+![002](/img/python/Reg/002.png)
 
 ### 非捕获分组
 
@@ -44,7 +44,7 @@ print re.search(r'(\d{4})-(\d{2})-(\d{2})','2018-12-22').group(1)
 print re.search(r'(?:\d{4})-(\d{2})-(\d{2})','2018-12-22').group(1)
 ```
 
-![003](../img/python/Reg/003.png)
+![003](/img/python/Reg/003.png)
 
 
 
@@ -86,7 +86,7 @@ str = 'first line\nsecond line\r\n\rlast line'
 print re.findall(r'(?m)^\w+',str)
 ```
 
-![004](/home/yyg/hexo/yingyingguaier.github.io/source/img/python/Reg/004.png)
+![004](/img/python/Reg/004.png)
 
 其中第三行因`\r`没有匹配上。
 
@@ -97,7 +97,7 @@ str = 'first line\nsecond line\r\nlast line'
 print re.findall(r'(?m)\A\w+',str)
 ```
 
-![005](../img/python/Reg/005.png)
+![005](/img/python/Reg/005.png)
 
 ### 锚点$
 
@@ -116,7 +116,7 @@ print re.findall(r'\w+$',str)
 
 结果是一样的。
 
-![006](../img/python/Reg/006.png)
+![006](/img/python/Reg/006.png)
 
 
 
@@ -127,7 +127,7 @@ str = 'first line1\nsecond line2\r\nlast line3'
 print re.findall(r'(?m)\w+$',str)
 ```
 
-![007](../img/python/Reg/007.png)
+![007](/img/python/Reg/007.png)
 
 ####  利用\A和\Z完成更准确的数据验证
 
@@ -141,7 +141,7 @@ re.search(r'\A\d{6}\Z','123456') !=None
 re.search(r'\A\d{6}\Z','123456\n') !=None
 ```
 
-![008](../img/python/Reg/008.png)
+![008](/img/python/Reg/008.png)
 
 ### 替换时不会被替代
 
@@ -156,7 +156,7 @@ print str
 print re.sub(r'(?m)$','</p>',re.sub(r'(?m)^','<p>',str))
 ```
 
-![009](../img/python/Reg/009.png)
+![009](/img/python/Reg/009.png)
 
 #### 处理行首尾空白字符
 
@@ -167,7 +167,7 @@ print str
 print re.sub(r'(?m)^\s+','',re.sub(r'(?m)\s+$','',str))
 ```
 
-![010](../img/python/Reg/010.png)
+![010](/img/python/Reg/010.png)
 
 ### 环视
 
@@ -202,7 +202,7 @@ import re
 print re.sub(r'(?=\d{3})',',','12345')
    ```
 
-![011](../img/python/Reg/011.png)
+![011](/img/python/Reg/011.png)
 
 产生这个原因是环视的特性：原地执行。可以把`12345`看成` 01020304050`，（0表示位置，不是表示数字。）现在我处在第一个0的位置，右边存在3个数字，满足正则，因此将第一处`0`替换为`，`，在下一个0位置同理。
 
@@ -216,7 +216,7 @@ print re.sub(r'(?=\d{3})',',','12345')
     print re.sub(r'(?<=\d)(?=(\d{3})+(?!\d))',',','123456789')
 ```
 
-![012](../img/python/Reg/012.png)
+![012](/img/python/Reg/012.png)
 
 #### 例2
 
@@ -228,7 +228,7 @@ str = '中 英文混排, some English word, 有多余的空 白字符'
 print re.sub(r'(?<![a-zA-Z])\s+(?![a-zA-Z])','',str)
 ```
 
-![013](../img/python/Reg/013.png)
+![013](/img/python/Reg/013.png)
 
 
 
@@ -242,7 +242,7 @@ print re.search(r'(?!=ab)(cd)','abcd').group(1)
 
 
 
-![014](../img/python/Reg/014.png)
+![014](/img/python/Reg/014.png)
 
 环视的用法还很多，这里不能一一列举了。
 
@@ -270,7 +270,7 @@ re.search(r'the','the',re.I) != None
 re.search(r'the','THE',re.I) != None
 ```
 
-![016](../img/python/Reg/016.png)
+![016](/img/python/Reg/016.png)
 
 ### 常见匹配模式表格（python）
 
@@ -289,7 +289,7 @@ for line in re.findall(r'(?m)^\d.*',mstr):
     print line
 ```
 
-![017](../img/python/Reg/017.png)
+![017](/img/python/Reg/017.png)
 
 ### 作用范围
 

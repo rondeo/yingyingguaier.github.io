@@ -1,7 +1,7 @@
 ---
 title: sqli-labs lession-11 基于错误的POST单引号字符型注入
 date: 2018-09-27 09:13:12
-tags:
+tags: [sqli-labs]
 categories: sql注入
 ---
 

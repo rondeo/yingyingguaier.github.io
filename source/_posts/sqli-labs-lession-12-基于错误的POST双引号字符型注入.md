@@ -1,7 +1,7 @@
 ---
 title: sqli-labs-lession 12 基于错误的POST双引号字符型注入
 date: 2018-09-27 13:38:47
-tags:
+tags: [sqli-labs]
 categories: sql注入
 ---
 # sqli-labs-lession 12 基于错误的POST双引号字符型注入 #

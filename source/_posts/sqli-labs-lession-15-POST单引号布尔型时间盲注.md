@@ -1,7 +1,7 @@
 ---
 title: sqli-labs lession 15 POST单引号布尔型时间盲注
 date: 2018-09-27 21:11:20
-tags:
+tags: [sqli-labs]
 categories: sql注入
 ---
 # sqli-labs lession 15 POST单引号布尔型时间盲注 #
@@ -218,10 +218,11 @@ categories: sql注入
 	                    dump_name += chr(m)
 	                    break
 	        print('[+]', dump_name)
-	
-	
-	
-	
-	
-	
-	
+
+
+​	
+​	
+​	
+​	
+​	
+​	
