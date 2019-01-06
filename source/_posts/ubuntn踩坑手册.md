@@ -2,7 +2,7 @@
 title: ubuntn踩坑手册
 date: 2018-10-01 15:07:48
 tags: [疑难杂症]
-categories: ubuntn
+categories: ubuntu
 
 ---
 

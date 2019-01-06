@@ -2,7 +2,7 @@
 title: wechat-ubuntu18.04
 date: 2018-11-03 17:22:01
 tags: [疑难杂症]
-categories: ubuntn
+categories: ubuntu
 ---
 
 # 安装wechat(ubuntu18.04)

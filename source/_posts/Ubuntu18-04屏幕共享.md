@@ -2,7 +2,7 @@
 title: Ubuntu18.04屏幕共享
 date: 2018-11-08 22:14:59
 tags: [疑难杂症]
-categories: ubuntn
+categories: ubuntu
 ---
 
 # Ubuntu18.04屏幕共享

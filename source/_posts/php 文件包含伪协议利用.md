@@ -60,6 +60,10 @@ expect:// — 处理交互式的流
 
 file:// [文件的绝对路径和文件名]
 
+```
+includes.php?file=file://C:\phpStudy\PHPTutorial\WWW\upload-labs\upload\phpinfo.txt
+```
+
 ![000](/img/FileContains/000.png)
 
 ## 利用php流input
