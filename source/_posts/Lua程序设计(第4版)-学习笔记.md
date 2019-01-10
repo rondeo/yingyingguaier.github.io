@@ -149,3 +149,19 @@ io.flush()
 local f = assert(io.open(filename,mode))
 ```
 
+seek获取设置文件位置
+
+```lua
+f:seek(whence,offset)
+-- 返回当前位置1相对于文件开头的偏移
+-- whence指定使用偏移的字符串  		
+-- set文件头 cur当前位置 end文件尾部 
+-- offset 偏移量
+```
+
+### 运行系统命令
+
+```lua
+os.execute 和 io.popen
+```
+
