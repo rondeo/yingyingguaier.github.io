@@ -4,17 +4,17 @@
 
 # Site
 # 博客名称
-title: BigJack's Blog  
+title: 0menc's Blog  
 # 博客子标题
-subtitle:          
+subtitle: 学习、踩坑及经验分享      
 # 作者描述     
-description:     
+description: 0menc    
 # 站点关键词，用于搜索优化       
-keywords:               
+keywords: Hexo,博客           
 # 博主名
 author: 嘤嘤怪er   
 # 站点语言     
-language: zh-CN 
+language: zh-Hans
 # 时区     
 timezone: Asia/Shanghai 
 
@@ -45,10 +45,13 @@ render_drafts: false
 post_asset_folder: false
 relative_link: false
 future: true
+
+#代码高亮设置
 highlight:
   enable: true
   line_number: true
-  auto_detect: false
+# 代码自动高亮
+  auto_detect: true
   tab_replace:
   
 # Home page setting
@@ -79,9 +82,24 @@ time_format: HH:mm:ss
 per_page: 10
 pagination_dir: page
 
+## 修改归档页面、某一分类页面、某一标签页面的显示篇数
+## 参考：http://theme-next.iissnan.com/faqs.html#setting-page-size
+archive_generator:
+  per_page: 0
+  yearly: false
+  monthly: false
+  daily: false
+
+category_generator:
+  per_page: 0
+
+tag_generator:
+  per_page: 0
+  
 # Extensions
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
+
 theme: next
 
 # Deployment
@@ -98,7 +116,7 @@ live2d:
     use: live2d-widget-model-hijiki  
     #模板目录，在node_modules里
   display:
-    position: left
+    position: right
     width: 150 
     height: 300
     bottom: -40
