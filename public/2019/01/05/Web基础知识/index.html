@@ -1,0 +1,1122 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#fff">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="https://fonts.loli.net/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.4.1" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.4.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/fish-32x32.png?v=6.4.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/fish-16x16.png?v=6.4.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.4.1" color="#fff">
+
+
+
+  <meta name="msapplication-config" content="/images/browserconfig.xml">
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '6.4.1',
+    sidebar: {"position":"right","display":"hide","offset":12,"b2t":false,"scrollpercent":true,"onmobile":true},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="基础知识 常见的端口   端口号 服务 漏洞    21 ftp    22 ssh    23 telnet    161 snmp    443 openssl 心脏滴血   837 Rsync 未授权   1433 MSSSQL    1521 Oracle    2375 docker 未授权   3306 Mysql    3389 远程连接    5432 PostgreSQL">
+<meta name="keywords" content="Hexo,博客">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Web基础知识">
+<meta property="og:url" content="https://yingyingguaier.github.io/2019/01/05/Web基础知识/index.html">
+<meta property="og:site_name" content="0menc&#39;s Blog">
+<meta property="og:description" content="基础知识 常见的端口   端口号 服务 漏洞    21 ftp    22 ssh    23 telnet    161 snmp    443 openssl 心脏滴血   837 Rsync 未授权   1433 MSSSQL    1521 Oracle    2375 docker 未授权   3306 Mysql    3389 远程连接    5432 PostgreSQL">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/knowledge/web/001.jpg">
+<meta property="og:updated_time" content="2019-06-19T17:23:13.382Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Web基础知识">
+<meta name="twitter:description" content="基础知识 常见的端口   端口号 服务 漏洞    21 ftp    22 ssh    23 telnet    161 snmp    443 openssl 心脏滴血   837 Rsync 未授权   1433 MSSSQL    1521 Oracle    2375 docker 未授权   3306 Mysql    3389 远程连接    5432 PostgreSQL">
+<meta name="twitter:image" content="https://yingyingguaier.github.io/img/knowledge/web/001.jpg">
+
+
+
+
+
+
+  <link rel="canonical" href="https://yingyingguaier.github.io/2019/01/05/Web基础知识/">
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Web基础知识 | 0menc's Blog</title>
+  
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">0menc's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">学习、踩坑及经验分享</p>
+      
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-user"></i> <br>About</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>Tags</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br>Categories</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-commonweal">
+    <a href="/404.html" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>Commonweal 404</a>
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://yingyingguaier.github.io/2019/01/05/Web基础知识/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="嘤嘤怪er">
+      <meta itemprop="description" content="0menc">
+      <meta itemprop="image" content="/images/jack.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="0menc's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Web基础知识
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-01-05 11:18:24" itemprop="dateCreated datePublished" datetime="2019-01-05T11:18:24+08:00">2019-01-05</time>
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="基础知识"><a href="#基础知识" class="headerlink" title="基础知识"></a>基础知识</h1><hr>
+<h2 id="常见的端口"><a href="#常见的端口" class="headerlink" title="常见的端口"></a>常见的端口</h2><table>
+<thead>
+<tr>
+<th align="center">端口号</th>
+<th align="center">服务</th>
+<th align="center">漏洞</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">21</td>
+<td align="center">ftp</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">22</td>
+<td align="center">ssh</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">23</td>
+<td align="center">telnet</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">161</td>
+<td align="center">snmp</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">443</td>
+<td align="center">openssl</td>
+<td align="center">心脏滴血</td>
+</tr>
+<tr>
+<td align="center">837</td>
+<td align="center">Rsync</td>
+<td align="center">未授权</td>
+</tr>
+<tr>
+<td align="center">1433</td>
+<td align="center">MSSSQL</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">1521</td>
+<td align="center">Oracle</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">2375</td>
+<td align="center">docker</td>
+<td align="center">未授权</td>
+</tr>
+<tr>
+<td align="center">3306</td>
+<td align="center">Mysql</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">3389</td>
+<td align="center">远程连接</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">5432</td>
+<td align="center">PostgreSQL</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">5900</td>
+<td align="center">vnc</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">6379</td>
+<td align="center">redis</td>
+<td align="center">未授权</td>
+</tr>
+<tr>
+<td align="center">7001,7002,7003</td>
+<td align="center">Weblogic</td>
+<td align="center">默认弱口令，反序列</td>
+</tr>
+<tr>
+<td align="center">9000</td>
+<td align="center">fastcgi-php</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">9200,9300</td>
+<td align="center">elasticsearch</td>
+<td align="center">CVE-2015-1427,CVE-2014-3120</td>
+</tr>
+<tr>
+<td align="center">11211</td>
+<td align="center">memcache</td>
+<td align="center">未授权</td>
+</tr>
+<tr>
+<td align="center">27017,27018</td>
+<td align="center">Mongodb</td>
+<td align="center">未授权访问</td>
+</tr>
+<tr>
+<td align="center">1099</td>
+<td align="center">rmi</td>
+<td align="center">命令执行</td>
+</tr>
+<tr>
+<td align="center">2601,2604</td>
+<td align="center">zebra</td>
+<td align="center">路由，默认密码 zebra</td>
+</tr>
+<tr>
+<td align="center">3128</td>
+<td align="center">squid</td>
+<td align="center">代理默认端口</td>
+</tr>
+<tr>
+<td align="center">4440</td>
+<td align="center">rundeck</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">4848</td>
+<td align="center">glassfish</td>
+<td align="center">中间件弱口令 admin/adminadmin</td>
+</tr>
+<tr>
+<td align="center">5984</td>
+<td align="center">CouchDB</td>
+<td align="center"><a href="http://xxx:5984/_utils/" target="_blank" rel="noopener">http://xxx:5984/_utils/</a></td>
+</tr>
+<tr>
+<td align="center">8000</td>
+<td align="center">jdwp java</td>
+<td align="center">调试接口命令执行</td>
+</tr>
+<tr>
+<td align="center">9043</td>
+<td align="center">websphere</td>
+<td align="center">弱口令 admin/admin</td>
+</tr>
+<tr>
+<td align="center">50000</td>
+<td align="center">SAP</td>
+<td align="center">命令执行</td>
+</tr>
+<tr>
+<td align="center">50060,50070,50030</td>
+<td align="center">hadoop</td>
+<td align="center">默认端口未授权访问</td>
+</tr>
+</tbody></table>
+<h2 id="SQL注入类型"><a href="#SQL注入类型" class="headerlink" title="SQL注入类型"></a>SQL注入类型</h2><p>数字型，字符型，搜索型</p>
+<h2 id="联合查询的条件（union-select）"><a href="#联合查询的条件（union-select）" class="headerlink" title="联合查询的条件（union select）"></a>联合查询的条件（union select）</h2><ol>
+<li>页面有注入回显</li>
+<li>拼接的两个结果集必须有相同列数,列的数据类型相同</li>
+</ol>
+<h2 id="DNSlog知道吗？是否能在Linux利用"><a href="#DNSlog知道吗？是否能在Linux利用" class="headerlink" title="DNSlog知道吗？是否能在Linux利用"></a>DNSlog知道吗？是否能在Linux利用</h2><p><a href="https://www.anquanke.com/post/id/98096" target="_blank" rel="noopener">https://www.anquanke.com/post/id/98096</a></p>
+<p><img src="/img/knowledge/web/001.jpg" alt="001"></p>
+<p>load_file函数在Linux下是无法用来做dnslog攻击的，因为在这里就涉及到Windows的UNC路径</p>
+<h2 id="绕过waf的方法"><a href="#绕过waf的方法" class="headerlink" title="绕过waf的方法"></a>绕过waf的方法</h2><p><a href="https://www.freebuf.com/column/163469.html" target="_blank" rel="noopener">https://www.freebuf.com/column/163469.html</a></p>
+<h2 id="利用过参数污染绕过waf吗？"><a href="#利用过参数污染绕过waf吗？" class="headerlink" title="利用过参数污染绕过waf吗？"></a>利用过参数污染绕过waf吗？</h2><p>在跟服务器交互的过程中，http允许 get 或者post多次传同一参数值，造成覆盖达到一些绕过waf的效果。</p>
+<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">GET</span> <span class="string">/foo?par1=val1&amp;par2=val2</span> HTTP/1.1</span><br><span class="line"><span class="attribute">User-Agent</span>: Mozilla/5.0</span><br><span class="line"><span class="attribute">Host</span>: Host</span><br><span class="line"><span class="attribute">Accept</span>: */*</span><br></pre></td></tr></table></figure>
+
+<p>如上面的http请求，一般同一参数名字只能传参一次，但是http协议中允许同样名称的参数出现多次。</p>
+<p>不同的服务器处理结果会不一样，利用这个特性进行绕过。</p>
+<h2 id="XSS类型"><a href="#XSS类型" class="headerlink" title="XSS类型"></a>XSS类型</h2><p>反射型，存储型，DOM型</p>
+<h2 id="xss可利用的协议"><a href="#xss可利用的协议" class="headerlink" title="xss可利用的协议"></a>xss可利用的协议</h2><p>javascript 伪协议，data 协议，MHTML注射XSS</p>
+<h2 id="同源策略"><a href="#同源策略" class="headerlink" title="同源策略"></a>同源策略</h2><p>3同，同域名同端口同协议。作用就是防止文档或脚本从不同源加载。</p>
+<h2 id="CSRF"><a href="#CSRF" class="headerlink" title="CSRF"></a>CSRF</h2><p>定义：攻击者劫持用户访问web站点执行非用户本意的操作。</p>
+<p>完成csrf的即可条件：</p>
+<ol>
+<li>受害者处于登录状态</li>
+<li>诱使用受害者点击连接</li>
+<li>系统对敏感操作没有进行验证</li>
+</ol>
+<h2 id="常见的请求方式有哪些"><a href="#常见的请求方式有哪些" class="headerlink" title="常见的请求方式有哪些"></a>常见的请求方式有哪些</h2><p>post,get,options,head,connect,trace,delete,put</p>
+<h2 id="ssrf利用协议"><a href="#ssrf利用协议" class="headerlink" title="ssrf利用协议"></a>ssrf利用协议</h2><p>最具代表性几个，dict操作redis,file任意文件读，gopher反弹shell，tftp发起udp拒绝服务</p>
+<h2 id="ssrf无回显怎么办"><a href="#ssrf无回显怎么办" class="headerlink" title="ssrf无回显怎么办"></a>ssrf无回显怎么办</h2><p>利用dnslog</p>
+<h2 id="ssrf如何绕过方式"><a href="#ssrf如何绕过方式" class="headerlink" title="ssrf如何绕过方式"></a>ssrf如何绕过方式</h2><p>1）<a href="http://www.baidu.com@10.10.10.xn--10http-4p7i//10.10.10.10" target="_blank" rel="noopener">http://www.baidu.com@10.10.10.10与http://10.10.10.10</a> 请求是相同的</p>
+<p>此脚本访问请求得到的内容都是10.10.10.10的内容。</p>
+<p>该绕过同样在URL跳转绕过中适用。</p>
+<p><a href="http://www.wooyun.org/bugs/wooyun-2015-091690" target="_blank" rel="noopener">http://www.wooyun.org/bugs/wooyun-2015-091690</a></p>
+<blockquote>
+<p>乌云镜像的url中的html替换为wooyun-2015-091690.html</p>
+</blockquote>
+<p>2）ip地址转换成进制来访问</p>
+<p>115.239.210.26 ＝ 16373751032</p>
+<p>3）添加端口可能绕过匹配正则</p>
+<p>10.10.10.10:80 案例：</p>
+<p><a href="http://www.wooyun.org/bugs/wooyun-2014-061850" target="_blank" rel="noopener">http://www.wooyun.org/bugs/wooyun-2014-061850</a></p>
+<blockquote>
+<p>乌云镜像的url中的html替换为wooyun-2014-061850.html</p>
+</blockquote>
+<p>4）localhost绕过</p>
+<p>5）用短地址（302跳转）绕过，案例:</p>
+<p>搜狐某云平台API接口SSRF续集-绕过:<a href="https://bugs.shuimugan.com/bug/view?bug_no=0132243" target="_blank" rel="noopener">https://bugs.shuimugan.com/bug/view?bug_no=0132243</a></p>
+<p>神器而已之奇虎360某SSRF绕过限制代理访问内网:<a href="https://bugs.shuimugan.com/bug/view?bug_no=0135257" target="_blank" rel="noopener">https://bugs.shuimugan.com/bug/view?bug_no=0135257</a></p>
+<p>5）利用xip.io和xip.name</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">10<span class="selector-class">.0</span><span class="selector-class">.0</span><span class="selector-class">.1</span><span class="selector-class">.xip</span><span class="selector-class">.io</span> 10<span class="selector-class">.0</span><span class="selector-class">.0</span><span class="selector-class">.1</span></span><br><span class="line"></span><br><span class="line"><span class="selector-tag">www</span><span class="selector-class">.10</span><span class="selector-class">.0</span><span class="selector-class">.0</span><span class="selector-class">.1</span><span class="selector-class">.xip</span><span class="selector-class">.io</span> 10<span class="selector-class">.0</span><span class="selector-class">.0</span><span class="selector-class">.1</span></span><br><span class="line"></span><br><span class="line"><span class="selector-tag">mysite</span><span class="selector-class">.10</span><span class="selector-class">.0</span><span class="selector-class">.0</span><span class="selector-class">.1</span><span class="selector-class">.xip</span><span class="selector-class">.io</span> 10<span class="selector-class">.0</span><span class="selector-class">.0</span><span class="selector-class">.1</span></span><br><span class="line"></span><br><span class="line"><span class="selector-tag">foo</span><span class="selector-class">.bar</span><span class="selector-class">.10</span><span class="selector-class">.0</span><span class="selector-class">.0</span><span class="selector-class">.1</span><span class="selector-class">.xip</span><span class="selector-class">.io</span> 10<span class="selector-class">.0</span><span class="selector-class">.0</span><span class="selector-class">.1</span></span><br><span class="line">10<span class="selector-class">.0</span><span class="selector-class">.0</span><span class="selector-class">.1</span><span class="selector-class">.xip</span><span class="selector-class">.name</span>  <span class="selector-tag">resolves</span> <span class="selector-tag">to</span>  10<span class="selector-class">.0</span><span class="selector-class">.0</span><span class="selector-class">.1</span></span><br><span class="line"></span><br><span class="line"><span class="selector-tag">www</span><span class="selector-class">.10</span><span class="selector-class">.0</span><span class="selector-class">.0</span><span class="selector-class">.2</span><span class="selector-class">.xip</span><span class="selector-class">.name</span>  <span class="selector-tag">resolves</span> <span class="selector-tag">to</span>  10<span class="selector-class">.0</span><span class="selector-class">.0</span><span class="selector-class">.2</span></span><br><span class="line"></span><br><span class="line"><span class="selector-tag">foo</span><span class="selector-class">.10</span><span class="selector-class">.0</span><span class="selector-class">.0</span><span class="selector-class">.3</span><span class="selector-class">.xip</span><span class="selector-class">.name</span>  <span class="selector-tag">resolves</span> <span class="selector-tag">to</span>  10<span class="selector-class">.0</span><span class="selector-class">.0</span><span class="selector-class">.3</span></span><br><span class="line"></span><br><span class="line"><span class="selector-tag">bar</span><span class="selector-class">.baz</span><span class="selector-class">.10</span><span class="selector-class">.0</span><span class="selector-class">.0</span><span class="selector-class">.4</span><span class="selector-class">.xip</span><span class="selector-class">.name</span>  <span class="selector-tag">resolves</span> <span class="selector-tag">to</span>  10<span class="selector-class">.0</span><span class="selector-class">.0</span><span class="selector-class">.4</span></span><br></pre></td></tr></table></figure>
+
+<p>6）利用Enclosed alphanumerics</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">利用Enclosed alphanumerics</span><br><span class="line">ⓔⓧⓐⓜⓟⓛⓔ.ⓒⓞⓜ  <span class="meta">&gt;&gt;&gt;  </span>example.com</span><br><span class="line"><span class="symbol">List:</span></span><br><span class="line">① ② ③ ④ ⑤ ⑥ ⑦ ⑧ ⑨ ⑩ ⑪ ⑫ ⑬ ⑭ ⑮ ⑯ ⑰ ⑱ ⑲ ⑳ ⑴ ⑵ ⑶ ⑷ ⑸ ⑹ ⑺ ⑻ ⑼ ⑽ ⑾ ⑿ ⒀ ⒁ ⒂ ⒃ ⒄ ⒅ ⒆ ⒇ ⒈ ⒉ ⒊ ⒋ ⒌ ⒍ ⒎ ⒏ ⒐ ⒑ ⒒ ⒓ ⒔ ⒕ ⒖ ⒗ ⒘ ⒙ ⒚ ⒛ ⒜ ⒝ ⒞ ⒟ ⒠ ⒡ ⒢ ⒣ ⒤ ⒥ ⒦ ⒧ ⒨ ⒩ ⒪ ⒫ ⒬ ⒭ ⒮ ⒯ ⒰ ⒱ ⒲ ⒳ ⒴ ⒵ Ⓐ Ⓑ Ⓒ Ⓓ Ⓔ Ⓕ Ⓖ Ⓗ Ⓘ Ⓙ Ⓚ Ⓛ Ⓜ Ⓝ Ⓞ Ⓟ Ⓠ Ⓡ Ⓢ Ⓣ Ⓤ Ⓥ Ⓦ Ⓧ Ⓨ Ⓩ ⓐ ⓑ ⓒ ⓓ ⓔ ⓕ ⓖ ⓗ ⓘ ⓙ ⓚ ⓛ ⓜ ⓝ ⓞ ⓟ ⓠ ⓡ ⓢ ⓣ ⓤ ⓥ ⓦ ⓧ ⓨ ⓩ ⓪ ⓫ ⓬ ⓭ ⓮ ⓯ ⓰ ⓱ ⓲ ⓳ ⓴ ⓵ ⓶ ⓷ ⓸ ⓹ ⓺ ⓻ ⓼ ⓽ ⓾ ⓿</span><br></pre></td></tr></table></figure>
+
+<p>7) 利用句号</p>
+<figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">127</span>。<span class="number">0</span>。<span class="number">0</span>。<span class="number">1</span>  &gt;&gt;&gt;  <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="文件包含有哪些伪协议"><a href="#文件包含有哪些伪协议" class="headerlink" title="文件包含有哪些伪协议"></a>文件包含有哪些伪协议</h2><p><a href="https://www.yingyingguaier.top/2019/01/03/php%20%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E4%BC%AA%E5%8D%8F%E8%AE%AE%E5%88%A9%E7%94%A8/#more" target="_blank" rel="noopener">https://www.yingyingguaier.top/2019/01/03/php%20%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%E4%BC%AA%E5%8D%8F%E8%AE%AE%E5%88%A9%E7%94%A8/#more</a></p>
+<h2 id="文件包含如何getshell"><a href="#文件包含如何getshell" class="headerlink" title="文件包含如何getshell"></a>文件包含如何getshell</h2><ol>
+<li><p>远程文件包含：可以直接执行任意代码</p>
+<hr>
+<p>下面是本地包含</p>
+<hr>
+</li>
+<li><p>上传图片马包含</p>
+</li>
+<li><p>包含日志文件Getshell</p>
+</li>
+<li><p>利用data伪协议和php://input流执行php代码</p>
+</li>
+<li><p>存在phpinfo信息泄露可包含临时文件</p>
+</li>
+<li><p>包涵session文件</p>
+</li>
+</ol>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+<div>
+  
+    <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-heart"></i>感谢阅读-------------</div>
+    
+</div>
+  
+</div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/01/06/php代码执行与命令执行/" rel="prev" title="php代码执行与命令执行">
+                <i class="fa fa-chevron-left"></i> php代码执行与命令执行
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/01/03/php 文件包含伪协议利用/" rel="next" title="php 文件包含伪协议利用">
+                php 文件包含伪协议利用 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+      <div id="sidebar-dimmer"></div>
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <a href="/">
+                <img class="site-author-image" itemprop="image" src="/images/jack.jpg" alt="嘤嘤怪er">
+              </a>
+            
+              <p class="site-author-name" itemprop="name">嘤嘤怪er</p>
+              <p class="site-description motion-element" itemprop="description">0menc</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">101</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">16</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">17</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#基础知识"><span class="nav-number">1.</span> <span class="nav-text">基础知识</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#常见的端口"><span class="nav-number">1.1.</span> <span class="nav-text">常见的端口</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SQL注入类型"><span class="nav-number">1.2.</span> <span class="nav-text">SQL注入类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#联合查询的条件（union-select）"><span class="nav-number">1.3.</span> <span class="nav-text">联合查询的条件（union select）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DNSlog知道吗？是否能在Linux利用"><span class="nav-number">1.4.</span> <span class="nav-text">DNSlog知道吗？是否能在Linux利用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#绕过waf的方法"><span class="nav-number">1.5.</span> <span class="nav-text">绕过waf的方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#利用过参数污染绕过waf吗？"><span class="nav-number">1.6.</span> <span class="nav-text">利用过参数污染绕过waf吗？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#XSS类型"><span class="nav-number">1.7.</span> <span class="nav-text">XSS类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#xss可利用的协议"><span class="nav-number">1.8.</span> <span class="nav-text">xss可利用的协议</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#同源策略"><span class="nav-number">1.9.</span> <span class="nav-text">同源策略</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CSRF"><span class="nav-number">1.10.</span> <span class="nav-text">CSRF</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#常见的请求方式有哪些"><span class="nav-number">1.11.</span> <span class="nav-text">常见的请求方式有哪些</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ssrf利用协议"><span class="nav-number">1.12.</span> <span class="nav-text">ssrf利用协议</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ssrf无回显怎么办"><span class="nav-number">1.13.</span> <span class="nav-text">ssrf无回显怎么办</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ssrf如何绕过方式"><span class="nav-number">1.14.</span> <span class="nav-text">ssrf如何绕过方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#文件包含有哪些伪协议"><span class="nav-number">1.15.</span> <span class="nav-text">文件包含有哪些伪协议</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#文件包含如何getshell"><span class="nav-number">1.16.</span> <span class="nav-text">文件包含如何getshell</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 – <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">嘤嘤怪er</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.4.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.4.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.4.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.4.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.4.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+<script type="text/javascript">
+
+    var a_idx = 0;
+    jQuery(document).ready(function($) {
+        $("body").click(function(e) {
+            var a = new Array("富强", "民主", "文明", "和谐", "自由", "平等", "公正" ,"法治", "爱国", "敬业", "诚信", "友善");
+            var $i = $("<span />").text(a[a_idx]);
+            a_idx = (a_idx + 1) % a.length;
+            var x = e.pageX,
+                y = e.pageY;
+            $i.css({
+                "z-index": 99999999999999999999999999999999999999999999999999999999999999999999999999 ,
+                "top": y - 20,
+                "left": x,
+                "position": "absolute",
+                "font-weight": "bold",
+                "color": "#ff6651"
+            });
+            $("body").append($i);
+            $i.animate({
+                    "top": y - 180,
+                    "opacity": 0
+                },
+                1500,
+                function() {
+                    $i.remove();
+                });
+        });
+    });
+</script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300,"bottom":-40},"mobile":{"show":false},"log":false,"pluginJsPath":"lib/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>

