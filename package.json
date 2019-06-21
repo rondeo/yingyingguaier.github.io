@@ -6,6 +6,9 @@
     "version": "3.9.0"
   },
   "dependencies": {
+    "babel-eslint": "^10.0.2",
+    "brace-expansion": "^1.1.11",
+    "eslint": "^5.16.0",
     "hexo": "^3.9.0",
     "hexo-asset-image": "git+https://github.com/CodeFalling/hexo-asset-image.git",
     "hexo-deployer-git": "^1.0.0",
@@ -20,6 +23,7 @@
     "hexo-server": "^0.3.3",
     "hexo-wordcount": "^6.0.1",
     "live2d-widget-model-hijiki": "^1.0.5",
-    "nrm": "^1.0.2"
+    "nrm": "^1.1.0",
+    "open": "^6.3.0"
   }
 }
