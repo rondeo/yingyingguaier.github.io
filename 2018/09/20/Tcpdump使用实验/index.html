@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#fff">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="https://fonts.loli.net/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.4.1" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.4.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/fish-32x32.png?v=6.4.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/fish-16x16.png?v=6.4.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.4.1" color="#fff">
+
+
+
+  <meta name="msapplication-config" content="/images/browserconfig.xml">
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '6.4.1',
+    sidebar: {"position":"right","display":"hide","offset":12,"b2t":false,"scrollpercent":true,"onmobile":true},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="Tcpdump使用实验【目的】学习使用tcpdump工具，tcpdump是最常用的网络数据分析工具之一。 【原理】tcpdump和wireshark一样,是一个抓包工具,基于libpcap开发的,过滤机制使用内核的BPF过滤,在linux下使用,也可以把tcpdump当成linux的命令。多数linux服务器是不按照图形界面的，在这种情况下，就可以使用tcpdump。 【步骤】安装tcpdump一">
+<meta name="keywords" content="Hexo,博客">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Tcpdump使用实验">
+<meta property="og:url" content="https://yingyingguaier.github.io/2018/09/20/Tcpdump使用实验/index.html">
+<meta property="og:site_name" content="0menc&#39;s Blog">
+<meta property="og:description" content="Tcpdump使用实验【目的】学习使用tcpdump工具，tcpdump是最常用的网络数据分析工具之一。 【原理】tcpdump和wireshark一样,是一个抓包工具,基于libpcap开发的,过滤机制使用内核的BPF过滤,在linux下使用,也可以把tcpdump当成linux的命令。多数linux服务器是不按照图形界面的，在这种情况下，就可以使用tcpdump。 【步骤】安装tcpdump一">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://i.imgur.com/i32BldG.png">
+<meta property="og:image" content="https://i.imgur.com/cbMrq2X.png">
+<meta property="og:image" content="https://i.imgur.com/maAUOo6.png">
+<meta property="og:image" content="https://i.imgur.com/OgWm7o4.png">
+<meta property="og:image" content="https://i.imgur.com/JYZyM0u.png">
+<meta property="og:image" content="https://i.imgur.com/IeFHwOL.png">
+<meta property="og:image" content="https://i.imgur.com/ozN3Uef.png">
+<meta property="og:image" content="https://i.imgur.com/PjSKRna.png">
+<meta property="og:image" content="https://i.imgur.com/9hsei8t.png">
+<meta property="og:image" content="https://i.imgur.com/Ko5X6wn.png">
+<meta property="og:image" content="https://i.imgur.com/JNiPpWS.png">
+<meta property="og:image" content="https://i.imgur.com/lY5hUnm.png">
+<meta property="og:image" content="https://i.imgur.com/Hz3k3qH.png">
+<meta property="og:image" content="https://i.imgur.com/4iM4VTS.png">
+<meta property="og:image" content="https://i.imgur.com/MLaCZEj.png">
+<meta property="og:image" content="https://i.imgur.com/ea8zQXs.png">
+<meta property="og:image" content="https://i.imgur.com/W8602BO.png">
+<meta property="og:image" content="https://i.imgur.com/2Y9swSM.png">
+<meta property="og:image" content="https://i.imgur.com/P6iJhc3.png">
+<meta property="og:image" content="https://i.imgur.com/vyNC7VE.png">
+<meta property="og:image" content="https://i.imgur.com/OFtQNEF.png">
+<meta property="og:image" content="https://i.imgur.com/7PLTIWu.png">
+<meta property="og:updated_time" content="2019-06-19T18:51:35.111Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Tcpdump使用实验">
+<meta name="twitter:description" content="Tcpdump使用实验【目的】学习使用tcpdump工具，tcpdump是最常用的网络数据分析工具之一。 【原理】tcpdump和wireshark一样,是一个抓包工具,基于libpcap开发的,过滤机制使用内核的BPF过滤,在linux下使用,也可以把tcpdump当成linux的命令。多数linux服务器是不按照图形界面的，在这种情况下，就可以使用tcpdump。 【步骤】安装tcpdump一">
+<meta name="twitter:image" content="https://i.imgur.com/i32BldG.png">
+
+
+
+
+
+
+  <link rel="canonical" href="https://yingyingguaier.github.io/2018/09/20/Tcpdump使用实验/">
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Tcpdump使用实验 | 0menc's Blog</title>
+  
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">0menc's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">学习、踩坑及经验分享</p>
+      
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-user"></i> <br>About</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>Tags</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br>Categories</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-commonweal">
+    <a href="/404.html" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>Commonweal 404</a>
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://yingyingguaier.github.io/2018/09/20/Tcpdump使用实验/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="嘤嘤怪er">
+      <meta itemprop="description" content="0menc">
+      <meta itemprop="image" content="/images/jack.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="0menc's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Tcpdump使用实验
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2018-09-20 09:09:12" itemprop="dateCreated datePublished" datetime="2018-09-20T09:09:12+08:00">2018-09-20</time>
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/工具/" itemprop="url" rel="index"><span itemprop="name">工具</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Tcpdump使用实验"><a href="#Tcpdump使用实验" class="headerlink" title="Tcpdump使用实验"></a><center>Tcpdump使用实验</center></h1><h2 id="【目的】"><a href="#【目的】" class="headerlink" title="【目的】"></a>【目的】</h2><p>学习使用tcpdump工具，tcpdump是最常用的网络数据分析工具之一。</p>
+<h2 id="【原理】"><a href="#【原理】" class="headerlink" title="【原理】"></a>【原理】</h2><p>tcpdump和wireshark一样,是一个抓包工具,基于libpcap开发的,过滤机制使用内核的BPF过滤,在linux下使用,也可以把tcpdump当成linux的命令。多数linux服务器是不按照图形界面的，在这种情况下，就可以使用tcpdump。</p>
+<h2 id="【步骤】"><a href="#【步骤】" class="headerlink" title="【步骤】"></a>【步骤】</h2><h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>tcpdump一般在linux服务器上是默认安装的,也可以说tcpdump是linux服务器端一个命令,可以用whereis命令查看安装位置;</p>
+<p><img src="https://i.imgur.com/i32BldG.png" alt="1"></p>
+<p>用<code>tcpdump -help</code>查看帮助    </p>
+<p><img src="https://i.imgur.com/cbMrq2X.png" alt="2"></p>
+<h3 id="常用命令选项"><a href="#常用命令选项" class="headerlink" title="常用命令选项"></a>常用命令选项</h3><blockquote>
+<p>跟进不同用户的权限,如果需要sudo的,在命令前面加上sudo</p>
+</blockquote>
+<h4 id="指定要抓的数据包的数量"><a href="#指定要抓的数据包的数量" class="headerlink" title="指定要抓的数据包的数量"></a>指定要抓的数据包的数量</h4><p>指定要抓的数据包的数量,指定”-c 10”将获取10个包,但可能已经处理了100个包,只不过只有10个包是满足条件的包。</p>
+<p><code>tcpdump -c 10</code></p>
+<p><img src="https://i.imgur.com/maAUOo6.png" alt="3"></p>
+<h4 id="查看哪些端口可以抓包"><a href="#查看哪些端口可以抓包" class="headerlink" title="查看哪些端口可以抓包"></a>查看哪些端口可以抓包</h4><p><code>tcpdump -D</code></p>
+<p><img src="https://i.imgur.com/OgWm7o4.png" alt="4"></p>
+<h4 id="指定接口"><a href="#指定接口" class="headerlink" title="指定接口"></a>指定接口</h4><p><code>tcpdump -i eth0 -c 10</code></p>
+<p><img src="https://i.imgur.com/JYZyM0u.png" alt="5"></p>
+<h4 id="n和-nn"><a href="#n和-nn" class="headerlink" title="-n和-nn"></a>-n和-nn</h4><p>-n: 对地址以数字方式显式,否则显式为主机名,也就是说-n选项不做主机名解析</p>
+<p>-nn: 把端口显示为数值,否则显示端口服务名</p>
+<p>对比下上图<code>tcpdump -i eth0 -c 10</code>红色方框的部分</p>
+<p><code>tcpdump -i eth0 -c 10 -n</code></p>
+<p><code>tcpdump -i eth0 -c 10 -nn</code></p>
+<p><img src="https://i.imgur.com/IeFHwOL.png" alt="6"></p>
+<h4 id="x和-xx-X和-XX-最常用的是-XX"><a href="#x和-xx-X和-XX-最常用的是-XX" class="headerlink" title="-x和-xx;-X和-XX,最常用的是-XX"></a>-x和-xx;-X和-XX,最常用的是-XX</h4><p>-x：以16进制打印出每个包的数据(不包括连接层的头部)</p>
+<p>-xx：以16进制打印出每个包的数据</p>
+<p>-X：输出包头部的数据,以16进制和ASCII两种方式同时输出（不包括连接层的头部）</p>
+<p>-XX：输出包头部的数据,会以16进制和ASCII两种方式同时输出。</p>
+<p><img src="https://i.imgur.com/ozN3Uef.png" alt="7"></p>
+<p><img src="https://i.imgur.com/PjSKRna.png" alt="8"></p>
+<h4 id="v，-vv，-vvv答应详细输出"><a href="#v，-vv，-vvv答应详细输出" class="headerlink" title="-v，-vv，-vvv答应详细输出"></a>-v，-vv，-vvv答应详细输出</h4><p>一个比一个详细，看一下吧</p>
+<p>如果没带-v或者-vv选项的时候，会有如下提示</p>
+<p><img src="https://i.imgur.com/9hsei8t.png" alt="9"></p>
+<p>对比一下带-v和不带-v的（<code>tcpdump -i eth0 -c 10 -nn</code>）区别，会多输出一些信息。</p>
+<p><img src="https://i.imgur.com/Ko5X6wn.png" alt="10"></p>
+<h4 id="包保存到指定文件-w，从指定文件读取包答应到屏幕-r"><a href="#包保存到指定文件-w，从指定文件读取包答应到屏幕-r" class="headerlink" title="包保存到指定文件-w，从指定文件读取包答应到屏幕-r"></a>包保存到指定文件-w，从指定文件读取包答应到屏幕-r</h4><p><img src="https://i.imgur.com/JNiPpWS.png" alt="11"></p>
+<p><img src="https://i.imgur.com/lY5hUnm.png" alt="12"></p>
+<h3 id="常用过滤字段"><a href="#常用过滤字段" class="headerlink" title="常用过滤字段"></a>常用过滤字段</h3><h4 id="过滤指定主机"><a href="#过滤指定主机" class="headerlink" title="过滤指定主机"></a>过滤指定主机</h4><p>首先ping下，看看ip是多少，然后用host过滤，抓到的都是指定host的包</p>
+<p><code>tcpdump host 360.cn</code></p>
+<p><img src="https://i.imgur.com/Hz3k3qH.png" alt="13"></p>
+<h4 id="源与目的，src与dst"><a href="#源与目的，src与dst" class="headerlink" title="源与目的，src与dst"></a>源与目的，src与dst</h4><p><code>tcpdump -i eth0 -c 10 -nn src host 360.cn</code></p>
+<p><code>tcpdump -i eth0 -c 10 -nn dst host 360.cn</code></p>
+<p><img src="https://i.imgur.com/4iM4VTS.png" alt="14"></p>
+<p><code>tcpdump -i eth0 -c 10 -nn src host 36.110.213.49</code></p>
+<p><code>tcpdump -i eth0 -c 10 -nn dst host 36.110.213.49</code></p>
+<p><img src="https://i.imgur.com/MLaCZEj.png" alt="15"></p>
+<h4 id="协议过滤"><a href="#协议过滤" class="headerlink" title="协议过滤"></a>协议过滤</h4><p>过滤udp协议</p>
+<p><code>tcpdump -i eth0 -c 10 -nn udp</code></p>
+<p><img src="https://i.imgur.com/ea8zQXs.png" alt="16"></p>
+<p>抓ping包</p>
+<p><code>tcpdump -i eth0 -c 10 -nn icmp</code></p>
+<p><img src="https://i.imgur.com/W8602BO.png" alt="17"></p>
+<h4 id="过滤网段"><a href="#过滤网段" class="headerlink" title="过滤网段"></a>过滤网段</h4><p><code>tcpdump -i eth0 -c 10 -nn net 10.60</code></p>
+<p><img src="https://i.imgur.com/2Y9swSM.png" alt="18"></p>
+<h4 id="过滤端口"><a href="#过滤端口" class="headerlink" title="过滤端口"></a>过滤端口</h4><p><code>tcpdump -c 5 udp port 53</code></p>
+<p><img src="https://i.imgur.com/P6iJhc3.png" alt="19"></p>
+<h4 id="协议字段过滤"><a href="#协议字段过滤" class="headerlink" title="协议字段过滤"></a>协议字段过滤</h4><p>表达式单元之间可以使用操作符” and / &amp;&amp; / or / || / not / ! “进行连接</p>
+<p>过滤syn包和fin包</p>
+<p><code>tcpdump -i eth0 -c 3 -nn &#39;tcp[tcpflags] &amp; (tcp-syn|tcp-fin) != 0&#39;</code></p>
+<p><img src="https://i.imgur.com/vyNC7VE.png" alt="20"></p>
+<p>过滤tcp 80端口，ip包长度大于1000的包（ip[2:2]表示整个ip数据包的长度）</p>
+<p><code>tcpdump -i eth0 -c 1 -nn &#39;tcp port 80 and ip[2:2] &gt; 1000&#39;</code></p>
+<p><img src="https://i.imgur.com/OFtQNEF.png" alt="21"></p>
+<p>过滤icmp的reply包</p>
+<p><code>tcpdump -i eth0 -c 1 -nn &#39;icmp[icmptype] == icmp-echoreply&#39;</code></p>
+<p><img src="https://i.imgur.com/7PLTIWu.png" alt="22"></p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+<div>
+  
+    <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-heart"></i>感谢阅读-------------</div>
+    
+</div>
+  
+</div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/09/21/sqli-labs-lession-5-GET单引号双注入/" rel="prev" title="sqli-labs-lession-5 GET单引号双注入">
+                <i class="fa fa-chevron-left"></i> sqli-labs-lession-5 GET单引号双注入
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/09/20/sqli-labs-lession-4-基于错误的GET双引号字符型注入/" rel="next" title="sqli-labs lession-4 基于错误的GET双引号字符型注入">
+                sqli-labs lession-4 基于错误的GET双引号字符型注入 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+      <div id="sidebar-dimmer"></div>
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <a href="/">
+                <img class="site-author-image" itemprop="image" src="/images/jack.jpg" alt="嘤嘤怪er">
+              </a>
+            
+              <p class="site-author-name" itemprop="name">嘤嘤怪er</p>
+              <p class="site-description motion-element" itemprop="description">0menc</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">101</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">16</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">17</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Tcpdump使用实验"><span class="nav-number">1.</span> <span class="nav-text">Tcpdump使用实验</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#【目的】"><span class="nav-number">1.1.</span> <span class="nav-text">【目的】</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#【原理】"><span class="nav-number">1.2.</span> <span class="nav-text">【原理】</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#【步骤】"><span class="nav-number">1.3.</span> <span class="nav-text">【步骤】</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装"><span class="nav-number">1.3.1.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#常用命令选项"><span class="nav-number">1.3.2.</span> <span class="nav-text">常用命令选项</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#指定要抓的数据包的数量"><span class="nav-number">1.3.2.1.</span> <span class="nav-text">指定要抓的数据包的数量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#查看哪些端口可以抓包"><span class="nav-number">1.3.2.2.</span> <span class="nav-text">查看哪些端口可以抓包</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#指定接口"><span class="nav-number">1.3.2.3.</span> <span class="nav-text">指定接口</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#n和-nn"><span class="nav-number">1.3.2.4.</span> <span class="nav-text">-n和-nn</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#x和-xx-X和-XX-最常用的是-XX"><span class="nav-number">1.3.2.5.</span> <span class="nav-text">-x和-xx;-X和-XX,最常用的是-XX</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#v，-vv，-vvv答应详细输出"><span class="nav-number">1.3.2.6.</span> <span class="nav-text">-v，-vv，-vvv答应详细输出</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#包保存到指定文件-w，从指定文件读取包答应到屏幕-r"><span class="nav-number">1.3.2.7.</span> <span class="nav-text">包保存到指定文件-w，从指定文件读取包答应到屏幕-r</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#常用过滤字段"><span class="nav-number">1.3.3.</span> <span class="nav-text">常用过滤字段</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#过滤指定主机"><span class="nav-number">1.3.3.1.</span> <span class="nav-text">过滤指定主机</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#源与目的，src与dst"><span class="nav-number">1.3.3.2.</span> <span class="nav-text">源与目的，src与dst</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#协议过滤"><span class="nav-number">1.3.3.3.</span> <span class="nav-text">协议过滤</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#过滤网段"><span class="nav-number">1.3.3.4.</span> <span class="nav-text">过滤网段</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#过滤端口"><span class="nav-number">1.3.3.5.</span> <span class="nav-text">过滤端口</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#协议字段过滤"><span class="nav-number">1.3.3.6.</span> <span class="nav-text">协议字段过滤</span></a></li></ol></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 – <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">嘤嘤怪er</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.4.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.4.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.4.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.4.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.4.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+<script type="text/javascript">
+
+    var a_idx = 0;
+    jQuery(document).ready(function($) {
+        $("body").click(function(e) {
+            var a = new Array("富强", "民主", "文明", "和谐", "自由", "平等", "公正" ,"法治", "爱国", "敬业", "诚信", "友善");
+            var $i = $("<span />").text(a[a_idx]);
+            a_idx = (a_idx + 1) % a.length;
+            var x = e.pageX,
+                y = e.pageY;
+            $i.css({
+                "z-index": 99999999999999999999999999999999999999999999999999999999999999999999999999 ,
+                "top": y - 20,
+                "left": x,
+                "position": "absolute",
+                "font-weight": "bold",
+                "color": "#ff6651"
+            });
+            $("body").append($i);
+            $i.animate({
+                    "top": y - 180,
+                    "opacity": 0
+                },
+                1500,
+                function() {
+                    $i.remove();
+                });
+        });
+    });
+</script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300,"bottom":-40},"mobile":{"show":false},"log":false,"pluginJsPath":"lib/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>

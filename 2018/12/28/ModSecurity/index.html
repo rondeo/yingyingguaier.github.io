@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#fff">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="https://fonts.loli.net/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.4.1" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.4.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/fish-32x32.png?v=6.4.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/fish-16x16.png?v=6.4.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.4.1" color="#fff">
+
+
+
+  <meta name="msapplication-config" content="/images/browserconfig.xml">
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '6.4.1',
+    sidebar: {"position":"right","display":"hide","offset":12,"b2t":false,"scrollpercent":true,"onmobile":true},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="ModSecurity 配置环境(ubuntu18.04)123456789101112131415161718192021222324252627282930#备份源sudo cp /etc/apt/sources.list /etc/apt/sources.list.bak#添加阿里云源sudo vim /etc/apt/sources.list#把以下内容覆盖deb http://mirro">
+<meta name="keywords" content="环境搭建">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ModSecurity">
+<meta property="og:url" content="https://yingyingguaier.github.io/2018/12/28/ModSecurity/index.html">
+<meta property="og:site_name" content="0menc&#39;s Blog">
+<meta property="og:description" content="ModSecurity 配置环境(ubuntu18.04)123456789101112131415161718192021222324252627282930#备份源sudo cp /etc/apt/sources.list /etc/apt/sources.list.bak#添加阿里云源sudo vim /etc/apt/sources.list#把以下内容覆盖deb http://mirro">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/modsecurity/001.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/modsecurity/002.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/modsecurity/003.png">
+<meta property="og:updated_time" content="2019-06-19T18:51:35.110Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ModSecurity">
+<meta name="twitter:description" content="ModSecurity 配置环境(ubuntu18.04)123456789101112131415161718192021222324252627282930#备份源sudo cp /etc/apt/sources.list /etc/apt/sources.list.bak#添加阿里云源sudo vim /etc/apt/sources.list#把以下内容覆盖deb http://mirro">
+<meta name="twitter:image" content="https://yingyingguaier.github.io/img/modsecurity/001.png">
+
+
+
+
+
+
+  <link rel="canonical" href="https://yingyingguaier.github.io/2018/12/28/ModSecurity/">
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>ModSecurity | 0menc's Blog</title>
+  
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">0menc's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">学习、踩坑及经验分享</p>
+      
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-user"></i> <br>About</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>Tags</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br>Categories</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-commonweal">
+    <a href="/404.html" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>Commonweal 404</a>
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://yingyingguaier.github.io/2018/12/28/ModSecurity/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="嘤嘤怪er">
+      <meta itemprop="description" content="0menc">
+      <meta itemprop="image" content="/images/jack.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="0menc's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">ModSecurity
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2018-12-28 15:24:32" itemprop="dateCreated datePublished" datetime="2018-12-28T15:24:32+08:00">2018-12-28</time>
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="ModSecurity"><a href="#ModSecurity" class="headerlink" title="ModSecurity"></a>ModSecurity</h1><hr>
+<h2 id="配置环境-ubuntu18-04"><a href="#配置环境-ubuntu18-04" class="headerlink" title="配置环境(ubuntu18.04)"></a>配置环境(ubuntu18.04)</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">备份源</span></span><br><span class="line">sudo cp /etc/apt/sources.list /etc/apt/sources.list.bak</span><br><span class="line"><span class="meta">#</span><span class="bash">添加阿里云源</span></span><br><span class="line">sudo vim /etc/apt/sources.list</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">把以下内容覆盖</span></span><br><span class="line">deb http://mirrors.aliyun.com/ubuntu/ bionic main restricted universe multiverse</span><br><span class="line"></span><br><span class="line">deb-src http://mirrors.aliyun.com/ubuntu/ bionic main restricted universe multiverse</span><br><span class="line"></span><br><span class="line">deb http://mirrors.aliyun.com/ubuntu/ bionic-security main restricted universe multiverse</span><br><span class="line"></span><br><span class="line">deb-src http://mirrors.aliyun.com/ubuntu/ bionic-security main restricted universe multiverse</span><br><span class="line"></span><br><span class="line">deb http://mirrors.aliyun.com/ubuntu/ bionic-updates main restricted universe multiverse</span><br><span class="line"></span><br><span class="line">deb-src http://mirrors.aliyun.com/ubuntu/ bionic-updates main restricted universe multiverse</span><br><span class="line"></span><br><span class="line">deb http://mirrors.aliyun.com/ubuntu/ bionic-backports main restricted universe multiverse</span><br><span class="line"></span><br><span class="line">deb-src http://mirrors.aliyun.com/ubuntu/ bionic-backports main restricted universe multiverse</span><br><span class="line"></span><br><span class="line">deb http://mirrors.aliyun.com/ubuntu/ bionic-proposed main restricted universe multiverse</span><br><span class="line"></span><br><span class="line">deb-src http://mirrors.aliyun.com/ubuntu/ bionic-proposed main restricted universe multiverse</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">保存退出后更新软件列表</span></span><br><span class="line">sudo apt-get update</span><br><span class="line"><span class="meta">#</span><span class="bash">更新软件包</span></span><br><span class="line">sudo apt-get upgrade</span><br></pre></td></tr></table></figure>
+
+<h2 id="安装apache"><a href="#安装apache" class="headerlink" title="安装apache"></a>安装apache</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install apache2</span><br></pre></td></tr></table></figure>
+
+<p><img src="/img/modsecurity/001.png" alt="001"></p>
+<h2 id="安装MYSQL"><a href="#安装MYSQL" class="headerlink" title="安装MYSQL"></a>安装MYSQL</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install mysql-server</span><br></pre></td></tr></table></figure>
+
+<h3 id="设置root密码"><a href="#设置root密码" class="headerlink" title="设置root密码"></a>设置root密码</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">sudo su</span><br><span class="line">mysql</span><br><span class="line"><span class="meta">mysql&gt;</span><span class="bash"> select user, plugin from mysql.user;</span></span><br><span class="line">+------------------+-----------------------+</span><br><span class="line">| user             | plugin                |</span><br><span class="line">+------------------+-----------------------+</span><br><span class="line">| root             | auth_socket           |</span><br><span class="line">| mysql.session    | mysql_native_password |</span><br><span class="line">| mysql.sys        | mysql_native_password |</span><br><span class="line">| debian-sys-maint | mysql_native_password |</span><br><span class="line">+------------------+-----------------------+</span><br><span class="line"></span><br><span class="line"><span class="meta">mysql&gt;</span><span class="bash"> update mysql.user <span class="built_in">set</span> authentication_string=PASSWORD(<span class="string">'密码'</span>), plugin=<span class="string">'mysql_native_password'</span> <span class="built_in">where</span> user=<span class="string">'root'</span>;</span></span><br><span class="line"><span class="meta">mysql&gt;</span><span class="bash"> flush privileges;</span></span><br><span class="line"><span class="meta">mysql&gt;</span><span class="bash"> <span class="built_in">exit</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">重启mysql</span></span><br><span class="line">sudo /etc/init.d/mysql restart</span><br><span class="line">mysql -uroot -p</span><br></pre></td></tr></table></figure>
+
+<h2 id="安装PHP"><a href="#安装PHP" class="headerlink" title="安装PHP"></a>安装PHP</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install php libapache2-mod-php php-mysql</span><br><span class="line"><span class="meta">#</span><span class="bash">添加info.php文件来测试</span></span><br><span class="line">&lt;?php</span><br><span class="line">phpinfo();</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/img/modsecurity/002.png" alt="002"></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">默认版本不符合实验，安装PHP5.6</span></span><br><span class="line">sudo add-apt-repository -y ppa:ondrej/php</span><br><span class="line">sudo apt update</span><br><span class="line">sudo apt install php5.6</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">首先使用命令禁用 PHP 7.2 模块</span></span><br><span class="line">sudo a2dismod php7.2</span><br><span class="line"><span class="meta">#</span><span class="bash">启用 PHP 5.6 模块</span></span><br><span class="line">sudo a2enmod php5.6</span><br><span class="line"></span><br><span class="line">sudo apt install libapache2-mod-php5.6 php-mysql5.6</span><br><span class="line"><span class="meta">#</span><span class="bash">重启apache2</span></span><br><span class="line">sudo systemctl restart apache2</span><br></pre></td></tr></table></figure>
+
+<p>其他配置</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">将 PHP 5.6 设置为默认版本</span></span><br><span class="line">sudo update-alternatives --set php /usr/bin/php5.6</span><br><span class="line"><span class="meta">#</span><span class="bash">设置默认情况下要使用的全局 PHP 版本</span></span><br><span class="line">sudo update-alternatives --config php</span><br></pre></td></tr></table></figure>
+
+<h2 id="配置phpmyadmin"><a href="#配置phpmyadmin" class="headerlink" title="配置phpmyadmin"></a>配置phpmyadmin</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">安装phpmyadmin,安装中会要求输入数据库连接密码</span></span><br><span class="line">sudo apt install phpmyadmin</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">创建软链接到web根目录下（我的是/var/www/html/)</span></span><br><span class="line">sudo ln -s /usr/share/phpmyadmin /var/www/html/phpmyadmin</span><br><span class="line"></span><br><span class="line">sudo apt-get install php5.6-mbstring</span><br><span class="line">sudo apt-get install php5.6-gettext</span><br></pre></td></tr></table></figure>
+
+<p>如果出现<code>The mbstring extension is missing. Please check your PHP configuration.</code>的错误</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">确保php_mbstring安装，且配置文件打开(下面是我的目录)</span></span><br><span class="line">/etc/php/5.6/apache2/php.ini</span><br></pre></td></tr></table></figure>
+
+<p><img src="/img/modsecurity/003.png" alt="003"></p>
+<h2 id="modsecurity"><a href="#modsecurity" class="headerlink" title="modsecurity"></a>modsecurity</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">添加源</span></span><br><span class="line">sudo vim /etc/apt/sources.list</span><br><span class="line"></span><br><span class="line">deb http://mirrors.aliyun.com/ubuntu/ xenial main restricted universe multiverse</span><br><span class="line"></span><br><span class="line">deb http://mirrors.aliyun.com/ubuntu/ xenial-security main restricted universe multiverse</span><br><span class="line"></span><br><span class="line">deb http://mirrors.aliyun.com/ubuntu/ xenial-updates main restricted universe multiverse</span><br><span class="line"></span><br><span class="line">deb http://mirrors.aliyun.com/ubuntu/ xenial-backports main restricted universe multiverse</span><br><span class="line"></span><br><span class="line">sudo apt-get update</span><br></pre></td></tr></table></figure>
+
+<h3 id="安装modsecurity"><a href="#安装modsecurity" class="headerlink" title="安装modsecurity"></a>安装modsecurity</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install libxml2 libxml2-dev libxml2-utils libaprutil1 libaprutil1-dev libapache2-modsecurity</span><br></pre></td></tr></table></figure>
+
+<h3 id="开启ModSecurity功能"><a href="#开启ModSecurity功能" class="headerlink" title="开启ModSecurity功能"></a>开启ModSecurity功能</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">cd /etc/modsecurity/</span><br><span class="line">sudo mv modsecurity.conf-recommended modsecurity.conf</span><br><span class="line">sudo vim /etc/modsecurity/modsecurity.conf</span><br><span class="line"></span><br><span class="line">查找SecRuleEngine，并将其修改为On：</span><br><span class="line">SecRuleEngine On</span><br></pre></td></tr></table></figure>
+
+<h3 id="安装OWASP-Rule-Set"><a href="#安装OWASP-Rule-Set" class="headerlink" title="安装OWASP Rule Set"></a>安装OWASP Rule Set</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cd ~</span><br><span class="line">sudo wget https://github.com/root25/MODSEC/raw/master/modsecurity-crs_2.2.5.tar.gz</span><br><span class="line">sudo tar -zxvf modsecurity-crs_2.2.5.tar.gz</span><br><span class="line">sudo mkdir -p /usr/share/modsecurity-crs</span><br><span class="line">sudo cp -R modsecurity-crs_2.2.5/* /usr/share/modsecurity-crs/</span><br></pre></td></tr></table></figure>
+
+<p>在<code>/usr/share/modsecurity-crs/</code>的目录下，有主要的几个规则目录，activated_rules、slr_rules、optional_rules和base_rules.</p>
+<p>将srl_rules、base_rules和optional_rules目录下的所有conf文件，拷贝到activated_rules目录下。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">sudo cp /usr/share/modsecurity-crs/modsecurity-crs_10_setup.conf.example /usr/share/modsecurity-crs/modsecurity-crs_10_setup.conf</span><br><span class="line"></span><br><span class="line">cd /usr/share/modsecurity-crs/activated_rules</span><br><span class="line"></span><br><span class="line">sudo cp /usr/share/modsecurity-crs/base_rules/* .</span><br><span class="line"></span><br><span class="line">sudo cp /usr/share/modsecurity-crs/optional_rules/* .</span><br><span class="line"></span><br><span class="line">sudo cp /usr/share/modsecurity-crs/slr_rules/* .</span><br></pre></td></tr></table></figure>
+
+<h3 id="在apache中启用modsecurity模块"><a href="#在apache中启用modsecurity模块" class="headerlink" title="在apache中启用modsecurity模块"></a>在apache中启用modsecurity模块</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">sudo vim /etc/apache2/mods-available/security2.conf</span><br><span class="line"><span class="meta">#</span><span class="bash">在 … 中加入以下内容，保存退出。</span></span><br><span class="line">includeOptional /etc/modsecurity/*.conf</span><br><span class="line">include /usr/share/modsecurity-crs/*.conf</span><br><span class="line">include /usr/share/modsecurity-crs/activated_rules/*.conf</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash">因为要用自己的规则，修改如下</span></span><br><span class="line">&lt;IfModule security2_module&gt;</span><br><span class="line">        # Default Debian dir for modsecurity's persistent data</span><br><span class="line">        SecDataDir /var/cache/modsecurity</span><br><span class="line"></span><br><span class="line">        # Include all the *.conf files in /etc/modsecurity.</span><br><span class="line">        # Keeping your local configuration in that directory</span><br><span class="line">        # will allow for an easy upgrade of THIS file and</span><br><span class="line">        # make your life easier</span><br><span class="line">        IncludeOptional /etc/modsecurity/*.conf</span><br><span class="line"></span><br><span class="line">        # Include OWASP ModSecurity CRS rules if installed</span><br><span class="line">        #IncludeOptional /usr/share/modsecurity-crs/owasp-crs.load</span><br><span class="line">        include /usr/share/modsecurity-crs/activated_rules/my.conf</span><br><span class="line">&lt;/IfModule&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="启用headers和Modsecurity"><a href="#启用headers和Modsecurity" class="headerlink" title="启用headers和Modsecurity"></a>启用headers和Modsecurity</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo a2enmod headers</span><br><span class="line">sudo a2enmod security2</span><br></pre></td></tr></table></figure>
+
+<p>在中<code>/usr/share/modsecurity-crs/activated_rules/my.conf</code>编写规则测试即可</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SecRule ARGS "@contains select" "id:00001,msg:'SQL Injection maybe',phase:1,t:compressWhitespace,t:htmlEntityDecode,deny"</span><br><span class="line"></span><br><span class="line">SecRule ARGS "@contains union" "id:00002,msg:'SQL Injection maybe',phase:1,t:compressWhitespace,t:htmlEntityDecode,block"</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+<div>
+  
+    <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-heart"></i>感谢阅读-------------</div>
+    
+</div>
+  
+</div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/环境搭建/" rel="tag"># 环境搭建</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/01/03/php 文件包含伪协议利用/" rel="prev" title="php 文件包含伪协议利用">
+                <i class="fa fa-chevron-left"></i> php 文件包含伪协议利用
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/12/25/XSS跨站脚本-笔记/" rel="next" title="XSS跨站脚本-笔记">
+                XSS跨站脚本-笔记 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+      <div id="sidebar-dimmer"></div>
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <a href="/">
+                <img class="site-author-image" itemprop="image" src="/images/jack.jpg" alt="嘤嘤怪er">
+              </a>
+            
+              <p class="site-author-name" itemprop="name">嘤嘤怪er</p>
+              <p class="site-description motion-element" itemprop="description">0menc</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">101</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">16</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">17</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#ModSecurity"><span class="nav-number">1.</span> <span class="nav-text">ModSecurity</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#配置环境-ubuntu18-04"><span class="nav-number">1.1.</span> <span class="nav-text">配置环境(ubuntu18.04)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装apache"><span class="nav-number">1.2.</span> <span class="nav-text">安装apache</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装MYSQL"><span class="nav-number">1.3.</span> <span class="nav-text">安装MYSQL</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#设置root密码"><span class="nav-number">1.3.1.</span> <span class="nav-text">设置root密码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装PHP"><span class="nav-number">1.4.</span> <span class="nav-text">安装PHP</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置phpmyadmin"><span class="nav-number">1.5.</span> <span class="nav-text">配置phpmyadmin</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#modsecurity"><span class="nav-number">1.6.</span> <span class="nav-text">modsecurity</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装modsecurity"><span class="nav-number">1.6.1.</span> <span class="nav-text">安装modsecurity</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#开启ModSecurity功能"><span class="nav-number">1.6.2.</span> <span class="nav-text">开启ModSecurity功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装OWASP-Rule-Set"><span class="nav-number">1.6.3.</span> <span class="nav-text">安装OWASP Rule Set</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在apache中启用modsecurity模块"><span class="nav-number">1.6.4.</span> <span class="nav-text">在apache中启用modsecurity模块</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#启用headers和Modsecurity"><span class="nav-number">1.6.5.</span> <span class="nav-text">启用headers和Modsecurity</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 – <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">嘤嘤怪er</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.4.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.4.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.4.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.4.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.4.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+<script type="text/javascript">
+
+    var a_idx = 0;
+    jQuery(document).ready(function($) {
+        $("body").click(function(e) {
+            var a = new Array("富强", "民主", "文明", "和谐", "自由", "平等", "公正" ,"法治", "爱国", "敬业", "诚信", "友善");
+            var $i = $("<span />").text(a[a_idx]);
+            a_idx = (a_idx + 1) % a.length;
+            var x = e.pageX,
+                y = e.pageY;
+            $i.css({
+                "z-index": 99999999999999999999999999999999999999999999999999999999999999999999999999 ,
+                "top": y - 20,
+                "left": x,
+                "position": "absolute",
+                "font-weight": "bold",
+                "color": "#ff6651"
+            });
+            $("body").append($i);
+            $i.animate({
+                    "top": y - 180,
+                    "opacity": 0
+                },
+                1500,
+                function() {
+                    $i.remove();
+                });
+        });
+    });
+</script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300,"bottom":-40},"mobile":{"show":false},"log":false,"pluginJsPath":"lib/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>

